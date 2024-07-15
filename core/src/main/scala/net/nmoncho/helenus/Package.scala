@@ -450,26 +450,3 @@ extension (session: CqlSession)
                 Failure(new IllegalStateException("CodecRegistry isn't mutable"))
             // $COVERAGE-ON$
 end extension
-
-object Codec:
-    def apply[T](using codec: TypeCodec[T]): TypeCodec[T] = codec
-
-    /** Creates a new mapping codec providing support for [[Outer]] based on an existing codec for [[Inner]].
-      *
-      * @param toOuter how to map from [[Inner]] to [[Outer]].
-      * @param toInner how to map from [[Outer]] to [[Inner]].
-      * @param codec The inner codec to use to handle instances of [[Inner]]; must not be null.
-      * @param tag [[Outer]] ClassTag
-      */
-    def mappingCodec[Inner, Outer](
-        toOuter: Inner => Outer,
-        toInner: Outer => Inner
-    )(using codec: TypeCodec[Inner], tag: ClassTag[Outer]): TypeCodec[Outer] =
-        new MappingCodec[Inner, Outer](
-          codec,
-          GenericType.of(tag.runtimeClass.asInstanceOf[Class[Outer]])
-        ):
-            override def innerToOuter(value: Inner): Outer = toOuter(value)
-
-            override def outerToInner(value: Outer): Inner = toInner(value)
-end Codec
