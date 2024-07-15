@@ -39,7 +39,6 @@ import com.datastax.dse.driver.api.core.data.geometry.Polygon
 import com.datastax.dse.driver.api.core.data.time.DateRange
 import com.datastax.oss.driver.api.core.ProtocolVersion
 import com.datastax.oss.driver.api.core.`type`.DataType
-import com.datastax.oss.driver.api.core.`type`.codec.MappingCodec
 import com.datastax.oss.driver.api.core.`type`.codec.TypeCodec
 import com.datastax.oss.driver.api.core.`type`.reflect.GenericType
 import net.nmoncho.helenus.internal.codec.*

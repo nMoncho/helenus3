@@ -36,7 +36,6 @@ import com.datastax.dse.driver.api.core.cql.reactive.ReactiveResultSet
 import com.datastax.oss.driver.api.core.CqlSession
 import com.datastax.oss.driver.api.core.MappedAsyncPagingIterable
 import com.datastax.oss.driver.api.core.PagingIterable
-import com.datastax.oss.driver.api.core.`type`.codec.MappingCodec
 import com.datastax.oss.driver.api.core.`type`.codec.TypeCodec
 import com.datastax.oss.driver.api.core.`type`.codec.registry.CodecRegistry
 import com.datastax.oss.driver.api.core.`type`.codec.registry.MutableCodecRegistry
