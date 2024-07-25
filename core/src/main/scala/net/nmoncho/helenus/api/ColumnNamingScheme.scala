@@ -35,7 +35,7 @@ sealed trait ColumnNamingScheme extends Serializable:
 
     /** Maps a field name to a [[ColumnNamingScheme]] name
       */
-    def map(fieldName: String): String
+    def map(fieldName: String): String // FIXME rename this to `apply`
 
     /** Returns the field name in a format appropriate for concatenation in a CQL query.
       *
