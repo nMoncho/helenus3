@@ -48,6 +48,7 @@ import com.datastax.oss.driver.api.core.cql.ResultSet
 import com.datastax.oss.driver.api.core.cql.Row
 import com.datastax.oss.driver.api.core.metadata.schema.KeyspaceMetadata
 import net.nmoncho.helenus.api.RowMapper
+import net.nmoncho.helenus.api.`type`.codec.Codec
 import net.nmoncho.helenus.api.cql.PagerSerializer
 import net.nmoncho.helenus.api.cql.ScalaPreparedStatement.CQLQuery
 import net.nmoncho.helenus.api.cql.StatementOptions
@@ -238,13 +239,13 @@ extension (row: Row)
       *
       * @param name column name
       */
-    def getCol[T](name: String)(using codec: TypeCodec[T]): T = row.get(name, codec)
+    def getCol[T](name: String)(using codec: Codec[T]): T = row.get(name, codec)
 
     /** Gets a column from this [[Row]] of type [[T]] by index
       *
       * @param index position in row
       */
-    def getCol[T](index: Int)(using codec: TypeCodec[T]): T = row.get(index, codec)
+    def getCol[T](index: Int)(using codec: Codec[T]): T = row.get(index, codec)
 end extension
 
 extension (rs: ResultSet)
