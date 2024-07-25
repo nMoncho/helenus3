@@ -144,7 +144,10 @@ class ScalaPreparedStatement1[T1, Out](
       *
       * @return a future of [[MappedAsyncPagingIterable]]
       */
-    def executeAsync(t1: T1)(implicit session: CqlSession, ec: ExecutionContext): Future[MappedAsyncPagingIterable[Out]] =
+    def executeAsync(t1: T1)(
+        implicit session: CqlSession,
+        ec: ExecutionContext
+    ): Future[MappedAsyncPagingIterable[Out]] =
         apply(t1).executeAsync()
 
     /** Executes this [[PreparedStatement]] in a reactive fashion
