@@ -19,13 +19,16 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package net.nmoncho.helenus.internal.codec.udt
+package net.nmoncho.helenus.internal.codec
+package udt
 
 import java.nio.ByteBuffer
 
+import scala.annotation.meta.field
 import scala.collection.mutable
 import scala.deriving.Mirror
 import scala.reflect.ClassTag
+import scala.runtime.Tuples
 
 import com.datastax.oss.driver.api.core.CqlIdentifier
 import com.datastax.oss.driver.api.core.ProtocolVersion
@@ -35,9 +38,13 @@ import com.datastax.oss.driver.api.core.`type`.codec.TypeCodec
 import com.datastax.oss.driver.api.core.`type`.reflect.GenericType
 import com.datastax.oss.driver.internal.core.`type`.DefaultUserDefinedType
 import com.datastax.oss.driver.internal.core.`type`.codec.ParseUtils
+import com.datastax.oss.driver.shaded.guava.common.reflect.ScalaTypeToken
+import com.datastax.oss.driver.shaded.guava.common.reflect.TypeParameter
 import net.nmoncho.helenus.api.ColumnNamingScheme
 import net.nmoncho.helenus.api.DefaultColumnNamingScheme
+import net.nmoncho.helenus.api.`type`.codec.Codec
 import net.nmoncho.helenus.internal.Labelling
+import net.nmoncho.helenus.internal.codec.collection.ListCodec.frozen
 
 /** A [[IdenticalUDTCodec]] is one that maps a case class to a UDT, both having the <strong>same</strong>
   * field order, for example:
@@ -66,7 +73,7 @@ trait IdenticalUDTCodec[A]:
       * @param protocolVersion DSE Version in use
       * @return accumulated buffers, one per case class component, with the total buffer size
       */
-    inline def encode(value: A, protocolVersion: ProtocolVersion): (List[ByteBuffer], Int)
+    def encode(value: A, protocolVersion: ProtocolVersion): (List[ByteBuffer], Int)
 
     /** Decodes an [[A]] value from a [[ByteCodec]]
       *
@@ -74,7 +81,7 @@ trait IdenticalUDTCodec[A]:
       * @param protocolVersion DSE Version in use
       * @return a decoded [[A]] value
       */
-    inline def decode(buffer: ByteBuffer, protocolVersion: ProtocolVersion): A
+    def decode(buffer: ByteBuffer, protocolVersion: ProtocolVersion): A
 
     /** Formats an [[A]] value
       *
@@ -82,7 +89,7 @@ trait IdenticalUDTCodec[A]:
       * @param sb where to format into
       * @return builder with formatted value
       */
-    inline def format(value: A, sb: mutable.StringBuilder): mutable.StringBuilder
+    def format(value: A, sb: mutable.StringBuilder): mutable.StringBuilder
 
     /** Parses an [[A]] value from a String
       *
@@ -90,7 +97,7 @@ trait IdenticalUDTCodec[A]:
       * @param idx from which index to start parsing
       * @return a parsed [[A]] value, and an index from where to continue parsing
       */
-    inline def parse(value: String, idx: Int): (A, Int)
+    def parse(value: String, idx: Int): (A, Int)
 
 end IdenticalUDTCodec
 
@@ -99,5 +106,230 @@ object IdenticalUDTCodec:
     private val fieldSeparator = ':'
     private val separator      = ','
     private val closingChar    = '}'
+
+    import scala.compiletime.*
+
+    inline def summonInstances[Elems <: Tuple](
+        fieldNames: Seq[String],
+        namingScheme: ColumnNamingScheme
+    ): IdenticalUDTCodec[Elems] =
+        inline erasedValue[Elems] match
+            case _: (elem *: EmptyTuple) =>
+                deriveLast[elem](fieldNames, namingScheme).asInstanceOf[IdenticalUDTCodec[Elems]]
+
+            case _: (elem *: elems) =>
+                deriveHList[elem, elems](fieldNames, namingScheme).asInstanceOf[IdenticalUDTCodec[Elems]]
+
+        end match
+    end summonInstances
+
+    inline def deriveLast[H](
+        fieldNames: Seq[String],
+        namingScheme: ColumnNamingScheme
+    ): IdenticalUDTCodec[H *: EmptyTuple] =
+        val fieldName = fieldNames.head
+        val codec     = summonInline[Codec[H]]
+
+        new IdenticalUDTCodec[H *: EmptyTuple]:
+            override val columns: List[(String, DataType)] = List(fieldName -> codec.getCqlType())
+
+            override def encode(value: H *: EmptyTuple, protocolVersion: ProtocolVersion): (List[ByteBuffer], Int) =
+                val encoded = codec.encode(value.head, protocolVersion)
+                val size    = if encoded == null then 4 else 4 + encoded.remaining()
+
+                List(encoded) -> size
+            end encode
+
+            override def decode(buffer: ByteBuffer, protocolVersion: ProtocolVersion): H *: EmptyTuple =
+                if buffer == null then null.asInstanceOf[H *: EmptyTuple]
+                else
+                    val input = buffer.duplicate()
+
+                    val elementSize = input.getInt()
+                    val element = if elementSize < 0 then codec.decode(null, protocolVersion)
+                    else
+                        val elementBuffer = input.slice()
+                        elementBuffer.limit(elementSize)
+                        input.position(input.position() + elementSize)
+                        codec.decode(elementBuffer, protocolVersion)
+
+                    element *: EmptyTuple
+            end decode
+
+            override def format(value: H *: EmptyTuple, sb: StringBuilder): StringBuilder =
+                sb.append(namingScheme.asCql(fieldName, pretty = true)).append(fieldSeparator).append {
+                    value match
+                        case null | null *: _ => NULL
+                        case head *: _ => codec.format(head)
+                }
+
+            override def parse(value: String, idx: Int): (H *: EmptyTuple, Int) =
+                val fieldNameEnd =
+                    skipSpacesAndExpectId(value, idx, namingScheme.asCql(fieldName, pretty = true))
+                val valueStart     = skipSpacesAndExpect(value, fieldNameEnd, fieldSeparator)
+                val (parsed, next) = parseWithCodec(value, codec, valueStart)
+
+                (parsed *: EmptyTuple) -> next
+            end parse
+        end new
+    end deriveLast
+
+    inline def deriveHList[H, T <: Tuple](
+        fieldNames: Seq[String],
+        namingScheme: ColumnNamingScheme
+    ): IdenticalUDTCodec[H *: T] =
+        val fieldName = fieldNames.head
+        val codec     = summonInline[Codec[H]]
+        val tail      = summonInstances[T](fieldNames.tail, namingScheme)
+
+        new IdenticalUDTCodec[H *: T]:
+            override val columns: List[(String, DataType)] =
+                (fieldNames.head -> codec.getCqlType()) :: tail.columns
+
+            override def encode(value: H *: T, protocolVersion: ProtocolVersion): (List[ByteBuffer], Int) =
+                val (tailBuffer, tailSize) = tail.encode(value.tail, protocolVersion)
+                val encoded                = codec.encode(value.head, protocolVersion)
+                val size                   = if encoded == null then 4 else 4 + encoded.remaining()
+
+                (encoded :: tailBuffer) -> (size + tailSize)
+            end encode
+
+            override def decode(buffer: ByteBuffer, protocolVersion: ProtocolVersion): H *: T =
+                if buffer == null then null.asInstanceOf[H *: T]
+                else
+                    val input = buffer.duplicate()
+
+                    val elementSize = input.getInt()
+                    val element = if elementSize < 0 then
+                        codec.decode(null, protocolVersion)
+                    else
+                        val elementBuffer = input.slice()
+                        elementBuffer.limit(elementSize)
+                        codec.decode(elementBuffer, protocolVersion)
+
+                    element *: tail.decode(
+                      input.position(input.position() + Math.max(0, elementSize)),
+                      protocolVersion
+                    )
+
+            override def format(value: H *: T, sb: StringBuilder): StringBuilder =
+                val head = sb.append(namingScheme.asCql(fieldName, pretty = true))
+                    .append(fieldSeparator)
+                    .append:
+                        value match
+                            case null | null *: _ => NULL
+                            case head *: _ => codec.format(head)
+                    .append(separator)
+
+                tail.format(value.tail, head)
+            end format
+
+            override def parse(value: String, idx: Int): (H *: T, Int) =
+                val fieldNameEnd =
+                    skipSpacesAndExpectId(value, idx, namingScheme.asCql(fieldName, pretty = true))
+                val valueStart             = skipSpacesAndExpect(value, fieldNameEnd, fieldSeparator)
+                val (parsed, valueEnd)     = parseWithCodec(value, codec, valueStart)
+                val afterValue             = skipSpacesAndExpect(value, valueEnd, separator)
+                val (parsedTail, nextTail) = tail.parse(value, afterValue)
+
+                (parsed *: parsedTail) -> nextTail
+            end parse
+        end new
+    end deriveHList
+
+    inline def deriveCodec[A <: Product](keyspace: Option[String], name: Option[String], frozen: Boolean)(
+        using mirror: Mirror.ProductOf[A],
+        labelling: Labelling[A],
+        tag: ClassTag[A],
+        namingScheme: ColumnNamingScheme = DefaultColumnNamingScheme
+    ): Codec[A] & UDTCodec[A] =
+        val codec = summonInstances[mirror.MirroredElemTypes](labelling.elemLabels, namingScheme)
+
+        val actualKeyspace = keyspace.getOrElse("system")
+        val actualName     = name.getOrElse(namingScheme.map(labelling.label))
+
+        new Codec[A] with UDTCodec[A]:
+            override def encode(value: A, protocolVersion: ProtocolVersion): ByteBuffer =
+                if value == null then null
+                else
+                    val (buffers, size) = codec.encode(Tuple.fromProductTyped(value), protocolVersion)
+                    val result          = ByteBuffer.allocate(size)
+
+                    buffers.foreach: field =>
+                        if field == null then
+                            result.putInt(-1)
+                        else
+                            result.putInt(field.remaining())
+                            result.put(field.duplicate())
+
+                    result.flip()
+
+            override def decode(bytes: ByteBuffer, protocolVersion: ProtocolVersion): A =
+                mirror.fromTuple(codec.decode(bytes, protocolVersion))
+
+            override def getCqlType(): DataType =
+                import scala.jdk.CollectionConverters.*
+
+                val (identifiers, dataTypes) =
+                    codec.columns.foldRight(List.empty[CqlIdentifier] -> List.empty[DataType]):
+                        case ((name, dataType), (identifiers, dataTypes)) =>
+                            (CqlIdentifier.fromInternal(name) :: identifiers) -> (dataType :: dataTypes)
+
+                new DefaultUserDefinedType(
+                  CqlIdentifier.fromInternal(actualKeyspace),
+                  CqlIdentifier.fromInternal(actualName),
+                  frozen,
+                  identifiers.asJava,
+                  dataTypes.asJava
+                )
+            end getCqlType
+
+            override val getJavaType: GenericType[A] =
+                GenericType.of(new ScalaTypeToken[A] {}.getType()).asInstanceOf[GenericType[A]]
+
+            override def format(value: A): String =
+                if value == null then NULL
+                else
+                    val sb = new mutable.StringBuilder().append(openingChar)
+                    val t  = Tuple.fromProductTyped(value)
+                    codec.format(t, sb)
+
+                    sb.append(closingChar).toString()
+
+            override def parse(value: String): A =
+                if value == null || value.isEmpty || value.equalsIgnoreCase(NULL) then null.asInstanceOf[A]
+                else
+                    val start = ParseUtils.skipSpaces(value, 0)
+
+                    expectParseChar(value, start, openingChar)
+                    val (parsed, end) = codec.parse(value, start + 1)
+                    expectParseChar(value, end, closingChar)
+
+                    mirror.fromTuple(parsed)
+
+            override def accepts(cqlType: DataType): Boolean = cqlType match
+                case udt: UserDefinedType =>
+                    udt.getFieldTypes == getCqlType.asInstanceOf[UserDefinedType].getFieldTypes
+
+                case _ => false
+        end new
+    end deriveCodec
+
+    // TODO check why we can overload `derived`!
+    inline def derive[A <: Product](keyspace: String, name: String, frozen: Boolean = true)(
+        using mirror: Mirror.ProductOf[A],
+        labelling: Labelling[A],
+        tag: ClassTag[A],
+        namingScheme: ColumnNamingScheme = DefaultColumnNamingScheme
+    ): Codec[A] & UDTCodec[A] =
+        deriveCodec[A](Some(keyspace), Some(name), frozen = true)
+
+    inline def derived[A <: Product](
+        using mirror: Mirror.ProductOf[A],
+        labelling: Labelling[A],
+        tag: ClassTag[A],
+        namingScheme: ColumnNamingScheme = DefaultColumnNamingScheme
+    ): Codec[A] & UDTCodec[A] =
+        deriveCodec[A](None, None, frozen = true)
 
 end IdenticalUDTCodec

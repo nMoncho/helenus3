@@ -33,9 +33,10 @@ import com.datastax.oss.driver.api.core.`type`.UserDefinedType
 import com.datastax.oss.driver.api.core.`type`.codec.TypeCodec
 import com.datastax.oss.driver.api.core.`type`.reflect.GenericType
 import com.datastax.oss.driver.internal.core.`type`.DefaultUserDefinedType
+import net.nmoncho.helenus.api.`type`.codec.Codec
 
-trait UDTCodec[T <: Product]:
-    that: TypeCodec[T] =>
+trait UDTCodec[T]:
+    that: Codec[T] =>
 
     private lazy val userDefinedType = that.getCqlType match
         case udt: UserDefinedType => udt
