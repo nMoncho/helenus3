@@ -30,6 +30,7 @@ import net.nmoncho.helenus.api.`type`.codec.Codec
 import net.nmoncho.helenus.internal.DerivedCaseClassRowMapper
 import net.nmoncho.helenus.internal.DerivedRowMapper
 import net.nmoncho.helenus.internal.DerivedTupleRowMapper
+import net.nmoncho.helenus.internal.macros.RenamedDerivedRowMapper
 import org.slf4j.LoggerFactory
 
 trait RowMapper[T] extends Serializable:
@@ -44,6 +45,12 @@ object RowMapper extends DerivedCaseClassRowMapper:
     given [T](using derived: DerivedRowMapper[T]): RowMapper[T] = derived
 
     def apply[T](using mapper: DerivedRowMapper[T]): RowMapper[T] = mapper
+
+    inline def derivedRenamed[A <: Product](
+        inline first: A => (Any, String),
+        inline rest: A => (Any, String)*
+    ): RowMapper[A] =
+        ${ RenamedDerivedRowMapper.renamedImpl[A]('first, 'rest) }
 
     /** Knows how to extract a column from a [[Row]] into a Scala type [[A]]
       * @tparam A target type

@@ -78,11 +78,7 @@ end DerivedTupleRowMapper
 
 trait DerivedCaseClassRowMapper:
 
-    // type FieldToColumn = Map[String, String]
-
-    // trait Builder[A] extends (Map[String, String] => DerivedRowMapper[A])
-
-    inline def summonInstances[Elems <: Tuple](fieldNames: Seq[String]): DerivedRowMapper[Elems] =
+    inline def summonInstances[Elems](fieldNames: Seq[String]): DerivedRowMapper[Elems] =
         inline erasedValue[Elems] match
             case _: (elem *: EmptyTuple) =>
                 val colDecoder = summonInline[ColumnMapper[elem]]
