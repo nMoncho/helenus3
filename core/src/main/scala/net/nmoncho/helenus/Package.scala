@@ -54,6 +54,7 @@ import net.nmoncho.helenus.api.cql.ScalaPreparedStatement.CQLQuery
 import net.nmoncho.helenus.api.cql.StatementOptions
 import net.nmoncho.helenus.api.cql.WrappedBoundStatement
 import net.nmoncho.helenus.internal.cql.Pager
+import net.nmoncho.helenus.internal.macros.CqlQueryInterpolation
 import net.nmoncho.helenus.internal.reactive.MapOperator
 import org.reactivestreams.Publisher
 import org.slf4j.LoggerFactory
@@ -74,6 +75,10 @@ extension (query: String)
     def toCQLAsync(using session: Future[CqlSession], ec: ExecutionContext): Future[CQLQuery] =
         session.map(CQLQuery(query, _))
 end extension
+
+extension (sc: StringContext)
+    inline def cql(inline args: Any*)(using inline session: CqlSession): WrappedBoundStatement[Row] =
+        ${ CqlQueryInterpolation.cqlImpl('{ sc.parts }, 'args, 'session) }
 
 extension (bs: BoundStatement)
     /** Sets or binds the specified value only if it's not NULL, avoiding a tombstone insert.
