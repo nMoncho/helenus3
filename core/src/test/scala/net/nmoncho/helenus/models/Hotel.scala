@@ -23,13 +23,11 @@ package net.nmoncho.helenus.models
 
 import net.nmoncho.helenus.api.RowMapper
 
-final case class Hotel(id: String, name: String, phone: String, address: Address, pois: Set[String])
+final case class Hotel(id: String, name: String, phone: String, address: Address, pois: Set[String]) derives RowMapper
 
 object Hotel:
-    import net.nmoncho.helenus.*
-
-    // implicit val rowMapper: RowMapper[Hotel] = RowMapper[Hotel]
 
     def byPoi(id: String, name: String, phone: String, address: Address): Hotel =
         Hotel(id, name, phone, address, Set())
+
 end Hotel
