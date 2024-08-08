@@ -272,6 +272,25 @@ extension [Out](future: Future[WrappedBoundStatement[Out]])
         implicit session: CqlSession,
         ec: ExecutionContext
     ): Future[MappedAsyncPagingIterable[Out]] = future.flatMap(_.executeAsync())
+
+    def pager(
+        implicit mapper: RowMapper[Out],
+        ec: ExecutionContext
+    ): Future[Pager[Out]] =
+        future.map(wbs => Pager.initial(tag(wbs)))
+
+    def pager(pagingState: PagingState)(
+        implicit mapper: RowMapper[Out],
+        ec: ExecutionContext
+    ): Future[Pager[Out]] =
+        future.map(wbs => Pager.continue[Out](tag(wbs), pagingState).get)
+
+    def pager[A: PagerSerializer](pagingState: A)(
+        implicit newMapper: RowMapper[Out],
+        ec: ExecutionContext
+    ): Future[Pager[Out]] =
+        future.map(wbs => Pager.continueFromEncoded[Out, A](tag(wbs), pagingState).get)
+
 end extension
 
 extension (row: Row)

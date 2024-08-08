@@ -43,6 +43,7 @@ import com.datastax.oss.driver.api.core.cql.Row
 import com.datastax.oss.driver.api.core.metadata.Node
 import com.datastax.oss.driver.api.core.metadata.token.Token
 import net.nmoncho.helenus.api.RowMapper
+import net.nmoncho.helenus.internal.cql.Pager as InternalPager
 import org.reactivestreams.Publisher
 
 /** This class is meant to wrap a [[BoundStatement]] and carry a [[RowMapper]]
@@ -86,6 +87,15 @@ class WrappedBoundStatement[Out](bstmt: BoundStatement)(using RowMapper[Out]) ex
       */
     def as[Out2: RowMapper](using ev: Out =:= Row): WrappedBoundStatement[Out2] =
         new WrappedBoundStatement(bstmt)
+
+    def pager: Pager[Out] =
+        InternalPager.initial(tag(this))
+
+    def pager(pagingState: PagingState): Try[Pager[Out]] =
+        InternalPager.continue(tag(this), pagingState)
+
+    def pager[A: PagerSerializer](pagingState: A): Try[Pager[Out]] =
+        InternalPager.continueFromEncoded(tag(this), pagingState)
 
     // format: off
     // $COVERAGE-OFF$

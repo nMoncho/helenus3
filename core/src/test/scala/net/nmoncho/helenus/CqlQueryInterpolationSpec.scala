@@ -77,6 +77,19 @@ class CqlQueryInterpolationSpec extends AnyWordSpec with Matchers with Cassandra
                 row shouldBe defined
                 row.foreach { case (rowId, _, _) => rowId shouldBe id }
             }
+
+            withClue("and create a pager") {
+                val query =
+                    cql"SELECT * FROM ${InterpolationTest.tableName} WHERE ${InterpolationTest.id} = $id"
+                        .as[(UUID, Int, String)]
+
+                val pager = query.pager
+
+                val (nextPager, page0) = pager.execute(2)
+
+                page0.foreach { case (rowId, _, _) => rowId shouldBe id }
+                nextPager.hasMorePages shouldBe false
+            }
         }
 
         "run asynchronously" in {
@@ -125,6 +138,23 @@ class CqlQueryInterpolationSpec extends AnyWordSpec with Matchers with Cassandra
                 whenReady(tx) { row =>
                     row shouldBe defined
                     row.foreach(_._1 shouldBe id)
+                }
+            }
+
+            withClue("and create a pager") {
+                val query =
+                    cqlAsync"SELECT * FROM ${InterpolationTest.tableName} WHERE ${InterpolationTest.id} = $id"
+                        .as[(UUID, Int, String)]
+
+                val tx =
+                    for
+                        pager <- query.pager
+                        (nextPager, page0) <- pager.executeAsync(2)
+                    yield (nextPager, page0)
+
+                whenReady(tx) { case (nextPager, page0) =>
+                    page0.foreach { case (rowId, _, _) => rowId shouldBe id }
+                    nextPager.hasMorePages shouldBe false
                 }
             }
         }
