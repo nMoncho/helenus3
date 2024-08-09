@@ -516,55 +516,68 @@ extension (session: CqlSession)
             // $COVERAGE-ON$
 end extension
 
+extension [Out](pager: Future[ApiPager[Out]])
+    def executeAsync(pageSize: Int)(using CqlSession, ExecutionContext): Future[(ApiPager[Out], Iterator[Out])] =
+        pager.flatMap(_.executeAsync(pageSize))
+
+end extension
+
 // format: off
+final class FutureCQLQueryOps(private val cql: Future[CQLQuery]) extends AnyVal:
+    def apply[T1: Codec](using ExecutionContext): Future[ScalaPreparedStatement1[T1, Row]] = cql.map(_.prepare[T1])
+
+    def apply[T1: Codec, T2: Codec](using ExecutionContext): Future[ScalaPreparedStatement2[T1, T2, Row]] = cql.map(_.prepare[T1, T2])
+
+    def apply[T1: Codec, T2: Codec, T3: Codec](using ExecutionContext): Future[ScalaPreparedStatement3[T1, T2, T3, Row]] = cql.map(_.prepare[T1, T2, T3])
+
+    def apply[T1: Codec, T2: Codec, T3: Codec, T4: Codec](using ExecutionContext): Future[ScalaPreparedStatement4[T1, T2, T3, T4, Row]] = cql.map(_.prepare[T1, T2, T3, T4])
+
+    def apply[T1: Codec, T2: Codec, T3: Codec, T4: Codec, T5: Codec](using ExecutionContext): Future[ScalaPreparedStatement5[T1, T2, T3, T4, T5, Row]] = cql.map(_.prepare[T1, T2, T3, T4, T5])
+
+    def apply[T1: Codec, T2: Codec, T3: Codec, T4: Codec, T5: Codec, T6: Codec](using ExecutionContext): Future[ScalaPreparedStatement6[T1, T2, T3, T4, T5, T6, Row]] = cql.map(_.prepare[T1, T2, T3, T4, T5, T6])
+
+    def apply[T1: Codec, T2: Codec, T3: Codec, T4: Codec, T5: Codec, T6: Codec, T7: Codec](using ExecutionContext): Future[ScalaPreparedStatement7[T1, T2, T3, T4, T5, T6, T7, Row]] = cql.map(_.prepare[T1, T2, T3, T4, T5, T6, T7])
+
+    def apply[T1: Codec, T2: Codec, T3: Codec, T4: Codec, T5: Codec, T6: Codec, T7: Codec, T8: Codec](using ExecutionContext): Future[ScalaPreparedStatement8[T1, T2, T3, T4, T5, T6, T7, T8, Row]] = cql.map(_.prepare[T1, T2, T3, T4, T5, T6, T7, T8])
+
+    def apply[T1: Codec, T2: Codec, T3: Codec, T4: Codec, T5: Codec, T6: Codec, T7: Codec, T8: Codec, T9: Codec](using ExecutionContext): Future[ScalaPreparedStatement9[T1, T2, T3, T4, T5, T6, T7, T8, T9, Row]] = cql.map(_.prepare[T1, T2, T3, T4, T5, T6, T7, T8, T9])
+
+    def apply[T1: Codec, T2: Codec, T3: Codec, T4: Codec, T5: Codec, T6: Codec, T7: Codec, T8: Codec, T9: Codec, T10: Codec](using ExecutionContext): Future[ScalaPreparedStatement10[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, Row]] = cql.map(_.prepare[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10])
+
+    def apply[T1: Codec, T2: Codec, T3: Codec, T4: Codec, T5: Codec, T6: Codec, T7: Codec, T8: Codec, T9: Codec, T10: Codec, T11: Codec](using ExecutionContext): Future[ScalaPreparedStatement11[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, Row]] = cql.map(_.prepare[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11])
+
+    def apply[T1: Codec, T2: Codec, T3: Codec, T4: Codec, T5: Codec, T6: Codec, T7: Codec, T8: Codec, T9: Codec, T10: Codec, T11: Codec, T12: Codec](using ExecutionContext): Future[ScalaPreparedStatement12[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, Row]] = cql.map(_.prepare[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12])
+
+    def apply[T1: Codec, T2: Codec, T3: Codec, T4: Codec, T5: Codec, T6: Codec, T7: Codec, T8: Codec, T9: Codec, T10: Codec, T11: Codec, T12: Codec, T13: Codec](using ExecutionContext): Future[ScalaPreparedStatement13[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, Row]] = cql.map(_.prepare[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13])
+
+    def apply[T1: Codec, T2: Codec, T3: Codec, T4: Codec, T5: Codec, T6: Codec, T7: Codec, T8: Codec, T9: Codec, T10: Codec, T11: Codec, T12: Codec, T13: Codec, T14: Codec](using ExecutionContext): Future[ScalaPreparedStatement14[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, Row]] = cql.map(_.prepare[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14])
+
+    def apply[T1: Codec, T2: Codec, T3: Codec, T4: Codec, T5: Codec, T6: Codec, T7: Codec, T8: Codec, T9: Codec, T10: Codec, T11: Codec, T12: Codec, T13: Codec, T14: Codec, T15: Codec](using ExecutionContext): Future[ScalaPreparedStatement15[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, Row]] = cql.map(_.prepare[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15])
+
+    def apply[T1: Codec, T2: Codec, T3: Codec, T4: Codec, T5: Codec, T6: Codec, T7: Codec, T8: Codec, T9: Codec, T10: Codec, T11: Codec, T12: Codec, T13: Codec, T14: Codec, T15: Codec, T16: Codec](using ExecutionContext): Future[ScalaPreparedStatement16[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, Row]] = cql.map(_.prepare[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16])
+
+    def apply[T1: Codec, T2: Codec, T3: Codec, T4: Codec, T5: Codec, T6: Codec, T7: Codec, T8: Codec, T9: Codec, T10: Codec, T11: Codec, T12: Codec, T13: Codec, T14: Codec, T15: Codec, T16: Codec, T17: Codec](using ExecutionContext): Future[ScalaPreparedStatement17[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, Row]] = cql.map(_.prepare[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17])
+
+    def apply[T1: Codec, T2: Codec, T3: Codec, T4: Codec, T5: Codec, T6: Codec, T7: Codec, T8: Codec, T9: Codec, T10: Codec, T11: Codec, T12: Codec, T13: Codec, T14: Codec, T15: Codec, T16: Codec, T17: Codec, T18: Codec](using ExecutionContext): Future[ScalaPreparedStatement18[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, Row]] = cql.map(_.prepare[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18])
+
+    def apply[T1: Codec, T2: Codec, T3: Codec, T4: Codec, T5: Codec, T6: Codec, T7: Codec, T8: Codec, T9: Codec, T10: Codec, T11: Codec, T12: Codec, T13: Codec, T14: Codec, T15: Codec, T16: Codec, T17: Codec, T18: Codec, T19: Codec](using ExecutionContext): Future[ScalaPreparedStatement19[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, Row]] = cql.map(_.prepare[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19])
+
+    def apply[T1: Codec, T2: Codec, T3: Codec, T4: Codec, T5: Codec, T6: Codec, T7: Codec, T8: Codec, T9: Codec, T10: Codec, T11: Codec, T12: Codec, T13: Codec, T14: Codec, T15: Codec, T16: Codec, T17: Codec, T18: Codec, T19: Codec, T20: Codec](using ExecutionContext): Future[ScalaPreparedStatement20[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, Row]] = cql.map(_.prepare[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20])
+
+    def apply[T1: Codec, T2: Codec, T3: Codec, T4: Codec, T5: Codec, T6: Codec, T7: Codec, T8: Codec, T9: Codec, T10: Codec, T11: Codec, T12: Codec, T13: Codec, T14: Codec, T15: Codec, T16: Codec, T17: Codec, T18: Codec, T19: Codec, T20: Codec, T21: Codec](using ExecutionContext): Future[ScalaPreparedStatement21[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, Row]] = cql.map(_.prepare[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21])
+
+    def apply[T1: Codec, T2: Codec, T3: Codec, T4: Codec, T5: Codec, T6: Codec, T7: Codec, T8: Codec, T9: Codec, T10: Codec, T11: Codec, T12: Codec, T13: Codec, T14: Codec, T15: Codec, T16: Codec, T17: Codec, T18: Codec, T19: Codec, T20: Codec, T21: Codec, T22: Codec](using ExecutionContext): Future[ScalaPreparedStatement22[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22, Row]] = cql.map(_.prepare[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22])
+
+end FutureCQLQueryOps
+
+
 extension (cql: Future[CQLQuery])
     def prepareUnit(using ExecutionContext): Future[ScalaPreparedStatementUnit[Row]] = cql.map(_.prepareUnit)
 
-    // def prepareFrom[T1: Mapping](using ExecutionContext): Future[ScalaPreparedStatementMapped[T1, Row]] = cql.map(_.prepareFrom[T1])
+    // The `prepare` methods had to be moved to the value class `FutureCQLQueryOps`
+    // Originally these methods were in the extension methods, but Scala 3 doesn't resolve the overload properly
+    inline def prepare: FutureCQLQueryOps = new FutureCQLQueryOps(cql)
 
-    def prepare[T1: Codec](using ExecutionContext): Future[ScalaPreparedStatement1[T1, Row]] = cql.map(_.prepare[T1])
-
-    def prepare[T1: Codec, T2: Codec](using ExecutionContext): Future[ScalaPreparedStatement2[T1, T2, Row]] = cql.map(_.prepare[T1, T2])
-
-    def prepare[T1: Codec, T2: Codec, T3: Codec](using ExecutionContext): Future[ScalaPreparedStatement3[T1, T2, T3, Row]] = cql.map(_.prepare[T1, T2, T3])
-
-    def prepare[T1: Codec, T2: Codec, T3: Codec, T4: Codec](using ExecutionContext): Future[ScalaPreparedStatement4[T1, T2, T3, T4, Row]] = cql.map(_.prepare[T1, T2, T3, T4])
-
-    def prepare[T1: Codec, T2: Codec, T3: Codec, T4: Codec, T5: Codec](using ExecutionContext): Future[ScalaPreparedStatement5[T1, T2, T3, T4, T5, Row]] = cql.map(_.prepare[T1, T2, T3, T4, T5])
-
-    def prepare[T1: Codec, T2: Codec, T3: Codec, T4: Codec, T5: Codec, T6: Codec](using ExecutionContext): Future[ScalaPreparedStatement6[T1, T2, T3, T4, T5, T6, Row]] = cql.map(_.prepare[T1, T2, T3, T4, T5, T6])
-
-    def prepare[T1: Codec, T2: Codec, T3: Codec, T4: Codec, T5: Codec, T6: Codec, T7: Codec](using ExecutionContext): Future[ScalaPreparedStatement7[T1, T2, T3, T4, T5, T6, T7, Row]] = cql.map(_.prepare[T1, T2, T3, T4, T5, T6, T7])
-
-    def prepare[T1: Codec, T2: Codec, T3: Codec, T4: Codec, T5: Codec, T6: Codec, T7: Codec, T8: Codec](using ExecutionContext): Future[ScalaPreparedStatement8[T1, T2, T3, T4, T5, T6, T7, T8, Row]] = cql.map(_.prepare[T1, T2, T3, T4, T5, T6, T7, T8])
-
-    def prepare[T1: Codec, T2: Codec, T3: Codec, T4: Codec, T5: Codec, T6: Codec, T7: Codec, T8: Codec, T9: Codec](using ExecutionContext): Future[ScalaPreparedStatement9[T1, T2, T3, T4, T5, T6, T7, T8, T9, Row]] = cql.map(_.prepare[T1, T2, T3, T4, T5, T6, T7, T8, T9])
-
-    def prepare[T1: Codec, T2: Codec, T3: Codec, T4: Codec, T5: Codec, T6: Codec, T7: Codec, T8: Codec, T9: Codec, T10: Codec](using ExecutionContext): Future[ScalaPreparedStatement10[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, Row]] = cql.map(_.prepare[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10])
-
-    def prepare[T1: Codec, T2: Codec, T3: Codec, T4: Codec, T5: Codec, T6: Codec, T7: Codec, T8: Codec, T9: Codec, T10: Codec, T11: Codec](using ExecutionContext): Future[ScalaPreparedStatement11[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, Row]] = cql.map(_.prepare[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11])
-
-    def prepare[T1: Codec, T2: Codec, T3: Codec, T4: Codec, T5: Codec, T6: Codec, T7: Codec, T8: Codec, T9: Codec, T10: Codec, T11: Codec, T12: Codec](using ExecutionContext): Future[ScalaPreparedStatement12[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, Row]] = cql.map(_.prepare[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12])
-
-    def prepare[T1: Codec, T2: Codec, T3: Codec, T4: Codec, T5: Codec, T6: Codec, T7: Codec, T8: Codec, T9: Codec, T10: Codec, T11: Codec, T12: Codec, T13: Codec](using ExecutionContext): Future[ScalaPreparedStatement13[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, Row]] = cql.map(_.prepare[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13])
-
-    def prepare[T1: Codec, T2: Codec, T3: Codec, T4: Codec, T5: Codec, T6: Codec, T7: Codec, T8: Codec, T9: Codec, T10: Codec, T11: Codec, T12: Codec, T13: Codec, T14: Codec](using ExecutionContext): Future[ScalaPreparedStatement14[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, Row]] = cql.map(_.prepare[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14])
-
-    def prepare[T1: Codec, T2: Codec, T3: Codec, T4: Codec, T5: Codec, T6: Codec, T7: Codec, T8: Codec, T9: Codec, T10: Codec, T11: Codec, T12: Codec, T13: Codec, T14: Codec, T15: Codec](using ExecutionContext): Future[ScalaPreparedStatement15[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, Row]] = cql.map(_.prepare[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15])
-
-    def prepare[T1: Codec, T2: Codec, T3: Codec, T4: Codec, T5: Codec, T6: Codec, T7: Codec, T8: Codec, T9: Codec, T10: Codec, T11: Codec, T12: Codec, T13: Codec, T14: Codec, T15: Codec, T16: Codec](using ExecutionContext): Future[ScalaPreparedStatement16[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, Row]] = cql.map(_.prepare[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16])
-
-    def prepare[T1: Codec, T2: Codec, T3: Codec, T4: Codec, T5: Codec, T6: Codec, T7: Codec, T8: Codec, T9: Codec, T10: Codec, T11: Codec, T12: Codec, T13: Codec, T14: Codec, T15: Codec, T16: Codec, T17: Codec](using ExecutionContext): Future[ScalaPreparedStatement17[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, Row]] = cql.map(_.prepare[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17])
-
-    def prepare[T1: Codec, T2: Codec, T3: Codec, T4: Codec, T5: Codec, T6: Codec, T7: Codec, T8: Codec, T9: Codec, T10: Codec, T11: Codec, T12: Codec, T13: Codec, T14: Codec, T15: Codec, T16: Codec, T17: Codec, T18: Codec](using ExecutionContext): Future[ScalaPreparedStatement18[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, Row]] = cql.map(_.prepare[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18])
-
-    def prepare[T1: Codec, T2: Codec, T3: Codec, T4: Codec, T5: Codec, T6: Codec, T7: Codec, T8: Codec, T9: Codec, T10: Codec, T11: Codec, T12: Codec, T13: Codec, T14: Codec, T15: Codec, T16: Codec, T17: Codec, T18: Codec, T19: Codec](using ExecutionContext): Future[ScalaPreparedStatement19[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, Row]] = cql.map(_.prepare[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19])
-
-    def prepare[T1: Codec, T2: Codec, T3: Codec, T4: Codec, T5: Codec, T6: Codec, T7: Codec, T8: Codec, T9: Codec, T10: Codec, T11: Codec, T12: Codec, T13: Codec, T14: Codec, T15: Codec, T16: Codec, T17: Codec, T18: Codec, T19: Codec, T20: Codec](using ExecutionContext): Future[ScalaPreparedStatement20[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, Row]] = cql.map(_.prepare[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20])
-
-    def prepare[T1: Codec, T2: Codec, T3: Codec, T4: Codec, T5: Codec, T6: Codec, T7: Codec, T8: Codec, T9: Codec, T10: Codec, T11: Codec, T12: Codec, T13: Codec, T14: Codec, T15: Codec, T16: Codec, T17: Codec, T18: Codec, T19: Codec, T20: Codec, T21: Codec](using ExecutionContext): Future[ScalaPreparedStatement21[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, Row]] = cql.map(_.prepare[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21])
-
-    def prepare[T1: Codec, T2: Codec, T3: Codec, T4: Codec, T5: Codec, T6: Codec, T7: Codec, T8: Codec, T9: Codec, T10: Codec, T11: Codec, T12: Codec, T13: Codec, T14: Codec, T15: Codec, T16: Codec, T17: Codec, T18: Codec, T19: Codec, T20: Codec, T21: Codec, T22: Codec](using ExecutionContext): Future[ScalaPreparedStatement22[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22, Row]] = cql.map(_.prepare[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22])
 end extension
 
 // extension [In2, In, Out](fut: Future[AdaptedScalaPreparedStatement[In2, In, Out]])
