@@ -72,12 +72,12 @@ class PackageSpec extends AnyWordSpec with Matchers with CassandraSpec:
 
             withClue("registering codec with a keyspace") {
                 session.registerCodecs(
-                  IdenticalUDTCodec.derive[Address](keyspace = keyspace, name = "address")
+                  Codec.derived[Address](keyspace = keyspace, name = "address")
                 ) shouldBe a[Success[?]]
             }
 
             withClue("registering codec without a specific keyspace") {
-                session.registerCodecs(IdenticalUDTCodec.derived[Address]) shouldBe a[Success[?]]
+                session.registerCodecs(summon[Codec[Address]]) shouldBe a[Success[?]]
             }
         }
     }

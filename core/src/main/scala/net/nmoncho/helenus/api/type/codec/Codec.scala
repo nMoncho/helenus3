@@ -31,6 +31,7 @@ import java.util.UUID
 import scala.collection.immutable.SortedMap
 import scala.collection.immutable.SortedSet
 import scala.collection.mutable as mutablecoll
+import scala.deriving.Mirror
 import scala.reflect.ClassTag
 
 import com.datastax.dse.driver.api.core.data.geometry.LineString
@@ -41,9 +42,14 @@ import com.datastax.oss.driver.api.core.ProtocolVersion
 import com.datastax.oss.driver.api.core.`type`.DataType
 import com.datastax.oss.driver.api.core.`type`.codec.TypeCodec
 import com.datastax.oss.driver.api.core.`type`.reflect.GenericType
+import net.nmoncho.helenus.api.ColumnNamingScheme
+import net.nmoncho.helenus.api.DefaultColumnNamingScheme
+import net.nmoncho.helenus.internal.Labelling
 import net.nmoncho.helenus.internal.codec.*
 import net.nmoncho.helenus.internal.codec.TupleCodecDerivation
 import net.nmoncho.helenus.internal.codec.collection.*
+import net.nmoncho.helenus.internal.codec.udt.IdenticalUDTCodec.deriveCodec
+import net.nmoncho.helenus.internal.codec.udt.UDTCodec
 
 trait Codec[T] extends TypeCodec[T]
 
@@ -144,5 +150,16 @@ object Codec extends TupleCodecDerivation:
     given mutableSet[T](using inner: Codec[T]): Codec[mutablecoll.Set[T]] = wrap(mutable.SetCodec.frozen(inner))
     given mutableMap[K, V](using keyInner: Codec[K], valueInner: Codec[V]): Codec[mutablecoll.Map[K, V]] =
         wrap(collection.mutable.MapCodec.frozen(keyInner, valueInner))
+
+    inline def derived[A <: Product: Mirror.ProductOf: Labelling: ClassTag](
+        keyspace: String = "",
+        name: String     = "",
+        frozen: Boolean  = true
+    )(using namingScheme: ColumnNamingScheme = DefaultColumnNamingScheme): Codec[A] & UDTCodec[A] =
+        deriveCodec[A](Some(keyspace).filter(_.trim().nonEmpty), Some(name).filter(_.trim().nonEmpty), frozen)
+
+    inline def derived[A <: Product: Mirror.ProductOf: Labelling: ClassTag]: Codec[A] & UDTCodec[A] =
+        given ColumnNamingScheme = DefaultColumnNamingScheme
+        deriveCodec[A](None, None, frozen = true)
 
 end Codec

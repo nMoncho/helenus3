@@ -43,7 +43,7 @@ class UdtCodecSpec extends AnyWordSpec with Matchers:
     "UdtCodec" should {
 
         "round-trip (encode-decode) properly" in {
-            val codec   = IdenticalUDTCodec.derived[IceCream]
+            val codec   = summon[Codec[IceCream]]
             val sundae  = IceCream("Sundae", 3, cone = false)
             val vanilla = IceCream("Vanilla", 3, cone = true)
 
@@ -55,7 +55,7 @@ class UdtCodecSpec extends AnyWordSpec with Matchers:
         }
 
         "encode-decode a case class with a tuple" in {
-            val codec = IdenticalUDTCodec.derived[IceCream2]
+            val codec = summon[Codec[IceCream2]]
 
             val sundae  = IceCream2("Sundae", 3, cone = false, 1 -> 2)
             val vanilla = IceCream2("Vanilla", 3, cone = true, 2 -> 1)
@@ -68,7 +68,7 @@ class UdtCodecSpec extends AnyWordSpec with Matchers:
         }
 
         "encode-decode a case class with a options" in {
-            val codec = IdenticalUDTCodec.derived[IceCream3]
+            val codec = summon[Codec[IceCream3]]
 
             withClue("with defined values") {
                 val sundae  = IceCream3("Sundae", 3, cone = Some(false), Some(1 -> 2))
@@ -109,7 +109,7 @@ class UdtCodecSpec extends AnyWordSpec with Matchers:
         // }
 
         "format-parse" in {
-            val codec = IdenticalUDTCodec.derived[IceCream]
+            val codec = summon[Codec[IceCream]]
 
             val vanilla = IceCream("Vanilla", 3, cone = true)
 
@@ -120,16 +120,16 @@ class UdtCodecSpec extends AnyWordSpec with Matchers:
 end UdtCodecSpec
 
 object UdtCodecSpec:
-    case class IceCream(name: String, numCherries: Int, cone: Boolean)
+    case class IceCream(name: String, numCherries: Int, cone: Boolean) derives Codec
 
-    case class IceCream2(name: String, numCherries: Int, cone: Boolean, count: (Int, Int))
+    case class IceCream2(name: String, numCherries: Int, cone: Boolean, count: (Int, Int)) derives Codec
 
     case class IceCream3(
         name: String,
         numCherries: Int,
         cone: Option[Boolean],
         count: Option[(Int, Int)]
-    ):
+    ) derives Codec:
         val shouldBeIgnored: String = "bar"
     end IceCream3
 
@@ -142,12 +142,13 @@ class CassandraUdtCodecSpec extends AnyWordSpec with Matchers with CassandraSpec
 
     given ColumnNamingScheme          = SnakeCase
     given CqlSession                  = session
-    given codec: Codec[IceCream]      = IdenticalUDTCodec.derived
     given c1: Codec[IceCreamInvalid]  = NonIdenticalUDTCodec.derived[IceCreamInvalid](name = "ice_cream")
     given c2: Codec[IceCreamShuffled] = NonIdenticalUDTCodec.derived[IceCreamShuffled](name = "ice_cream")
 
     "UdtCodec" should {
         "work with Cassandra" in {
+            val codec = summon[Codec[IceCream]]
+
             val id = UUID.randomUUID()
             query(id) shouldBe empty
 
@@ -197,7 +198,7 @@ class CassandraUdtCodecSpec extends AnyWordSpec with Matchers with CassandraSpec
         }
 
         "be registered on the session" in {
-            val codec = IdenticalUDTCodec.derived[UdtCodecSpec.IceCream3]
+            val codec = summon[Codec[UdtCodecSpec.IceCream3]]
 
             session.registerCodecs(codec).isSuccess shouldBe true
         }
@@ -231,7 +232,7 @@ class CassandraUdtCodecSpec extends AnyWordSpec with Matchers with CassandraSpec
 end CassandraUdtCodecSpec
 
 object CassandraUdtCodecSpec:
-    case class IceCream(name: String, numCherries: Int, cone: Boolean)
+    case class IceCream(name: String, numCherries: Int, cone: Boolean) derives Codec
 
     case class IceCreamShuffled(numCherries: Int, cone: Boolean, name: String)
 
