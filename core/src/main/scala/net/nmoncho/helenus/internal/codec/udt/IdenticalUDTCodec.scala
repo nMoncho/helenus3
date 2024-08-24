@@ -24,28 +24,23 @@ package udt
 
 import java.nio.ByteBuffer
 
-import scala.annotation.meta.field
 import scala.collection.mutable
 import scala.deriving.Mirror
 import scala.reflect.ClassTag
-import scala.runtime.Tuples
 
 import com.datastax.oss.driver.api.core.CqlIdentifier
 import com.datastax.oss.driver.api.core.ProtocolVersion
 import com.datastax.oss.driver.api.core.`type`.DataType
 import com.datastax.oss.driver.api.core.`type`.UserDefinedType
-import com.datastax.oss.driver.api.core.`type`.codec.TypeCodec
 import com.datastax.oss.driver.api.core.`type`.reflect.GenericType
 import com.datastax.oss.driver.internal.core.`type`.DefaultUserDefinedType
 import com.datastax.oss.driver.internal.core.`type`.codec.ParseUtils
 import com.datastax.oss.driver.shaded.guava.common.reflect.ScalaTypeToken
-import com.datastax.oss.driver.shaded.guava.common.reflect.TypeParameter
 import net.nmoncho.helenus.api.ColumnNamingScheme
 import net.nmoncho.helenus.api.DefaultColumnNamingScheme
 import net.nmoncho.helenus.api.`type`.codec.Codec
 import net.nmoncho.helenus.api.`type`.codec.UDTCodec
 import net.nmoncho.helenus.internal.Labelling
-import net.nmoncho.helenus.internal.codec.collection.ListCodec.frozen
 
 /** A [[IdenticalUDTCodec]] is one that maps a case class to a UDT, both having the <strong>same</strong>
   * field order, for example:

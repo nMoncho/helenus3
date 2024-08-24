@@ -29,7 +29,6 @@ import com.datastax.oss.driver.api.core.ProtocolVersion
 import com.datastax.oss.driver.api.core.`type`.DataType
 import com.datastax.oss.driver.api.core.`type`.UserDefinedType
 import com.datastax.oss.driver.api.core.`type`.reflect.GenericType
-import net.nmoncho.helenus.api.`type`.codec.Codec
 import net.nmoncho.helenus.api.`type`.codec.UDTCodec
 import org.slf4j.LoggerFactory
 

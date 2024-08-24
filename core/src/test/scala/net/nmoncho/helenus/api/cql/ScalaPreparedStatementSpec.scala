@@ -24,7 +24,6 @@ package api.cql
 
 import java.time.Duration
 
-import scala.annotation.nowarn
 import scala.concurrent.Future
 
 import com.datastax.oss.driver.api.core.ConsistencyLevel
@@ -38,8 +37,6 @@ import net.nmoncho.helenus.utils.HotelsTestData
 import org.scalatest.concurrent.Eventually
 import org.scalatest.concurrent.ScalaFutures
 import org.scalatest.matchers.should.Matchers
-import org.scalatest.time.Seconds
-import org.scalatest.time.Span
 import org.scalatest.wordspec.AnyWordSpec
 
 class ScalaPreparedStatementSpec

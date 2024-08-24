@@ -26,10 +26,8 @@ import scala.collection.mutable as mutablecoll
 
 import com.datastax.oss.driver.api.core.`type`.codec.TypeCodec
 import com.datastax.oss.driver.api.core.`type`.reflect.GenericType
-import com.datastax.oss.driver.api.core.`type`.reflect.GenericTypeParameter
 import com.datastax.oss.driver.shaded.guava.common.reflect.ScalaTypeToken
 import com.datastax.oss.driver.shaded.guava.common.reflect.TypeParameter
-import com.datastax.oss.driver.shaded.guava.common.reflect.TypeToken
 
 class BufferCodec[T](inner: TypeCodec[T], frozen: Boolean)
     extends AbstractSeqCodec[T, mutablecoll.Buffer](inner, frozen):

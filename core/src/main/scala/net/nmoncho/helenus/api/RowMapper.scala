@@ -21,15 +21,10 @@
 
 package net.nmoncho.helenus.api
 
-import scala.deriving.Mirror
-import scala.util.NotGiven
-
-import com.datastax.oss.driver.api.core.`type`.codec.TypeCodec
 import com.datastax.oss.driver.api.core.cql.Row
 import net.nmoncho.helenus.api.`type`.codec.Codec
 import net.nmoncho.helenus.internal.DerivedCaseClassRowMapper
 import net.nmoncho.helenus.internal.DerivedRowMapper
-import net.nmoncho.helenus.internal.DerivedTupleRowMapper
 import net.nmoncho.helenus.internal.macros.RenamedDerivedRowMapper
 import org.slf4j.LoggerFactory
 

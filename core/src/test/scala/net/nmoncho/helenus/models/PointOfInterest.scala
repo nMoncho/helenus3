@@ -23,10 +23,4 @@ package net.nmoncho.helenus.models
 
 import net.nmoncho.helenus.api.RowMapper
 
-final case class PointOfInterest(name: String, description: String)
-
-object PointOfInterest:
-    import net.nmoncho.helenus.*
-
-    // implicit val rowMapper: RowMapper[PointOfInterest] = RowMapper[PointOfInterest]
-end PointOfInterest
+final case class PointOfInterest(name: String, description: String) derives RowMapper

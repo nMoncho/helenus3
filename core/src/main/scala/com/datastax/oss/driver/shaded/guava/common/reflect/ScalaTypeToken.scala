@@ -23,7 +23,6 @@ package com.datastax.oss.driver.shaded.guava.common.reflect
 
 import java.lang.reflect.Type
 
-import com.datastax.oss.driver.api.core.`type`.codec.TypeCodec
 import com.datastax.oss.driver.shaded.guava.common.collect.ImmutableMap
 import com.datastax.oss.driver.shaded.guava.common.primitives.Primitives
 import com.datastax.oss.driver.shaded.guava.common.reflect.ScalaTypeToken.SimpleScalaTypeToken

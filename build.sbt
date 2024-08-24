@@ -53,10 +53,9 @@ lazy val basicSettings = Seq(
       "-feature" :+
       "-release" :+
       "11" :+
-      "-Ywarn-unused" :+
+      "-Wunused:all" :+
       "-Xcheck-macros" :+
-      "-language:higherKinds" :+
-      "-Xlog-implicits"),
+      "-language:higherKinds"),
   (Test / testOptions) += Tests.Argument("-oF"),
   semanticdbEnabled := true,
   semanticdbVersion := scalafixSemanticdb.revision
