@@ -27,12 +27,15 @@ import java.util.UUID
 import com.datastax.oss.driver.api.core.CqlSession
 import com.datastax.oss.driver.api.core.ProtocolVersion
 import com.datastax.oss.driver.api.core.cql.Row
+import com.datastax.oss.driver.api.core.servererrors.ServerError
 import net.nmoncho.helenus.api.ColumnNamingScheme
 import net.nmoncho.helenus.api.SnakeCase
 import net.nmoncho.helenus.api.`type`.codec.Codec
 import net.nmoncho.helenus.api.`type`.codec.Codecs
+import net.nmoncho.helenus.api.`type`.codec.UDTCodec
 import net.nmoncho.helenus.internal.codec.udt.IdenticalUDTCodec
 import net.nmoncho.helenus.internal.codec.udt.NonIdenticalUDTCodec
+import net.nmoncho.helenus.internal.codec.udt.UnifiedUDTCodec
 import net.nmoncho.helenus.utils.CassandraSpec
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
@@ -120,16 +123,16 @@ class UdtCodecSpec extends AnyWordSpec with Matchers:
 end UdtCodecSpec
 
 object UdtCodecSpec:
-    case class IceCream(name: String, numCherries: Int, cone: Boolean) derives Codec
+    case class IceCream(name: String, numCherries: Int, cone: Boolean) derives UDTCodec
 
-    case class IceCream2(name: String, numCherries: Int, cone: Boolean, count: (Int, Int)) derives Codec
+    case class IceCream2(name: String, numCherries: Int, cone: Boolean, count: (Int, Int)) derives UDTCodec
 
     case class IceCream3(
         name: String,
         numCherries: Int,
         cone: Option[Boolean],
         count: Option[(Int, Int)]
-    ) derives Codec:
+    ) derives UDTCodec:
         val shouldBeIgnored: String = "bar"
     end IceCream3
 
@@ -137,13 +140,9 @@ end UdtCodecSpec
 
 class CassandraUdtCodecSpec extends AnyWordSpec with Matchers with CassandraSpec:
     import CassandraUdtCodecSpec.*
+    import scala.jdk.OptionConverters.*
 
     override protected lazy val keyspace: String = "udt_codec_tests"
-
-    given ColumnNamingScheme          = SnakeCase
-    given CqlSession                  = session
-    given c1: Codec[IceCreamInvalid]  = NonIdenticalUDTCodec.derived[IceCreamInvalid](name = "ice_cream")
-    given c2: Codec[IceCreamShuffled] = NonIdenticalUDTCodec.derived[IceCreamShuffled](name = "ice_cream")
 
     "UdtCodec" should {
         "work with Cassandra" in {
@@ -161,15 +160,30 @@ class CassandraUdtCodecSpec extends AnyWordSpec with Matchers with CassandraSpec
         }
 
         "work when fields are in different order (with session)" in {
+            val codec = summon[Codec[IceCreamShuffled]]
+            val ice   = IceCreamShuffled(2, cone = false, "Vanilla")
+
+            withClue("fail before adaptation") {
+                val exception = intercept[ServerError](
+                  insert(UUID.randomUUID(), ice, codec)
+                )
+
+                exception.getMessage should include("Expected 4 or 0 byte int")
+            }
+
+            // this adaptation would be done after a statement is prepared,
+            // so we're hacking this in the middle for this test
+            val udt = session.sessionKeyspace.flatMap(_.getUserDefinedType("ice_cream").toScala).get
+            codec.asInstanceOf[UnifiedUDTCodec[?]].adapt(udt)
+
             val id = UUID.randomUUID()
             query(id) shouldBe empty
 
-            val ice = IceCreamShuffled(2, cone = false, "Vanilla")
-            insert(id, ice, c2)
+            insert(id, ice, codec)
 
             val rowOpt = query(id)
             rowOpt shouldBe defined
-            rowOpt.foreach(row => row.get("ice", c2) shouldBe ice)
+            rowOpt.foreach(row => row.get("ice", codec) shouldBe ice)
         }
 
         // "work when fields are in different order (with fields)" in {
@@ -189,9 +203,24 @@ class CassandraUdtCodecSpec extends AnyWordSpec with Matchers with CassandraSpec
         // }
 
         "fail on invalid mapping" in {
-            val ice = IceCreamInvalid(2, cone = false, "Vanilla")
+            val codec = summon[Codec[IceCreamInvalid]]
+            val ice   = IceCreamInvalid(2, cone = false, "Vanilla")
+
+            withClue("fail before adaptation") {
+                val exception = intercept[ServerError](
+                  insert(UUID.randomUUID(), ice, codec)
+                )
+
+                exception.getMessage should include("Expected 4 or 0 byte int")
+            }
+
+            // this adaptation would be done after a statement is prepared,
+            // so we're hacking this in the middle for this test
+            val udt = session.sessionKeyspace.flatMap(_.getUserDefinedType("ice_cream").toScala).get
+            codec.asInstanceOf[UnifiedUDTCodec[?]].adapt(udt)
+
             val exception = intercept[IllegalArgumentException](
-              insert(UUID.randomUUID(), ice, c1)
+              insert(UUID.randomUUID(), ice, codec)
             )
 
             exception.getMessage should include("cherries_number is not a field in this UDT")
@@ -232,10 +261,12 @@ class CassandraUdtCodecSpec extends AnyWordSpec with Matchers with CassandraSpec
 end CassandraUdtCodecSpec
 
 object CassandraUdtCodecSpec:
-    case class IceCream(name: String, numCherries: Int, cone: Boolean) derives Codec
+    given ColumnNamingScheme = SnakeCase
 
-    case class IceCreamShuffled(numCherries: Int, cone: Boolean, name: String)
+    case class IceCream(name: String, numCherries: Int, cone: Boolean) derives UDTCodec
 
-    case class IceCreamInvalid(cherriesNumber: Int, cone: Boolean, name: String)
+    case class IceCreamShuffled(numCherries: Int, cone: Boolean, name: String) derives UDTCodec
+
+    case class IceCreamInvalid(cherriesNumber: Int, cone: Boolean, name: String) derives UDTCodec
 
 end CassandraUdtCodecSpec

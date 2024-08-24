@@ -27,6 +27,7 @@ import com.datastax.oss.driver.internal.core.`type`.DefaultListType
 import com.datastax.oss.driver.internal.core.`type`.PrimitiveType
 import com.datastax.oss.protocol.internal.ProtocolConstants
 import net.nmoncho.helenus.api.`type`.codec.Codec
+import net.nmoncho.helenus.api.`type`.codec.UDTCodec
 import net.nmoncho.helenus.internal.codec.udt.IdenticalUDTCodec
 import net.nmoncho.helenus.models.Address
 import net.nmoncho.helenus.utils.CassandraSpec
@@ -72,7 +73,7 @@ class PackageSpec extends AnyWordSpec with Matchers with CassandraSpec:
 
             withClue("registering codec with a keyspace") {
                 session.registerCodecs(
-                  Codec.derived[Address](keyspace = keyspace, name = "address")
+                  UDTCodec.derive[Address](keyspace = keyspace, name = "address")
                 ) shouldBe a[Success[?]]
             }
 
