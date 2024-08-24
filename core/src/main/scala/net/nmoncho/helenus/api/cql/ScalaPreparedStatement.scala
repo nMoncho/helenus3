@@ -51,6 +51,16 @@ abstract class ScalaPreparedStatement[In, Out](pstmt: PreparedStatement, mapper:
     // Since this is no longer exposed to users, we can use the tupled `apply` function
     def tupled: In => BoundStatement
 
+    /** Adapts this [[ScalaPreparedStatement]] converting [[In2]] values with the provided adapter
+      * into a [[In]] value (ie. the original type of this statement)
+      *
+      * @param adapter how to adapt an [[In2]] value into [[In]] value
+      * @tparam In2 new input type
+      * @return adapted [[ScalaPreparedStatement]] with new [[In2]] input type
+      */
+    def from[In2](implicit adapter: Adapter[In2, In]): AdaptedScalaPreparedStatement[In2, In, Out] =
+        new AdaptedScalaPreparedStatement[In2, In, Out](this, mapper, adapter, options)
+
     /** Maps the result from this [[PreparedStatement]] with a different [[Out2]]
       * as long as there is an implicit [[RowMapper]] and [[Out]] is [[Row]] (this is
       * meant to avoid calling `as` twice)

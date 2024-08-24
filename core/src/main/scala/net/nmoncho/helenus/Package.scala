@@ -580,19 +580,53 @@ extension (cql: Future[CQLQuery])
 
 end extension
 
-// extension [In2, In, Out](fut: Future[AdaptedScalaPreparedStatement[In2, In, Out]])
-//     def as[Out2](using ec: ExecutionContext, mapper: RowMapper[Out2], ev: Out =:= Row): Future[AdaptedScalaPreparedStatement[In2, In, Out2]] = fut.map(_.as[Out2])
+extension [In, Out](fut: Future[ScalaPreparedStatement[In, Out]])
+    /** Adapts this [[ScalaPreparedStatement]] converting [[In2]] values with the provided adapter
+      * into a [[In]] value (ie. the original type of this statement)
+      *
+      * @param adapter how to adapt an [[In2]] value into [[In]] value
+      * @tparam In2 new input type
+      * @return adapted [[ScalaPreparedStatement]] with new [[In2]] input type
+      */
+    def from[In2](
+        using ec: ExecutionContext,
+        adapter: Adapter[In2, In]
+    ): Future[AdaptedScalaPreparedStatement[In2, In, Out]] =
+        fut.map(_.from[In2])
 
-//     def as[Out2](mapper: RowMapper[Out2])(using ec: ExecutionContext, ev: Out =:= Row): Future[AdaptedScalaPreparedStatement[In2, In, Out2]] = fut.map(_.as[Out2](ev, mapper))
+    /** Adapts this [[ScalaPreparedStatement]] converting [[In2]] values with the provided adapter
+      * into a [[In]] value (ie. the original type of this statement)
+      *
+      * @param adapter how to adapt an [[In2]] value into [[In]] value
+      * @tparam In2 new input type
+      * @return adapted [[ScalaPreparedStatement]] with new [[In2]] input type
+      */
+    def from[In2](adapter: In2 => In)(
+        using ec: ExecutionContext
+    ): Future[AdaptedScalaPreparedStatement[In2, In, Out]] =
+        fut.map(_.from((a: In2) => adapter(a)))
 
-//     def executeAsync(t1: In2)(using cqlSession: Future[CqlSession], ec: ExecutionContext): Future[MappedAsyncPagingIterable[Out]] = cqlSession.flatMap {using s => fut.flatMap(_.executeAsync(t1))}
+end extension
 
-//     def pager(t1: In2)(using ec: ExecutionContext): Future[ApiPager[Out]] = fut.map(_.pager(t1))
+extension [In2, In, Out](fut: Future[AdaptedScalaPreparedStatement[In2, In, Out]])
+    @targetName("future_scala_pstmt_adapted_as_out2")
+    def as[Out2](using ec: ExecutionContext, mapper: RowMapper[Out2], ev: Out =:= Row): Future[AdaptedScalaPreparedStatement[In2, In, Out2]] = fut.map(_.as[Out2])
 
-//     def pager(pagingState: PagingState, t1: In2)(using ec: ExecutionContext): Future[ApiPager[Out]] = fut.map(_.pager(pagingState, t1).get)
+    @targetName("future_scala_pstmt_adapted_as_out2_explicit_mapper")
+    def as[Out2](mapper: RowMapper[Out2])(using ec: ExecutionContext, ev: Out =:= Row): Future[AdaptedScalaPreparedStatement[In2, In, Out2]] = fut.map(_.as[Out2](ev, mapper))
 
-//     def pager[A: PagerSerializer](pagingState: A, t1: In2)(using ec: ExecutionContext): Future[ApiPager[Out]] = fut.map(_.pager(pagingState, t1).get)
-// end extension
+    @targetName("future_scala_pstmt_unit_execute_async")
+    def executeAsync(t1: In2)(using cqlSession: Future[CqlSession], ec: ExecutionContext): Future[MappedAsyncPagingIterable[Out]] = cqlSession.flatMap {s => fut.flatMap(_.executeAsync(t1)(using s))}
+
+    @targetName("future_scala_pstmt_unit_execute_pager_from_input")
+    def pager(t1: In2)(using ec: ExecutionContext): Future[ApiPager[Out]] = fut.map(_.pager(t1))
+
+    @targetName("future_scala_pstmt_unit_execute_pager_from_paging_state")
+    def pager(pagingState: PagingState, t1: In2)(using ec: ExecutionContext): Future[ApiPager[Out]] = fut.map(_.pager(pagingState, t1).get)
+
+    @targetName("future_scala_pstmt_unit_execute_pager_from_paging_state_with_serializer")
+    def pager[A: PagerSerializer](pagingState: A, t1: In2)(using ec: ExecutionContext): Future[ApiPager[Out]] = fut.map(_.pager(pagingState, t1).get)
+end extension
 
 extension [Out](fut: Future[ScalaPreparedStatementUnit[Out]])
     @targetName("future_scala_pstmt_unit_as_out2")
