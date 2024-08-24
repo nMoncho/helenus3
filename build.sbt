@@ -69,7 +69,6 @@ lazy val core = project
       Test / testOptions += Tests.Setup(() => EmbeddedDatabase.start()),
       libraryDependencies ++= Seq(
         Dependencies.ossJavaDriver % Provided,
-        Dependencies.shapeless,
         Dependencies.slf4j,
         // Test Dependencies
         Dependencies.mockito       % Test,
