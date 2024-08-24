@@ -75,22 +75,22 @@ class MapOperatorSpec extends AnyWordSpec with Matchers with Eventually with Cas
         )
 
         "be mapped properly" in {
-            // ijes.foreach(ice =>
-            //   execute(
-            //     s"INSERT INTO ice_creams(name, numCherries, cone) VALUES ('${ice.name}', ${ice.numCherries}, ${ice.cone})"
-            //   )
-            // )
+            ijes.foreach(ice =>
+                this.execute(
+                  s"INSERT INTO ice_creams(name, numCherries, cone) VALUES ('${ice.name}', ${ice.numCherries}, ${ice.cone})"
+                )
+            )
 
-            // val rrs        = session.executeReactive("SELECT * FROM ice_creams")
-            // val publisher  = rrs.as[IceCream]
-            // val subscriber = new EndSubscriber[IceCream]()
-            // publisher.subscribe(
-            //   FlowAdapters.toSubscriber(subscriber)
-            // )
+            val rrs        = session.executeReactive("SELECT * FROM ice_creams")
+            val publisher  = rrs.as[IceCream]
+            val subscriber = new EndSubscriber[IceCream]()
+            publisher.subscribe(
+              FlowAdapters.toSubscriber(subscriber)
+            )
 
-            // eventually {
-            //   subscriber.elems.toSet shouldBe ijes.toSet
-            // }
+            eventually {
+                subscriber.elems.toSet shouldBe ijes.toSet
+            }
         }
     }
 
@@ -108,10 +108,7 @@ end MapOperatorSpec
 object MapOperatorSpec:
     import scala.compiletime.uninitialized
 
-    case class IceCream(name: String, numCherries: Int, cone: Boolean)
-    object IceCream:
-        import net.nmoncho.helenus.*
-        // implicit val rowMapper: RowMapper[IceCream] = RowMapper[IceCream]
+    case class IceCream(name: String, numCherries: Int, cone: Boolean) derives RowMapper
 
     private class EndSubscriber[T]() extends Flow.Subscriber[T]:
         private var subscription: Subscription = uninitialized
