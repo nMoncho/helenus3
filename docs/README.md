@@ -23,7 +23,7 @@ We also provide integration against several streaming libraries:
 Include the library into you project definition:
 
 ```scala
-libraryDependencies += "net.nmoncho" %% "helenus-core" % "0.3.0+4-41db4af4+20240826-1502-SNAPSHOT"
+libraryDependencies += "net.nmoncho" %% "helenus-core" % "@VERSION@"
 ```
 
 ## Motivation
@@ -64,8 +64,16 @@ As of this version, Helenus supports the following types:
 
 ## Usage
 
+```scala mdoc:invisible
+import com.datastax.oss.driver.api.core.CqlSession
+import com.datastax.oss.driver.api.core.`type`.codec.TypeCodec
+import net.nmoncho.helenus.api.RowMapper
+import net.nmoncho.helenus.api.`type`.codec.UDTCodec
 
-```scala
+def getSession: CqlSession = net.nmoncho.helenus.docs.DocsHelper.cqlSession
+```
+
+```scala mdoc
 // First import helenus...
 import net.nmoncho.helenus.*
 
@@ -79,53 +87,20 @@ case class Address(street: String, city: String, stateOrProvince: String, postal
 case class Hotel(id: String, name: String, phone: String, address: Address, pois: Set[String]) derives RowMapper
 
 val hotelId = "h1"
-// hotelId: String = "h1"
 
 // We can prepare queries with parameters that don't require boxing
 val hotelsById = "SELECT * FROM hotels WHERE id = ?".toCQL
     .prepare[String]
     .as[Hotel]
-// hotelsById: ScalaPreparedStatement1[String, Hotel] = net.nmoncho.helenus.internal.cql.ScalaPreparedStatement1@569dd438
 
 // We can extract a single result using `nextOption()`, or
 // use `to(Coll)` to transform the result to a collection
 hotelsById.execute("h1").nextOption()
-// res0: Option[Hotel] = Some(
-//   value = Hotel(
-//     id = "h1",
-//     name = "The New York Hotel Rotterdam",
-//     phone = "+31 10 217 3000",
-//     address = Address(
-//       street = "Meent 78-82",
-//       city = "Rotterdam",
-//       stateOrProvince = "Zuid-Holland",
-//       postalCode = "3011 JM",
-//       country = "Netherlands"
-//     ),
-//     pois = Set("Erasmus Bridge", "Markthal Rotterdam", "Rotterdam Zoo")
-//   )
-// )
 
 // We can also run the same using CQL interpolated queries
 val interpolatedHotelsById = cql"SELECT * FROM hotels WHERE id = $hotelId"
-// interpolatedHotelsById: WrappedBoundStatement[Row] = net.nmoncho.helenus.api.cql.WrappedBoundStatement@6cd0d466
 
 interpolatedHotelsById.as[Hotel].execute().nextOption()
-// res1: Option[Hotel] = Some(
-//   value = Hotel(
-//     id = "h1",
-//     name = "The New York Hotel Rotterdam",
-//     phone = "+31 10 217 3000",
-//     address = Address(
-//       street = "Meent 78-82",
-//       city = "Rotterdam",
-//       stateOrProvince = "Zuid-Holland",
-//       postalCode = "3011 JM",
-//       country = "Netherlands"
-//     ),
-//     pois = Set("Erasmus Bridge", "Markthal Rotterdam", "Rotterdam Zoo")
-//   )
-// )
 ```
 
 For a more detailed guide on how to use Helenus, please read our [wiki](https://github.com/nMoncho/helenus3/wiki). We also provide
