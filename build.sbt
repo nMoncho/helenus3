@@ -19,6 +19,8 @@ addCommandAlias(
   "; scalafmtCheckAll; headerCheckAll; scalafixAll --check"
 )
 
+Global / resolvers += "Akka library repository".at("https://repo.akka.io/maven")
+
 lazy val root = project
     .in(file("."))
     .settings(basicSettings)
@@ -27,7 +29,7 @@ lazy val root = project
       mimaFailOnNoPrevious := false,
       Test / testOptions += Tests.Setup(() => EmbeddedDatabase.start())
     )
-    .aggregate(core, pekko)
+    .aggregate(core, pekko, akka, akkaBusl)
 
 lazy val basicSettings = Seq(
   organization := "net.nmoncho",
@@ -79,6 +81,41 @@ lazy val core = project
       )
     )
 
+lazy val akka = project
+    .settings(basicSettings)
+    .dependsOn(core % "compile->compile;test->test")
+    .settings(
+      name := "helenus-akka",
+      Test / testOptions += Tests.Setup(() => EmbeddedDatabase.start()),
+      // 5.x changed to business license
+      dependencyUpdatesFilter -= moduleFilter(organization = "com.lightbend.akka"),
+      // 2.7.x changed to business license
+      dependencyUpdatesFilter -= moduleFilter(organization = "com.typesafe.akka"),
+      libraryDependencies ++= Seq(
+        Dependencies.alpakka.cross(CrossVersion.for3Use2_13)     % "provided,test",
+        Dependencies.akkaTestKit.cross(CrossVersion.for3Use2_13) % Test,
+        // Adding this until Alpakka aligns version with Akka TestKit
+        ("com.typesafe.akka" %% "akka-stream" % Dependencies.Version.akka).cross(
+          CrossVersion.for3Use2_13
+        ) % "provided,test"
+      )
+    )
+
+lazy val akkaBusl = project
+    .in(file("akka-busl"))
+    .settings(basicSettings)
+    .dependsOn(core % "compile->compile;test->test")
+    .settings(
+      name := "helenus-akka-busl",
+      Test / testOptions += Tests.Setup(() => EmbeddedDatabase.start()),
+      libraryDependencies ++= Seq(
+        Dependencies.alpakkaBusl     % "provided,test",
+        Dependencies.akkaTestKitBusl % Test,
+        // Adding this until Alpakka aligns version with Akka TestKit
+        "com.typesafe.akka" %% "akka-stream" % Dependencies.Version.akkaBusl % "provided,test"
+      )
+    )
+
 lazy val pekko = project
     .settings(basicSettings)
     .dependsOn(core % "compile->compile;test->test")
@@ -89,6 +126,6 @@ lazy val pekko = project
         Dependencies.pekkoConnector % "provided,test",
         Dependencies.pekkoTestKit   % Test,
         // Adding this until Alpakka aligns version with Pekko TestKit
-        "org.apache.pekko" %% "pekko-stream" % Dependencies.Version.pekkoTestKit
+        "org.apache.pekko" %% "pekko-stream" % Dependencies.Version.pekkoTestKit % "provided,test"
       )
     )
