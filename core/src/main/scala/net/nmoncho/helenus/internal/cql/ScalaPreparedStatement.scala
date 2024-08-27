@@ -40,6 +40,77 @@ import net.nmoncho.helenus.api.cql.ScalaPreparedStatement
 import net.nmoncho.helenus.api.cql.StatementOptions
 import org.reactivestreams.Publisher
 
+/** Adapts the input for a [[ScalaPreparedStatement]] from [[In2]] to [[In]] through an [[Adapter]].
+  *
+  * This useful when inserting `case classes` into tables
+  *
+  * @param pstmt wrapped instance
+  * @param mapper how to map results into [[Out]] values
+  * @param adapter how to adapt [[In2]] to [[In]]
+  * @tparam In2 new input value
+  * @tparam In statement input value
+  * @tparam Out statement output value
+  */
+class AdaptedScalaPreparedStatement[In2, In, Out](
+    pstmt: ScalaPreparedStatement[In, ?],
+    mapper: RowMapper[Out],
+    adapter: Adapter[In2, In],
+    val options: StatementOptions
+) extends ScalaPreparedStatement[In2, Out](pstmt, mapper):
+
+    import net.nmoncho.helenus.*
+
+    override type Self     = AdaptedScalaPreparedStatement[In2, In, Out]
+    override type AsOut[T] = AdaptedScalaPreparedStatement[In2, In, T]
+
+    override val tupled: In2 => BoundStatement = apply
+
+    /** Bounds an input [[In]] value and returns a [[BoundStatement]] */
+    def apply(t1: In2): ScalaBoundStatement[Out] =
+        tag(pstmt.tupled(adapter(t1)))
+
+    /** Executes this [[PreparedStatement]] with the provided value.
+      *
+      * @return [[PagingIterable]] of [[Out]] output values
+      */
+    def execute(t1: In2)(implicit session: CqlSession): PagingIterable[Out] =
+        apply(t1).execute()
+
+    /** Executes this [[PreparedStatement]] in a asynchronous fashion using
+      * the provided [[In]] input value
+      *
+      * @return a future of [[MappedAsyncPagingIterable]]
+      */
+    def executeAsync(t1: In2)(
+        implicit session: CqlSession,
+        ec: ExecutionContext
+    ): Future[MappedAsyncPagingIterable[Out]] =
+        apply(t1).executeAsync()
+
+    /** Executes this [[PreparedStatement]] in a reactive fashion
+      *
+      * @return [[Publisher]] of [[Out]] output values
+      */
+    def executeReactive(t1: In2)(implicit session: CqlSession): Publisher[Out] =
+        apply(t1).executeReactive()
+
+    override def as[Out2](implicit ev: Out =:= Row, mapper: RowMapper[Out2]): AsOut[Out2] =
+        new AdaptedScalaPreparedStatement[In2, In, Out2](pstmt, mapper, adapter, options)
+
+    override def withOptions(options: StatementOptions): Self =
+        new AdaptedScalaPreparedStatement(pstmt, mapper, adapter, options)
+
+    def pager(t1: In2): ApiPager[Out] =
+        Pager.initial(apply(t1))
+
+    def pager(pagingState: PagingState, t1: In2): Try[ApiPager[Out]] =
+        Pager.continue(apply(t1), pagingState)
+
+    def pager[A: PagerSerializer](pagingState: A, t1: In2): Try[ApiPager[Out]] =
+        Pager.continueFromEncoded(apply(t1), pagingState)
+
+end AdaptedScalaPreparedStatement
+
 /** A [[PreparedStatement]] without input parameters
   *
   * @param pstmt wrapped instance

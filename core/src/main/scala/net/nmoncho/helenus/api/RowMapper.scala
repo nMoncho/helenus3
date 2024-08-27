@@ -42,6 +42,8 @@ object RowMapper extends DerivedCaseClassRowMapper:
 
     val identity: RowMapper[Row] = (row: Row) => row
 
+    given RowMapper[Row] = identity
+
     given [T](using derived: DerivedRowMapper[T]): RowMapper[T] = derived
 
     def apply[T](using mapper: DerivedRowMapper[T]): RowMapper[T] = mapper
