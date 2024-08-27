@@ -29,13 +29,12 @@ import com.datastax.oss.driver.api.core.`type`.codec.TypeCodec
 import com.datastax.oss.driver.api.core.`type`.reflect.GenericType
 import net.nmoncho.helenus.api.`type`.codec.Codec
 
-/**
- * A [[TypeCodec]] that maps instances of `Inner`, a driver supported Java type, to
- * instances of a target `Outer` Java type.
- *
- * <p>This codec can be used to provide support for Java types that are not natively handled by the
- * driver, as long as there is a conversion path to and from another supported Java type.
- */
+/** A [[TypeCodec]] that maps instances of `Inner`, a driver supported Java type, to
+  * instances of a target `Outer` Java type.
+  *
+  * <p>This codec can be used to provide support for Java types that are not natively handled by the
+  * driver, as long as there is a conversion path to and from another supported Java type.
+  */
 abstract class MappingCodec[Inner, Outer](inner: TypeCodec[Inner], outerJavaType: GenericType[Outer])
     extends Codec[Outer]:
 
