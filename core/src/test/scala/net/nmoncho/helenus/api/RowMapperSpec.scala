@@ -45,10 +45,12 @@ class RowMapperSpec
     with CassandraSpec
     with ScalaFutures:
 
+    import scala.concurrent.ExecutionContext.Implicits.global
+
     private implicit lazy val cqlSession: CqlSession = session
 
     // We create the mapper here to avoid testing the generic derivation
-    implicit val rowMapper: RowMapper[Hotel] = (row: Row) =>
+    given RowMapper[Hotel] = (row: Row) =>
         Hotel(
           row.getCol[String]("id"),
           row.getCol[String]("name"),
@@ -67,6 +69,104 @@ class RowMapperSpec
             query(Hotels.h3.id)
                 .execute()
                 .nextOption() shouldBe Some(Hotels.h3.name)
+
+            query(Hotels.h4.id)
+                .execute()
+                .nextOption() shouldBe Some(Hotels.h4.name)
+
+            val page = whenReady(query(Hotels.h5.id).executeAsync()) { page =>
+                page.currPage.nextOption() shouldBe Some(Hotels.h5.name)
+
+                page
+            }
+
+            whenReady(page.nextPage()) { next =>
+                next shouldBe empty
+            }
+
+            withClue(", with an Either field") {
+                case class Hotel2(
+                    id: String,
+                    name: String,
+                    phoneOrAddress: Either[String, Address],
+                    pois: Set[String]
+                )
+
+                given ColumnMapper[Either[String, Address]] = ColumnMapper.either[String, Address]("phone", "address")
+                given RowMapper[Hotel2]                     = RowMapper.derived[Hotel2]
+
+                val query = "SELECT * FROM hotels WHERE id = ?".toCQL
+                    .prepare[String]
+                    .as[Hotel2]
+
+                query(Hotels.h3.id)
+                    .execute()
+                    .nextOption()
+                    .value
+                    .phoneOrAddress shouldBe Right(Hotels.h3.address)
+            }
+        }
+
+        "map result to case classes" in {
+            val query = "SELECT * FROM hotels WHERE id = ?".toCQL
+                .prepare[String]
+                .as[Hotel]
+
+            val hotelH1Opt = query.execute(Hotels.h1.id).nextOption()
+            hotelH1Opt shouldBe defined
+            hotelH1Opt.map(_.name) shouldBe Some(Hotels.h1.name)
+
+            withClue("(when using an explicit mapper)") {
+                val query = "SELECT * FROM hotels WHERE id = ?".toCQL
+                    .prepare[String]
+                    .as((row: Row) =>
+                        Hotel(
+                          row.getCol[String]("id"),
+                          row.getCol[String]("name"),
+                          row.getCol[String]("phone"),
+                          row.getCol[Address]("address"),
+                          row.getCol[Set[String]]("pois")
+                        )
+                    )
+
+                val hotelH1Opt = query.execute(Hotels.h1.id).nextOption()
+                hotelH1Opt shouldBe defined
+                hotelH1Opt.map(_.name) shouldBe Some(Hotels.h1.name)
+            }
+        }
+
+        "map single column results" in {
+            val query = "SELECT name FROM hotels WHERE id = ?".toCQL
+                .prepare[String]
+                .as[String]
+
+            val hotelH1Opt = query.execute(Hotels.h1.id).nextOption()
+            hotelH1Opt shouldBe defined
+            hotelH1Opt shouldBe Some(Hotels.h1.name)
+        }
+
+        "map result to tuples" in {
+            val query = "SELECT name, phone FROM hotels WHERE id = ?".toCQL
+                .prepare[String]
+                .as[(String, String)]
+
+            val hotelH1Opt = query.execute(Hotels.h1.id).nextOption()
+            hotelH1Opt shouldBe defined
+            hotelH1Opt shouldBe Some(Hotels.h1.name -> Hotels.h1.phone)
+        }
+
+        "map result to case classes (async)" in {
+            val query = "SELECT * FROM hotels WHERE id = ?".toCQL
+                .prepare[String]
+                .as[Hotel]
+
+            whenReady(
+              query
+                  .executeAsync(Hotels.h2.id)
+                  .map(it => it.currPage.nextOption())
+            ) { h2RowOpt =>
+                h2RowOpt.map(_.name) shouldBe Some(Hotels.h2.name)
+            }
         }
     }
 
