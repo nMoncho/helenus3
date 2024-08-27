@@ -21,7 +21,6 @@
 
 package net.nmoncho.helenus
 
-import scala.annotation.nowarn
 import scala.concurrent.Future
 import scala.concurrent.duration.DurationInt
 

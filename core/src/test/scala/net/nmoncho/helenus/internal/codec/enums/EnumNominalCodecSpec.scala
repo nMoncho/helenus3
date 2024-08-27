@@ -22,7 +22,6 @@
 package net.nmoncho.helenus
 package internal.codec.enums
 
-import com.datastax.oss.driver.api.core.`type`.codec.TypeCodec
 import com.datastax.oss.driver.api.core.`type`.reflect.GenericType
 import net.nmoncho.helenus.api.`type`.codec.Codec
 import net.nmoncho.helenus.internal.codec.CodecSpecBase

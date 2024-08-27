@@ -31,7 +31,6 @@ import java.util.UUID
 import scala.collection.immutable.SortedMap
 import scala.collection.immutable.SortedSet
 import scala.collection.mutable as mutablecoll
-import scala.deriving.Mirror
 import scala.reflect.ClassTag
 
 import com.datastax.dse.driver.api.core.data.geometry.LineString
@@ -40,13 +39,8 @@ import com.datastax.dse.driver.api.core.data.geometry.Polygon
 import com.datastax.dse.driver.api.core.data.time.DateRange
 import com.datastax.oss.driver.api.core.ProtocolVersion
 import com.datastax.oss.driver.api.core.`type`.DataType
-import com.datastax.oss.driver.api.core.`type`.UserDefinedType
 import com.datastax.oss.driver.api.core.`type`.codec.TypeCodec
 import com.datastax.oss.driver.api.core.`type`.reflect.GenericType
-import net.nmoncho.helenus.api.ColumnNamingScheme
-import net.nmoncho.helenus.api.DefaultColumnNamingScheme
-import net.nmoncho.helenus.api.SnakeCase
-import net.nmoncho.helenus.internal.Labelling
 import net.nmoncho.helenus.internal.codec.*
 import net.nmoncho.helenus.internal.codec.TupleCodecDerivation
 import net.nmoncho.helenus.internal.codec.collection.*

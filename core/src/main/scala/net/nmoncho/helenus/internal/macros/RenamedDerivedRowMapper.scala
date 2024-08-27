@@ -36,7 +36,6 @@ object RenamedDerivedRowMapper:
     def renamedImpl[A <: Product: Type](first: Expr[A => (Any, String)], rest: Expr[Seq[A => (Any, String)]])(using
     qctx: Quotes): Expr[RowMapper[A]] =
         import qctx.reflect.*
-        import scala.compiletime.*
 
         def summonOrFail[T: Type]: Expr[T] =
             Expr.summon[T] match

@@ -33,7 +33,6 @@ import com.datastax.oss.driver.api.core.`type`.codec.TypeCodec
 import com.datastax.oss.driver.api.core.cql.*
 import net.nmoncho.helenus.api.RowMapper
 import net.nmoncho.helenus.api.cql.Adapter
-import net.nmoncho.helenus.api.cql.Mapping
 import net.nmoncho.helenus.api.cql.Pager as ApiPager
 import net.nmoncho.helenus.api.cql.PagerSerializer
 import net.nmoncho.helenus.api.cql.ScalaPreparedStatement

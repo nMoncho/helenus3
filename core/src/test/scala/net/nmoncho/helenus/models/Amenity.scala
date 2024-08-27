@@ -23,10 +23,4 @@ package net.nmoncho.helenus.models
 
 import net.nmoncho.helenus.api.RowMapper
 
-final case class Amenity(name: String, description: String)
-
-object Amenity:
-    import net.nmoncho.helenus.*
-
-    // implicit val rowMapper: RowMapper[Amenity] = RowMapper[Amenity]
-end Amenity
+final case class Amenity(name: String, description: String) derives RowMapper

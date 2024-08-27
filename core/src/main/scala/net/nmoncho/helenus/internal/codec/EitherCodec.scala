@@ -27,12 +27,10 @@ import com.datastax.oss.driver.api.core.ProtocolVersion
 import com.datastax.oss.driver.api.core.`type`.DataType
 import com.datastax.oss.driver.api.core.`type`.codec.TypeCodec
 import com.datastax.oss.driver.api.core.`type`.reflect.GenericType
-import com.datastax.oss.driver.api.core.`type`.reflect.GenericTypeParameter
 import com.datastax.oss.driver.internal.core.`type`.DefaultTupleType
 import com.datastax.oss.driver.internal.core.`type`.codec.ParseUtils
 import com.datastax.oss.driver.shaded.guava.common.reflect.ScalaTypeToken
 import com.datastax.oss.driver.shaded.guava.common.reflect.TypeParameter
-import com.datastax.oss.driver.shaded.guava.common.reflect.TypeToken
 import net.nmoncho.helenus.api.`type`.codec.Codec
 
 /** [[TypeCodec]] implementation for [[Either]]. Translates to a two element tuple in Cassandra.

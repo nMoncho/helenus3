@@ -22,9 +22,7 @@
 package net.nmoncho.helenus
 package api.cql
 
-import scala.annotation.nowarn
 import scala.collection.mutable
-import scala.concurrent.Future
 
 import ch.qos.logback.classic.LoggerContext
 import ch.qos.logback.classic.spi.ILoggingEvent
@@ -51,8 +49,7 @@ class ScalaPreparedStatementAritySpec extends AnyWordSpec
 
     import scala.concurrent.ExecutionContext.Implicits.global
 
-    private implicit lazy val cqlSession: CqlSession              = session
-    private implicit lazy val cqlSessionAsync: Future[CqlSession] = session.toAsync
+    private implicit lazy val cqlSession: CqlSession = session
 
     "ScalaPreparedStatement" should {
         import MemoryAppender.*

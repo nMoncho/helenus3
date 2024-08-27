@@ -24,7 +24,6 @@ package internal.codec
 
 import java.util.UUID
 
-import com.datastax.oss.driver.api.core.CqlSession
 import com.datastax.oss.driver.api.core.ProtocolVersion
 import com.datastax.oss.driver.api.core.cql.Row
 import com.datastax.oss.driver.api.core.servererrors.ServerError

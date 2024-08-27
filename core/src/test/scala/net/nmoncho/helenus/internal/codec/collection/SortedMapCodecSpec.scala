@@ -24,7 +24,6 @@ package internal.codec.collection
 
 import scala.collection.immutable.SortedMap
 
-import com.datastax.oss.driver.api.core.`type`.codec.TypeCodec
 import net.nmoncho.helenus.api.`type`.codec.Codec
 import net.nmoncho.helenus.internal.codec.*
 import org.scalatest.matchers.should.Matchers

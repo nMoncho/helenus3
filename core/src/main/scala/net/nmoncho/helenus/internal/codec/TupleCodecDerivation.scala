@@ -24,7 +24,6 @@ package net.nmoncho.helenus.internal.codec
 import java.nio.ByteBuffer
 
 import scala.collection.mutable
-import scala.quoted.Type
 import scala.reflect.ClassTag
 
 import com.datastax.oss.driver.api.core.ProtocolVersion

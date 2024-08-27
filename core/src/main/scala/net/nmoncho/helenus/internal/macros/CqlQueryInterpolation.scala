@@ -21,10 +21,6 @@
 
 package net.nmoncho.helenus.internal.macros
 
-import java.nio.ByteBuffer
-
-import javax.xml.namespace.QName
-
 import scala.concurrent.ExecutionContext
 import scala.concurrent.Future
 import scala.quoted.*
@@ -32,10 +28,8 @@ import scala.quoted.*
 import com.datastax.oss.driver.api.core.CqlSession
 import com.datastax.oss.driver.api.core.ProtocolVersion
 import com.datastax.oss.driver.api.core.cql.BoundStatement
-import com.datastax.oss.driver.api.core.cql.PreparedStatement
 import com.datastax.oss.driver.api.core.cql.Row
 import com.datastax.oss.driver.internal.core.util.Strings
-import net.nmoncho.helenus.api.DefaultColumnNamingScheme.map
 import net.nmoncho.helenus.api.RowMapper
 import net.nmoncho.helenus.api.`type`.codec.Codec
 import net.nmoncho.helenus.api.cql.WrappedBoundStatement

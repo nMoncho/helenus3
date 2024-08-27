@@ -37,7 +37,6 @@ import com.datastax.oss.driver.api.core.`type`.reflect.GenericType
 import com.datastax.oss.driver.internal.core.`type`.DefaultUserDefinedType
 import net.nmoncho.helenus.api.ColumnNamingScheme
 import net.nmoncho.helenus.api.DefaultColumnNamingScheme
-import net.nmoncho.helenus.api.`type`.codec.Codec
 import net.nmoncho.helenus.internal.Labelling
 import net.nmoncho.helenus.internal.codec.udt.IdenticalUDTCodec
 import net.nmoncho.helenus.internal.codec.udt.NonIdenticalUDTCodec

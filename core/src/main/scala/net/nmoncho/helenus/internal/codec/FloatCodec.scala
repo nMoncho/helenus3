@@ -26,7 +26,6 @@ import java.nio.ByteBuffer
 import com.datastax.oss.driver.api.core.ProtocolVersion
 import com.datastax.oss.driver.api.core.`type`.DataType
 import com.datastax.oss.driver.api.core.`type`.DataTypes
-import com.datastax.oss.driver.api.core.`type`.codec.TypeCodec
 import com.datastax.oss.driver.api.core.`type`.reflect.GenericType
 import net.nmoncho.helenus.api.`type`.codec.Codec
 

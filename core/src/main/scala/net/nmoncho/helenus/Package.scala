@@ -28,7 +28,6 @@ import scala.concurrent.ExecutionContext
 import scala.concurrent.Future
 import scala.concurrent.duration.FiniteDuration
 import scala.language.implicitConversions
-import scala.reflect.ClassTag
 import scala.util.Failure
 import scala.util.Success
 import scala.util.Try
@@ -40,7 +39,6 @@ import com.datastax.oss.driver.api.core.PagingIterable
 import com.datastax.oss.driver.api.core.`type`.codec.TypeCodec
 import com.datastax.oss.driver.api.core.`type`.codec.registry.CodecRegistry
 import com.datastax.oss.driver.api.core.`type`.codec.registry.MutableCodecRegistry
-import com.datastax.oss.driver.api.core.`type`.reflect.GenericType
 import com.datastax.oss.driver.api.core.config.DriverExecutionProfile
 import com.datastax.oss.driver.api.core.cql.AsyncResultSet
 import com.datastax.oss.driver.api.core.cql.BoundStatement
