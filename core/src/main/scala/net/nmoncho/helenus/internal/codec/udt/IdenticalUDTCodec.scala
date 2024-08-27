@@ -43,6 +43,7 @@ import com.datastax.oss.driver.shaded.guava.common.reflect.TypeParameter
 import net.nmoncho.helenus.api.ColumnNamingScheme
 import net.nmoncho.helenus.api.DefaultColumnNamingScheme
 import net.nmoncho.helenus.api.`type`.codec.Codec
+import net.nmoncho.helenus.api.`type`.codec.UDTCodec
 import net.nmoncho.helenus.internal.Labelling
 import net.nmoncho.helenus.internal.codec.collection.ListCodec.frozen
 
@@ -128,10 +129,11 @@ object IdenticalUDTCodec:
         namingScheme: ColumnNamingScheme
     ): IdenticalUDTCodec[H *: EmptyTuple] =
         val fieldName = fieldNames.head
+        val column    = namingScheme.map(fieldName)
         val codec     = summonInline[Codec[H]]
 
         new IdenticalUDTCodec[H *: EmptyTuple]:
-            override val columns: List[(String, DataType)] = List(fieldName -> codec.getCqlType())
+            override val columns: List[(String, DataType)] = List(column -> codec.getCqlType())
 
             override def encode(value: H *: EmptyTuple, protocolVersion: ProtocolVersion): (List[ByteBuffer], Int) =
                 val encoded = codec.encode(value.head, protocolVersion)
@@ -179,12 +181,13 @@ object IdenticalUDTCodec:
         namingScheme: ColumnNamingScheme
     ): IdenticalUDTCodec[H *: T] =
         val fieldName = fieldNames.head
+        val column    = namingScheme.map(fieldName)
         val codec     = summonInline[Codec[H]]
         val tail      = summonInstances[T](fieldNames.tail, namingScheme)
 
         new IdenticalUDTCodec[H *: T]:
             override val columns: List[(String, DataType)] =
-                (fieldNames.head -> codec.getCqlType()) :: tail.columns
+                (column -> codec.getCqlType()) :: tail.columns
 
             override def encode(value: H *: T, protocolVersion: ProtocolVersion): (List[ByteBuffer], Int) =
                 val (tailBuffer, tailSize) = tail.encode(value.tail, protocolVersion)
@@ -242,13 +245,16 @@ object IdenticalUDTCodec:
         labelling: Labelling[A],
         tag: ClassTag[A],
         namingScheme: ColumnNamingScheme = DefaultColumnNamingScheme
-    ): Codec[A] & UDTCodec[A] =
+    ): UDTCodec[A] =
         val codec = summonInstances[mirror.MirroredElemTypes](labelling.elemLabels, namingScheme)
 
         val actualKeyspace = keyspace.getOrElse("system")
         val actualName     = name.getOrElse(namingScheme.map(labelling.label))
 
-        new Codec[A] with UDTCodec[A]:
+        new UDTCodec[A]:
+
+            override def fields: Seq[(String, DataType)] = codec.columns
+
             override def encode(value: A, protocolVersion: ProtocolVersion): ByteBuffer =
                 if value == null then null
                 else

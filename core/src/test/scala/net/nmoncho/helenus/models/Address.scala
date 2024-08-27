@@ -22,6 +22,7 @@
 package net.nmoncho.helenus.models
 
 import net.nmoncho.helenus.api.`type`.codec.Codec
+import net.nmoncho.helenus.api.`type`.codec.UDTCodec
 
 final case class Address(
     street: String,
@@ -29,7 +30,7 @@ final case class Address(
     stateOrProvince: String,
     postalCode: String,
     country: String
-) derives Codec
+) derives UDTCodec
 
 object Address:
     import net.nmoncho.helenus.*

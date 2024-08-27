@@ -40,6 +40,7 @@ import com.datastax.oss.driver.shaded.guava.common.reflect.ScalaTypeToken
 import net.nmoncho.helenus.api.ColumnNamingScheme
 import net.nmoncho.helenus.api.DefaultColumnNamingScheme
 import net.nmoncho.helenus.api.`type`.codec.Codec
+import net.nmoncho.helenus.api.`type`.codec.UDTCodec
 import net.nmoncho.helenus.internal.Labelling
 
 /** A [[NonIdenticalUDTCodec]] is one that maps a case class to a UDT, both not having the same
@@ -122,32 +123,43 @@ object NonIdenticalUDTCodec:
             )
     end buildUserDefinedType
 
-    inline def derived[A <: Product](keyspace: String = "", name: String = "")(
+    inline def deriveFromNames[A <: Product](keyspace: String = "", name: String = "")(
         using session: CqlSession,
         mirror: Mirror.ProductOf[A],
         labelling: Labelling[A],
         tag: ClassTag[A],
         namingScheme: ColumnNamingScheme = DefaultColumnNamingScheme
-    ): Codec[A] =
-        derivedFrom[A](buildUserDefinedType(
+    ): UDTCodec[A] =
+        deriveFromType[A](buildUserDefinedType(
           session,
           Option(keyspace).filter(_.trim().nonEmpty),
           Option(name).filter(_.trim().nonEmpty).getOrElse(namingScheme.map(labelling.label))
         ))
 
-    inline def derivedFrom[A <: Product](udt: UserDefinedType)(
-        using session: CqlSession,
-        mirror: Mirror.ProductOf[A],
+    inline def deriveFromType[A <: Product](udt: UserDefinedType)(
+        using mirror: Mirror.ProductOf[A],
         labelling: Labelling[A],
         tag: ClassTag[A],
         namingScheme: ColumnNamingScheme = DefaultColumnNamingScheme
-    ): Codec[A] =
+    ): UDTCodec[A] = derivedFn[A](udt)
+
+    inline def derivedFn[A <: Product](
+        using mirror: Mirror.ProductOf[A],
+        labelling: Labelling[A],
+        tag: ClassTag[A],
+        namingScheme: ColumnNamingScheme
+    ): UserDefinedType => UDTCodec[A] = (udt: UserDefinedType) =>
         val codec       = summonInstances[mirror.MirroredElemTypes](labelling.elemLabels.map(namingScheme.map))
         val clazz       = tag.runtimeClass.asInstanceOf[Class[A]]
         val dseCodec    = new DseUdtCodec(udt)
         val genericType = GenericType.of(new ScalaTypeToken[A] {}.getType()).asInstanceOf[GenericType[A]]
 
         new MappingCodec[UdtValue, A](dseCodec, genericType) with UDTCodec[A]:
+
+            override def fields: Seq[(String, DataType)] =
+                import scala.jdk.CollectionConverters.*
+                udt.getFieldNames().asScala.zip(udt.getFieldTypes().asScala).map(_.asInternal() -> _).toSeq
+
             override val getCqlType: UserDefinedType =
                 super.getCqlType.asInstanceOf[UserDefinedType]
 
@@ -160,6 +172,6 @@ object NonIdenticalUDTCodec:
             override lazy val toString: String =
                 s"UtdCodec[${clazz.getSimpleName}]"
         end new
-    end derivedFrom
+    end derivedFn
 
 end NonIdenticalUDTCodec

@@ -19,11 +19,13 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package net.nmoncho.helenus.internal.codec.udt
+package net.nmoncho.helenus.api.`type`.codec
 
 import java.nio.ByteBuffer
 
+import scala.deriving.Mirror
 import scala.jdk.OptionConverters.*
+import scala.reflect.ClassTag
 
 import com.datastax.oss.driver.api.core.CqlIdentifier
 import com.datastax.oss.driver.api.core.CqlSession
@@ -33,10 +35,19 @@ import com.datastax.oss.driver.api.core.`type`.UserDefinedType
 import com.datastax.oss.driver.api.core.`type`.codec.TypeCodec
 import com.datastax.oss.driver.api.core.`type`.reflect.GenericType
 import com.datastax.oss.driver.internal.core.`type`.DefaultUserDefinedType
+import net.nmoncho.helenus.api.ColumnNamingScheme
+import net.nmoncho.helenus.api.DefaultColumnNamingScheme
 import net.nmoncho.helenus.api.`type`.codec.Codec
+import net.nmoncho.helenus.internal.Labelling
+import net.nmoncho.helenus.internal.codec.udt.IdenticalUDTCodec
+import net.nmoncho.helenus.internal.codec.udt.NonIdenticalUDTCodec
+import net.nmoncho.helenus.internal.codec.udt.UnifiedUDTCodec
 
-trait UDTCodec[T]:
-    that: Codec[T] =>
+trait UDTCodec[T] extends Codec[T]:
+    that =>
+
+    /* Fields defined/handled by this UDT Codec */
+    def fields: Seq[(String, DataType)]
 
     private lazy val userDefinedType = that.getCqlType match
         case udt: UserDefinedType => udt
@@ -89,5 +100,30 @@ trait UDTCodec[T]:
             that.parse(value)
 
     end forKeyspace
+
+end UDTCodec
+
+object UDTCodec:
+
+    inline def derive[A <: Product: Mirror.ProductOf: Labelling: ClassTag](
+        keyspace: String = "",
+        name: String     = "",
+        frozen: Boolean  = true
+    )(using namingScheme: ColumnNamingScheme = DefaultColumnNamingScheme): UDTCodec[A] =
+        new UnifiedUDTCodec[A](
+          IdenticalUDTCodec.deriveCodec[A](
+            Some(keyspace).filter(_.trim().nonEmpty),
+            Some(name).filter(_.trim().nonEmpty),
+            frozen
+          ),
+          NonIdenticalUDTCodec.derivedFn[A]
+        )
+
+    inline def derived[A <: Product: Mirror.ProductOf: Labelling: ClassTag](using namingScheme: ColumnNamingScheme =
+        DefaultColumnNamingScheme): UDTCodec[A] =
+        new UnifiedUDTCodec[A](
+          IdenticalUDTCodec.deriveCodec[A](None, None, frozen = true),
+          NonIdenticalUDTCodec.derivedFn[A]
+        )
 
 end UDTCodec

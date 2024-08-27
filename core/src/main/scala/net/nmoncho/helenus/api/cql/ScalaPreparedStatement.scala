@@ -28,6 +28,7 @@ import scala.concurrent.ExecutionContext
 import scala.concurrent.Future
 
 import com.datastax.oss.driver.api.core.CqlSession
+import com.datastax.oss.driver.api.core.`type`.UserDefinedType
 import com.datastax.oss.driver.api.core.`type`.codec.TypeCodec
 import com.datastax.oss.driver.api.core.cql.BoundStatement
 import com.datastax.oss.driver.api.core.cql.BoundStatementBuilder
@@ -36,6 +37,7 @@ import com.datastax.oss.driver.api.core.cql.PreparedStatement
 import com.datastax.oss.driver.api.core.cql.Row
 import net.nmoncho.helenus.api.RowMapper
 import net.nmoncho.helenus.api.`type`.codec.Codec
+import net.nmoncho.helenus.internal.codec.udt.UnifiedUDTCodec
 import net.nmoncho.helenus.internal.cql.*
 import org.slf4j.LoggerFactory
 
@@ -93,15 +95,30 @@ abstract class ScalaPreparedStatement[In, Out](pstmt: PreparedStatement, mapper:
             )
         end if
 
-        actualParams.iterator().asScala.zip(codecs.iterator).zipWithIndex.foreach { case ((param, codec), idx) =>
-            if !codec.accepts(param.getType) then
-                log.warn(
-                  "Invalid PreparedStatement expected parameter with type {} at index {} but got type {}",
-                  param.getType.toString,
-                  idx.toString,
-                  codec.getCqlType.toString
-                )
-        }
+        actualParams.iterator()
+            .asScala
+            .map(_.getType)
+            .zip(codecs.iterator)
+            .zipWithIndex
+            .foreach {
+                case ((udt: UserDefinedType, codec: UnifiedUDTCodec[?]), idx) =>
+                    if !codec.adapt(udt) then
+                        log.warn(
+                          "Invalid PreparedStatement expected parameter with type {} at index {} but got type {}",
+                          udt.toString, // TODO I think we can remove these `.toString` everywhere to improve performance!
+                          idx.toString,
+                          codec.getCqlType.toString
+                        )
+
+                case ((param, codec), idx) =>
+                    if !codec.accepts(param) then
+                        log.warn(
+                          "Invalid PreparedStatement expected parameter with type {} at index {} but got type {}",
+                          param.toString,
+                          idx.toString,
+                          codec.getCqlType.toString
+                        )
+            }
     end verifyArity
 
     // ----------------------------------------------------------------------------

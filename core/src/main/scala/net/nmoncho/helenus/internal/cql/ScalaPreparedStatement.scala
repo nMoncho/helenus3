@@ -232,6 +232,7 @@ class ScalaPreparedStatement2[T1, T2, Out](pstmt: PreparedStatement, mapper: Row
 end ScalaPreparedStatement2
 
 // $COVERAGE-OFF$
+
 class ScalaPreparedStatement3[T1, T2, T3, Out](pstmt: PreparedStatement, mapper: RowMapper[Out], val options: StatementOptions, t1Codec: TypeCodec[T1], t2Codec: TypeCodec[T2], t3Codec: TypeCodec[T3]) extends ScalaPreparedStatement[(T1, T2, T3), Out](pstmt, mapper):
 
     override type Self     = ScalaPreparedStatement3[T1, T2, T3, Out]
@@ -1385,3 +1386,5 @@ class ScalaPreparedStatement22[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12
 end ScalaPreparedStatement22
 
 // format: on
+
+// $COVERAGE-ON$
