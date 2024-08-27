@@ -51,7 +51,7 @@ class ScalaPreparedStatementAritySpec extends AnyWordSpec
 
     import scala.concurrent.ExecutionContext.Implicits.global
 
-    private implicit lazy val cqlSession: CqlSession = session
+    private implicit lazy val cqlSession: CqlSession              = session
     private implicit lazy val cqlSessionAsync: Future[CqlSession] = session.toAsync
 
     "ScalaPreparedStatement" should {
