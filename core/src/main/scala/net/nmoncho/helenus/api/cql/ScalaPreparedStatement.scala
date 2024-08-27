@@ -32,6 +32,8 @@ import com.datastax.oss.driver.api.core.cql.ColumnDefinitions
 import com.datastax.oss.driver.api.core.cql.PreparedStatement
 import com.datastax.oss.driver.api.core.cql.Row
 import net.nmoncho.helenus.api.RowMapper
+import net.nmoncho.helenus.api.`type`.codec.Codec
+import net.nmoncho.helenus.internal.cql.*
 import org.slf4j.LoggerFactory
 
 abstract class ScalaPreparedStatement[In, Out](pstmt: PreparedStatement, mapper: RowMapper[Out])
@@ -43,6 +45,19 @@ abstract class ScalaPreparedStatement[In, Out](pstmt: PreparedStatement, mapper:
 
     // Since this is no longer exposed to users, we can use the tupled `apply` function
     def tupled: In => BoundStatement
+
+    /** Maps the result from this [[PreparedStatement]] with a different [[Out2]]
+      * as long as there is an implicit [[RowMapper]] and [[Out]] is [[Row]] (this is
+      * meant to avoid calling `as` twice)
+      */
+    def as[Out2](implicit ev: Out =:= Row, mapper: RowMapper[Out2]): AsOut[Out2]
+
+    /** Maps the result from this [[PreparedStatement]] with a different [[Out2]]
+      * with an explicit [[RowMapper]] as long as [[Out]] is [[Row]] (this is
+      * meant to avoid calling `as` twice)
+      */
+    def as[Out2](mapper: RowMapper[Out2])(implicit ev: Out =:= Row): AsOut[Out2] =
+        as[Out2](ev, mapper)
 
     /** Verifies that this [[ScalaPreparedStatement]] has the same amount of bind parameters (e.g. '?') as the amount
       * used on the '.prepare' call. It will also verify that these parameters have the same type as the specified in

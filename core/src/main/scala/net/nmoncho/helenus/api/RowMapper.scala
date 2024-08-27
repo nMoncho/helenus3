@@ -26,20 +26,24 @@ import scala.util.NotGiven
 
 import com.datastax.oss.driver.api.core.`type`.codec.TypeCodec
 import com.datastax.oss.driver.api.core.cql.Row
+import net.nmoncho.helenus.api.`type`.codec.Codec
+import net.nmoncho.helenus.internal.DerivedCaseClassRowMapper
 import net.nmoncho.helenus.internal.DerivedRowMapper
-import net.nmoncho.helenus.internal.DerivedRowMapper.DerivedIdxRowMapper
+import net.nmoncho.helenus.internal.DerivedTupleRowMapper
 import org.slf4j.LoggerFactory
-import shapeless3.*
-import shapeless3.deriving.Labelling
 
 trait RowMapper[T] extends Serializable:
     def apply(row: Row): T
 
-object RowMapper:
+object RowMapper extends DerivedCaseClassRowMapper:
 
     type ColumnName = String
 
     val identity: RowMapper[Row] = (row: Row) => row
+
+    given [T](using derived: DerivedRowMapper[T]): RowMapper[T] = derived
+
+    def apply[T](using mapper: DerivedRowMapper[T]): RowMapper[T] = mapper
 
     /** Knows how to extract a column from a [[Row]] into a Scala type [[A]]
       * @tparam A target type
@@ -50,7 +54,9 @@ object RowMapper:
     object ColumnMapper:
         private val log = LoggerFactory.getLogger(classOf[ColumnMapper[?]])
 
-        def default[A](using codec: TypeCodec[A]): ColumnMapper[A] = new ColumnMapper[A]:
+        given [T](using codec: Codec[T]): ColumnMapper[T] = default[T]
+
+        def default[A](using codec: Codec[A]): ColumnMapper[A] = new ColumnMapper[A]:
             override def apply(columnName: ColumnName, row: Row): A =
                 row.get(columnName, codec)
 
@@ -83,19 +89,5 @@ object RowMapper:
             end apply
 
     end ColumnMapper
-
-    def apply[T: DerivedRowMapper]: RowMapper[T] = summon[DerivedRowMapper[T]]
-
-    given tupleRowMapper[T <: Tuple: DerivedIdxRowMapper]: RowMapper[T] =
-        summon[DerivedIdxRowMapper[T]]
-
-    /** Derives a [[RowMapper]] from a [[TypeCodec]] when [[T]] isn't a `Product`
-      */
-    given simpleRowMapper[T](
-        using ev: NotGiven[T <:< Product],
-        codec: TypeCodec[T]
-    ): DerivedRowMapper[T] with
-        def apply(row: Row): T = row.get(0, codec)
-    end simpleRowMapper
 
 end RowMapper
