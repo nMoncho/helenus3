@@ -208,112 +208,112 @@ object ScalaPreparedStatement:
          *
          * @return BoundStatement that can be called like a function
          */
-        def prepare[T1, T2, T3, T4, T5, T6, T7](implicit t1: TypeCodec[T1], t2: TypeCodec[T2], t3: TypeCodec[T3], t4: TypeCodec[T4], t5: TypeCodec[T5], t6: TypeCodec[T6], t7: TypeCodec[T7]): ScalaPreparedStatement7[T1, T2, T3, T4, T5, T6, T7, Row] =
+        def prepare[T1, T2, T3, T4, T5, T6, T7](implicit t1: Codec[T1], t2: Codec[T2], t3: Codec[T3], t4: Codec[T4], t5: Codec[T5], t6: Codec[T6], t7: Codec[T7]): ScalaPreparedStatement7[T1, T2, T3, T4, T5, T6, T7, Row] =
             new ScalaPreparedStatement7[T1, T2, T3, T4, T5, T6, T7, Row](session.prepare(query), RowMapper.identity, StatementOptions.default, t1, t2, t3, t4, t5, t6, t7)
 
         /** Prepares a query that will take 8 query parameter
          *
          * @return BoundStatement that can be called like a function
          */
-        def prepare[T1, T2, T3, T4, T5, T6, T7, T8](implicit t1: TypeCodec[T1], t2: TypeCodec[T2], t3: TypeCodec[T3], t4: TypeCodec[T4], t5: TypeCodec[T5], t6: TypeCodec[T6], t7: TypeCodec[T7], t8: TypeCodec[T8]): ScalaPreparedStatement8[T1, T2, T3, T4, T5, T6, T7, T8, Row] =
+        def prepare[T1, T2, T3, T4, T5, T6, T7, T8](implicit t1: Codec[T1], t2: Codec[T2], t3: Codec[T3], t4: Codec[T4], t5: Codec[T5], t6: Codec[T6], t7: Codec[T7], t8: Codec[T8]): ScalaPreparedStatement8[T1, T2, T3, T4, T5, T6, T7, T8, Row] =
             new ScalaPreparedStatement8[T1, T2, T3, T4, T5, T6, T7, T8, Row](session.prepare(query), RowMapper.identity, StatementOptions.default, t1, t2, t3, t4, t5, t6, t7, t8)
 
         /** Prepares a query that will take 9 query parameter
          *
          * @return BoundStatement that can be called like a function
          */
-        def prepare[T1, T2, T3, T4, T5, T6, T7, T8, T9](implicit t1: TypeCodec[T1], t2: TypeCodec[T2], t3: TypeCodec[T3], t4: TypeCodec[T4], t5: TypeCodec[T5], t6: TypeCodec[T6], t7: TypeCodec[T7], t8: TypeCodec[T8], t9: TypeCodec[T9]): ScalaPreparedStatement9[T1, T2, T3, T4, T5, T6, T7, T8, T9, Row] =
+        def prepare[T1, T2, T3, T4, T5, T6, T7, T8, T9](implicit t1: Codec[T1], t2: Codec[T2], t3: Codec[T3], t4: Codec[T4], t5: Codec[T5], t6: Codec[T6], t7: Codec[T7], t8: Codec[T8], t9: Codec[T9]): ScalaPreparedStatement9[T1, T2, T3, T4, T5, T6, T7, T8, T9, Row] =
             new ScalaPreparedStatement9[T1, T2, T3, T4, T5, T6, T7, T8, T9, Row](session.prepare(query), RowMapper.identity, StatementOptions.default, t1, t2, t3, t4, t5, t6, t7, t8, t9)
 
         /** Prepares a query that will take 10 query parameter
          *
          * @return BoundStatement that can be called like a function
          */
-        def prepare[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10](implicit t1: TypeCodec[T1], t2: TypeCodec[T2], t3: TypeCodec[T3], t4: TypeCodec[T4], t5: TypeCodec[T5], t6: TypeCodec[T6], t7: TypeCodec[T7], t8: TypeCodec[T8], t9: TypeCodec[T9], t10: TypeCodec[T10]): ScalaPreparedStatement10[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, Row] =
+        def prepare[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10](implicit t1: Codec[T1], t2: Codec[T2], t3: Codec[T3], t4: Codec[T4], t5: Codec[T5], t6: Codec[T6], t7: Codec[T7], t8: Codec[T8], t9: Codec[T9], t10: Codec[T10]): ScalaPreparedStatement10[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, Row] =
             new ScalaPreparedStatement10[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, Row](session.prepare(query), RowMapper.identity, StatementOptions.default, t1, t2, t3, t4, t5, t6, t7, t8, t9, t10)
 
         /** Prepares a query that will take 11 query parameter
          *
          * @return BoundStatement that can be called like a function
          */
-        def prepare[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11](implicit t1: TypeCodec[T1], t2: TypeCodec[T2], t3: TypeCodec[T3], t4: TypeCodec[T4], t5: TypeCodec[T5], t6: TypeCodec[T6], t7: TypeCodec[T7], t8: TypeCodec[T8], t9: TypeCodec[T9], t10: TypeCodec[T10], t11: TypeCodec[T11]): ScalaPreparedStatement11[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, Row] =
+        def prepare[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11](implicit t1: Codec[T1], t2: Codec[T2], t3: Codec[T3], t4: Codec[T4], t5: Codec[T5], t6: Codec[T6], t7: Codec[T7], t8: Codec[T8], t9: Codec[T9], t10: Codec[T10], t11: Codec[T11]): ScalaPreparedStatement11[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, Row] =
             new ScalaPreparedStatement11[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, Row](session.prepare(query), RowMapper.identity, StatementOptions.default, t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11)
 
         /** Prepares a query that will take 12 query parameter
          *
          * @return BoundStatement that can be called like a function
          */
-        def prepare[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12](implicit t1: TypeCodec[T1], t2: TypeCodec[T2], t3: TypeCodec[T3], t4: TypeCodec[T4], t5: TypeCodec[T5], t6: TypeCodec[T6], t7: TypeCodec[T7], t8: TypeCodec[T8], t9: TypeCodec[T9], t10: TypeCodec[T10], t11: TypeCodec[T11], t12: TypeCodec[T12]): ScalaPreparedStatement12[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, Row] =
+        def prepare[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12](implicit t1: Codec[T1], t2: Codec[T2], t3: Codec[T3], t4: Codec[T4], t5: Codec[T5], t6: Codec[T6], t7: Codec[T7], t8: Codec[T8], t9: Codec[T9], t10: Codec[T10], t11: Codec[T11], t12: Codec[T12]): ScalaPreparedStatement12[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, Row] =
             new ScalaPreparedStatement12[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, Row](session.prepare(query), RowMapper.identity, StatementOptions.default, t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11, t12)
 
         /** Prepares a query that will take 13 query parameter
          *
          * @return BoundStatement that can be called like a function
          */
-        def prepare[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13](implicit t1: TypeCodec[T1], t2: TypeCodec[T2], t3: TypeCodec[T3], t4: TypeCodec[T4], t5: TypeCodec[T5], t6: TypeCodec[T6], t7: TypeCodec[T7], t8: TypeCodec[T8], t9: TypeCodec[T9], t10: TypeCodec[T10], t11: TypeCodec[T11], t12: TypeCodec[T12], t13: TypeCodec[T13]): ScalaPreparedStatement13[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, Row] =
+        def prepare[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13](implicit t1: Codec[T1], t2: Codec[T2], t3: Codec[T3], t4: Codec[T4], t5: Codec[T5], t6: Codec[T6], t7: Codec[T7], t8: Codec[T8], t9: Codec[T9], t10: Codec[T10], t11: Codec[T11], t12: Codec[T12], t13: Codec[T13]): ScalaPreparedStatement13[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, Row] =
             new ScalaPreparedStatement13[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, Row](session.prepare(query), RowMapper.identity, StatementOptions.default, t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11, t12, t13)
 
         /** Prepares a query that will take 14 query parameter
          *
          * @return BoundStatement that can be called like a function
          */
-        def prepare[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14](implicit t1: TypeCodec[T1], t2: TypeCodec[T2], t3: TypeCodec[T3], t4: TypeCodec[T4], t5: TypeCodec[T5], t6: TypeCodec[T6], t7: TypeCodec[T7], t8: TypeCodec[T8], t9: TypeCodec[T9], t10: TypeCodec[T10], t11: TypeCodec[T11], t12: TypeCodec[T12], t13: TypeCodec[T13], t14: TypeCodec[T14]): ScalaPreparedStatement14[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, Row] =
+        def prepare[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14](implicit t1: Codec[T1], t2: Codec[T2], t3: Codec[T3], t4: Codec[T4], t5: Codec[T5], t6: Codec[T6], t7: Codec[T7], t8: Codec[T8], t9: Codec[T9], t10: Codec[T10], t11: Codec[T11], t12: Codec[T12], t13: Codec[T13], t14: Codec[T14]): ScalaPreparedStatement14[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, Row] =
             new ScalaPreparedStatement14[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, Row](session.prepare(query), RowMapper.identity, StatementOptions.default, t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11, t12, t13, t14)
 
         /** Prepares a query that will take 15 query parameter
          *
          * @return BoundStatement that can be called like a function
          */
-        def prepare[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15](implicit t1: TypeCodec[T1], t2: TypeCodec[T2], t3: TypeCodec[T3], t4: TypeCodec[T4], t5: TypeCodec[T5], t6: TypeCodec[T6], t7: TypeCodec[T7], t8: TypeCodec[T8], t9: TypeCodec[T9], t10: TypeCodec[T10], t11: TypeCodec[T11], t12: TypeCodec[T12], t13: TypeCodec[T13], t14: TypeCodec[T14], t15: TypeCodec[T15]): ScalaPreparedStatement15[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, Row] =
+        def prepare[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15](implicit t1: Codec[T1], t2: Codec[T2], t3: Codec[T3], t4: Codec[T4], t5: Codec[T5], t6: Codec[T6], t7: Codec[T7], t8: Codec[T8], t9: Codec[T9], t10: Codec[T10], t11: Codec[T11], t12: Codec[T12], t13: Codec[T13], t14: Codec[T14], t15: Codec[T15]): ScalaPreparedStatement15[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, Row] =
             new ScalaPreparedStatement15[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, Row](session.prepare(query), RowMapper.identity, StatementOptions.default, t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11, t12, t13, t14, t15)
 
         /** Prepares a query that will take 16 query parameter
          *
          * @return BoundStatement that can be called like a function
          */
-        def prepare[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16](implicit t1: TypeCodec[T1], t2: TypeCodec[T2], t3: TypeCodec[T3], t4: TypeCodec[T4], t5: TypeCodec[T5], t6: TypeCodec[T6], t7: TypeCodec[T7], t8: TypeCodec[T8], t9: TypeCodec[T9], t10: TypeCodec[T10], t11: TypeCodec[T11], t12: TypeCodec[T12], t13: TypeCodec[T13], t14: TypeCodec[T14], t15: TypeCodec[T15], t16: TypeCodec[T16]): ScalaPreparedStatement16[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, Row] =
+        def prepare[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16](implicit t1: Codec[T1], t2: Codec[T2], t3: Codec[T3], t4: Codec[T4], t5: Codec[T5], t6: Codec[T6], t7: Codec[T7], t8: Codec[T8], t9: Codec[T9], t10: Codec[T10], t11: Codec[T11], t12: Codec[T12], t13: Codec[T13], t14: Codec[T14], t15: Codec[T15], t16: Codec[T16]): ScalaPreparedStatement16[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, Row] =
             new ScalaPreparedStatement16[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, Row](session.prepare(query), RowMapper.identity, StatementOptions.default, t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11, t12, t13, t14, t15, t16)
 
         /** Prepares a query that will take 17 query parameter
          *
          * @return BoundStatement that can be called like a function
          */
-        def prepare[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17](implicit t1: TypeCodec[T1], t2: TypeCodec[T2], t3: TypeCodec[T3], t4: TypeCodec[T4], t5: TypeCodec[T5], t6: TypeCodec[T6], t7: TypeCodec[T7], t8: TypeCodec[T8], t9: TypeCodec[T9], t10: TypeCodec[T10], t11: TypeCodec[T11], t12: TypeCodec[T12], t13: TypeCodec[T13], t14: TypeCodec[T14], t15: TypeCodec[T15], t16: TypeCodec[T16], t17: TypeCodec[T17]): ScalaPreparedStatement17[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, Row] =
+        def prepare[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17](implicit t1: Codec[T1], t2: Codec[T2], t3: Codec[T3], t4: Codec[T4], t5: Codec[T5], t6: Codec[T6], t7: Codec[T7], t8: Codec[T8], t9: Codec[T9], t10: Codec[T10], t11: Codec[T11], t12: Codec[T12], t13: Codec[T13], t14: Codec[T14], t15: Codec[T15], t16: Codec[T16], t17: Codec[T17]): ScalaPreparedStatement17[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, Row] =
             new ScalaPreparedStatement17[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, Row](session.prepare(query), RowMapper.identity, StatementOptions.default, t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11, t12, t13, t14, t15, t16, t17)
 
         /** Prepares a query that will take 18 query parameter
          *
          * @return BoundStatement that can be called like a function
          */
-        def prepare[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18](implicit t1: TypeCodec[T1], t2: TypeCodec[T2], t3: TypeCodec[T3], t4: TypeCodec[T4], t5: TypeCodec[T5], t6: TypeCodec[T6], t7: TypeCodec[T7], t8: TypeCodec[T8], t9: TypeCodec[T9], t10: TypeCodec[T10], t11: TypeCodec[T11], t12: TypeCodec[T12], t13: TypeCodec[T13], t14: TypeCodec[T14], t15: TypeCodec[T15], t16: TypeCodec[T16], t17: TypeCodec[T17], t18: TypeCodec[T18]): ScalaPreparedStatement18[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, Row] =
+        def prepare[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18](implicit t1: Codec[T1], t2: Codec[T2], t3: Codec[T3], t4: Codec[T4], t5: Codec[T5], t6: Codec[T6], t7: Codec[T7], t8: Codec[T8], t9: Codec[T9], t10: Codec[T10], t11: Codec[T11], t12: Codec[T12], t13: Codec[T13], t14: Codec[T14], t15: Codec[T15], t16: Codec[T16], t17: Codec[T17], t18: Codec[T18]): ScalaPreparedStatement18[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, Row] =
             new ScalaPreparedStatement18[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, Row](session.prepare(query), RowMapper.identity, StatementOptions.default, t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11, t12, t13, t14, t15, t16, t17, t18)
 
         /** Prepares a query that will take 19 query parameter
          *
          * @return BoundStatement that can be called like a function
          */
-        def prepare[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19](implicit t1: TypeCodec[T1], t2: TypeCodec[T2], t3: TypeCodec[T3], t4: TypeCodec[T4], t5: TypeCodec[T5], t6: TypeCodec[T6], t7: TypeCodec[T7], t8: TypeCodec[T8], t9: TypeCodec[T9], t10: TypeCodec[T10], t11: TypeCodec[T11], t12: TypeCodec[T12], t13: TypeCodec[T13], t14: TypeCodec[T14], t15: TypeCodec[T15], t16: TypeCodec[T16], t17: TypeCodec[T17], t18: TypeCodec[T18], t19: TypeCodec[T19]): ScalaPreparedStatement19[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, Row] =
+        def prepare[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19](implicit t1: Codec[T1], t2: Codec[T2], t3: Codec[T3], t4: Codec[T4], t5: Codec[T5], t6: Codec[T6], t7: Codec[T7], t8: Codec[T8], t9: Codec[T9], t10: Codec[T10], t11: Codec[T11], t12: Codec[T12], t13: Codec[T13], t14: Codec[T14], t15: Codec[T15], t16: Codec[T16], t17: Codec[T17], t18: Codec[T18], t19: Codec[T19]): ScalaPreparedStatement19[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, Row] =
             new ScalaPreparedStatement19[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, Row](session.prepare(query), RowMapper.identity, StatementOptions.default, t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11, t12, t13, t14, t15, t16, t17, t18, t19)
 
         /** Prepares a query that will take 20 query parameter
          *
          * @return BoundStatement that can be called like a function
          */
-        def prepare[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20](implicit t1: TypeCodec[T1], t2: TypeCodec[T2], t3: TypeCodec[T3], t4: TypeCodec[T4], t5: TypeCodec[T5], t6: TypeCodec[T6], t7: TypeCodec[T7], t8: TypeCodec[T8], t9: TypeCodec[T9], t10: TypeCodec[T10], t11: TypeCodec[T11], t12: TypeCodec[T12], t13: TypeCodec[T13], t14: TypeCodec[T14], t15: TypeCodec[T15], t16: TypeCodec[T16], t17: TypeCodec[T17], t18: TypeCodec[T18], t19: TypeCodec[T19], t20: TypeCodec[T20]): ScalaPreparedStatement20[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, Row] =
+        def prepare[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20](implicit t1: Codec[T1], t2: Codec[T2], t3: Codec[T3], t4: Codec[T4], t5: Codec[T5], t6: Codec[T6], t7: Codec[T7], t8: Codec[T8], t9: Codec[T9], t10: Codec[T10], t11: Codec[T11], t12: Codec[T12], t13: Codec[T13], t14: Codec[T14], t15: Codec[T15], t16: Codec[T16], t17: Codec[T17], t18: Codec[T18], t19: Codec[T19], t20: Codec[T20]): ScalaPreparedStatement20[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, Row] =
             new ScalaPreparedStatement20[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, Row](session.prepare(query), RowMapper.identity, StatementOptions.default, t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11, t12, t13, t14, t15, t16, t17, t18, t19, t20)
 
         /** Prepares a query that will take 21 query parameter
          *
          * @return BoundStatement that can be called like a function
          */
-        def prepare[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21](implicit t1: TypeCodec[T1], t2: TypeCodec[T2], t3: TypeCodec[T3], t4: TypeCodec[T4], t5: TypeCodec[T5], t6: TypeCodec[T6], t7: TypeCodec[T7], t8: TypeCodec[T8], t9: TypeCodec[T9], t10: TypeCodec[T10], t11: TypeCodec[T11], t12: TypeCodec[T12], t13: TypeCodec[T13], t14: TypeCodec[T14], t15: TypeCodec[T15], t16: TypeCodec[T16], t17: TypeCodec[T17], t18: TypeCodec[T18], t19: TypeCodec[T19], t20: TypeCodec[T20], t21: TypeCodec[T21]): ScalaPreparedStatement21[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, Row] =
+        def prepare[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21](implicit t1: Codec[T1], t2: Codec[T2], t3: Codec[T3], t4: Codec[T4], t5: Codec[T5], t6: Codec[T6], t7: Codec[T7], t8: Codec[T8], t9: Codec[T9], t10: Codec[T10], t11: Codec[T11], t12: Codec[T12], t13: Codec[T13], t14: Codec[T14], t15: Codec[T15], t16: Codec[T16], t17: Codec[T17], t18: Codec[T18], t19: Codec[T19], t20: Codec[T20], t21: Codec[T21]): ScalaPreparedStatement21[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, Row] =
             new ScalaPreparedStatement21[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, Row](session.prepare(query), RowMapper.identity, StatementOptions.default, t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11, t12, t13, t14, t15, t16, t17, t18, t19, t20, t21)
 
         /** Prepares a query that will take 22 query parameter
          *
          * @return BoundStatement that can be called like a function
          */
-        def prepare[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22](implicit t1: TypeCodec[T1], t2: TypeCodec[T2], t3: TypeCodec[T3], t4: TypeCodec[T4], t5: TypeCodec[T5], t6: TypeCodec[T6], t7: TypeCodec[T7], t8: TypeCodec[T8], t9: TypeCodec[T9], t10: TypeCodec[T10], t11: TypeCodec[T11], t12: TypeCodec[T12], t13: TypeCodec[T13], t14: TypeCodec[T14], t15: TypeCodec[T15], t16: TypeCodec[T16], t17: TypeCodec[T17], t18: TypeCodec[T18], t19: TypeCodec[T19], t20: TypeCodec[T20], t21: TypeCodec[T21], t22: TypeCodec[T22]): ScalaPreparedStatement22[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22, Row] =
+        def prepare[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22](implicit t1: Codec[T1], t2: Codec[T2], t3: Codec[T3], t4: Codec[T4], t5: Codec[T5], t6: Codec[T6], t7: Codec[T7], t8: Codec[T8], t9: Codec[T9], t10: Codec[T10], t11: Codec[T11], t12: Codec[T12], t13: Codec[T13], t14: Codec[T14], t15: Codec[T15], t16: Codec[T16], t17: Codec[T17], t18: Codec[T18], t19: Codec[T19], t20: Codec[T20], t21: Codec[T21], t22: Codec[T22]): ScalaPreparedStatement22[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22, Row] =
             new ScalaPreparedStatement22[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22, Row](session.prepare(query), RowMapper.identity, StatementOptions.default, t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11, t12, t13, t14, t15, t16, t17, t18, t19, t20, t21, t22)
 
         // format: on
@@ -339,7 +339,7 @@ object ScalaPreparedStatement:
           *
           * @return BoundStatement that can be called like a function
           */
-        def prepareAsync[T1](implicit ec: ExecutionContext, t1: TypeCodec[T1]): Future[ScalaPreparedStatement1[T1, Row]] =
+        def prepareAsync[T1](implicit ec: ExecutionContext, t1: Codec[T1]): Future[ScalaPreparedStatement1[T1, Row]] =
             session.prepareAsync(query).asScala
                 .map(pstmt => new ScalaPreparedStatement1[T1, Row](pstmt, RowMapper.identity, StatementOptions.default, t1))
 
@@ -347,7 +347,7 @@ object ScalaPreparedStatement:
           *
           * @return BoundStatement that can be called like a function
           */
-        def prepareAsync[T1, T2](implicit ec: ExecutionContext, t1: TypeCodec[T1], t2: TypeCodec[T2]): Future[ScalaPreparedStatement2[T1, T2, Row]] =
+        def prepareAsync[T1, T2](implicit ec: ExecutionContext, t1: Codec[T1], t2: Codec[T2]): Future[ScalaPreparedStatement2[T1, T2, Row]] =
             session.prepareAsync(query).asScala
                 .map(pstmt => new ScalaPreparedStatement2[T1, T2, Row](pstmt, RowMapper.identity, StatementOptions.default, t1, t2))
 
@@ -355,7 +355,7 @@ object ScalaPreparedStatement:
           *
           * @return BoundStatement that can be called like a function
           */
-        def prepareAsync[T1, T2, T3](implicit ec: ExecutionContext, t1: TypeCodec[T1], t2: TypeCodec[T2], t3: TypeCodec[T3]): Future[ScalaPreparedStatement3[T1, T2, T3, Row]] =
+        def prepareAsync[T1, T2, T3](implicit ec: ExecutionContext, t1: Codec[T1], t2: Codec[T2], t3: Codec[T3]): Future[ScalaPreparedStatement3[T1, T2, T3, Row]] =
             session.prepareAsync(query).asScala
                 .map(pstmt => new ScalaPreparedStatement3[T1, T2, T3, Row](pstmt, RowMapper.identity, StatementOptions.default, t1, t2, t3))
 
@@ -363,7 +363,7 @@ object ScalaPreparedStatement:
           *
           * @return BoundStatement that can be called like a function
           */
-        def prepareAsync[T1, T2, T3, T4](implicit ec: ExecutionContext, t1: TypeCodec[T1], t2: TypeCodec[T2], t3: TypeCodec[T3], t4: TypeCodec[T4]): Future[ScalaPreparedStatement4[T1, T2, T3, T4, Row]] =
+        def prepareAsync[T1, T2, T3, T4](implicit ec: ExecutionContext, t1: Codec[T1], t2: Codec[T2], t3: Codec[T3], t4: Codec[T4]): Future[ScalaPreparedStatement4[T1, T2, T3, T4, Row]] =
             session.prepareAsync(query).asScala
                 .map(pstmt => new ScalaPreparedStatement4[T1, T2, T3, T4, Row](pstmt, RowMapper.identity, StatementOptions.default, t1, t2, t3, t4))
 
@@ -371,7 +371,7 @@ object ScalaPreparedStatement:
           *
           * @return BoundStatement that can be called like a function
           */
-        def prepareAsync[T1, T2, T3, T4, T5](implicit ec: ExecutionContext, t1: TypeCodec[T1], t2: TypeCodec[T2], t3: TypeCodec[T3], t4: TypeCodec[T4], t5: TypeCodec[T5]): Future[ScalaPreparedStatement5[T1, T2, T3, T4, T5, Row]] =
+        def prepareAsync[T1, T2, T3, T4, T5](implicit ec: ExecutionContext, t1: Codec[T1], t2: Codec[T2], t3: Codec[T3], t4: Codec[T4], t5: Codec[T5]): Future[ScalaPreparedStatement5[T1, T2, T3, T4, T5, Row]] =
             session.prepareAsync(query).asScala
                 .map(pstmt => new ScalaPreparedStatement5[T1, T2, T3, T4, T5, Row](pstmt, RowMapper.identity, StatementOptions.default, t1, t2, t3, t4, t5))
 
@@ -379,7 +379,7 @@ object ScalaPreparedStatement:
           *
           * @return BoundStatement that can be called like a function
           */
-        def prepareAsync[T1, T2, T3, T4, T5, T6](implicit ec: ExecutionContext, t1: TypeCodec[T1], t2: TypeCodec[T2], t3: TypeCodec[T3], t4: TypeCodec[T4], t5: TypeCodec[T5], t6: TypeCodec[T6]): Future[ScalaPreparedStatement6[T1, T2, T3, T4, T5, T6, Row]] =
+        def prepareAsync[T1, T2, T3, T4, T5, T6](implicit ec: ExecutionContext, t1: Codec[T1], t2: Codec[T2], t3: Codec[T3], t4: Codec[T4], t5: Codec[T5], t6: Codec[T6]): Future[ScalaPreparedStatement6[T1, T2, T3, T4, T5, T6, Row]] =
             session.prepareAsync(query).asScala
                 .map(pstmt => new ScalaPreparedStatement6[T1, T2, T3, T4, T5, T6, Row](pstmt, RowMapper.identity, StatementOptions.default, t1, t2, t3, t4, t5, t6))
 
@@ -387,7 +387,7 @@ object ScalaPreparedStatement:
           *
           * @return BoundStatement that can be called like a function
           */
-        def prepareAsync[T1, T2, T3, T4, T5, T6, T7](implicit ec: ExecutionContext, t1: TypeCodec[T1], t2: TypeCodec[T2], t3: TypeCodec[T3], t4: TypeCodec[T4], t5: TypeCodec[T5], t6: TypeCodec[T6], t7: TypeCodec[T7]): Future[ScalaPreparedStatement7[T1, T2, T3, T4, T5, T6, T7, Row]] =
+        def prepareAsync[T1, T2, T3, T4, T5, T6, T7](implicit ec: ExecutionContext, t1: Codec[T1], t2: Codec[T2], t3: Codec[T3], t4: Codec[T4], t5: Codec[T5], t6: Codec[T6], t7: Codec[T7]): Future[ScalaPreparedStatement7[T1, T2, T3, T4, T5, T6, T7, Row]] =
             session.prepareAsync(query).asScala
                 .map(pstmt => new ScalaPreparedStatement7[T1, T2, T3, T4, T5, T6, T7, Row](pstmt, RowMapper.identity, StatementOptions.default, t1, t2, t3, t4, t5, t6, t7))
 
@@ -395,7 +395,7 @@ object ScalaPreparedStatement:
           *
           * @return BoundStatement that can be called like a function
           */
-        def prepareAsync[T1, T2, T3, T4, T5, T6, T7, T8](implicit ec: ExecutionContext, t1: TypeCodec[T1], t2: TypeCodec[T2], t3: TypeCodec[T3], t4: TypeCodec[T4], t5: TypeCodec[T5], t6: TypeCodec[T6], t7: TypeCodec[T7], t8: TypeCodec[T8]): Future[ScalaPreparedStatement8[T1, T2, T3, T4, T5, T6, T7, T8, Row]] =
+        def prepareAsync[T1, T2, T3, T4, T5, T6, T7, T8](implicit ec: ExecutionContext, t1: Codec[T1], t2: Codec[T2], t3: Codec[T3], t4: Codec[T4], t5: Codec[T5], t6: Codec[T6], t7: Codec[T7], t8: Codec[T8]): Future[ScalaPreparedStatement8[T1, T2, T3, T4, T5, T6, T7, T8, Row]] =
             session.prepareAsync(query).asScala
                 .map(pstmt => new ScalaPreparedStatement8[T1, T2, T3, T4, T5, T6, T7, T8, Row](pstmt, RowMapper.identity, StatementOptions.default, t1, t2, t3, t4, t5, t6, t7, t8))
 
@@ -403,7 +403,7 @@ object ScalaPreparedStatement:
           *
           * @return BoundStatement that can be called like a function
           */
-        def prepareAsync[T1, T2, T3, T4, T5, T6, T7, T8, T9](implicit ec: ExecutionContext, t1: TypeCodec[T1], t2: TypeCodec[T2], t3: TypeCodec[T3], t4: TypeCodec[T4], t5: TypeCodec[T5], t6: TypeCodec[T6], t7: TypeCodec[T7], t8: TypeCodec[T8], t9: TypeCodec[T9]): Future[ScalaPreparedStatement9[T1, T2, T3, T4, T5, T6, T7, T8, T9, Row]] =
+        def prepareAsync[T1, T2, T3, T4, T5, T6, T7, T8, T9](implicit ec: ExecutionContext, t1: Codec[T1], t2: Codec[T2], t3: Codec[T3], t4: Codec[T4], t5: Codec[T5], t6: Codec[T6], t7: Codec[T7], t8: Codec[T8], t9: Codec[T9]): Future[ScalaPreparedStatement9[T1, T2, T3, T4, T5, T6, T7, T8, T9, Row]] =
             session.prepareAsync(query).asScala
                 .map(pstmt => new ScalaPreparedStatement9[T1, T2, T3, T4, T5, T6, T7, T8, T9, Row](pstmt, RowMapper.identity, StatementOptions.default, t1, t2, t3, t4, t5, t6, t7, t8, t9))
 
@@ -411,7 +411,7 @@ object ScalaPreparedStatement:
           *
           * @return BoundStatement that can be called like a function
           */
-        def prepareAsync[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10](implicit ec: ExecutionContext, t1: TypeCodec[T1], t2: TypeCodec[T2], t3: TypeCodec[T3], t4: TypeCodec[T4], t5: TypeCodec[T5], t6: TypeCodec[T6], t7: TypeCodec[T7], t8: TypeCodec[T8], t9: TypeCodec[T9], t10: TypeCodec[T10]): Future[ScalaPreparedStatement10[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, Row]] =
+        def prepareAsync[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10](implicit ec: ExecutionContext, t1: Codec[T1], t2: Codec[T2], t3: Codec[T3], t4: Codec[T4], t5: Codec[T5], t6: Codec[T6], t7: Codec[T7], t8: Codec[T8], t9: Codec[T9], t10: Codec[T10]): Future[ScalaPreparedStatement10[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, Row]] =
             session.prepareAsync(query).asScala
                 .map(pstmt => new ScalaPreparedStatement10[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, Row](pstmt, RowMapper.identity, StatementOptions.default, t1, t2, t3, t4, t5, t6, t7, t8, t9, t10))
 
@@ -419,7 +419,7 @@ object ScalaPreparedStatement:
           *
           * @return BoundStatement that can be called like a function
           */
-        def prepareAsync[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11](implicit ec: ExecutionContext, t1: TypeCodec[T1], t2: TypeCodec[T2], t3: TypeCodec[T3], t4: TypeCodec[T4], t5: TypeCodec[T5], t6: TypeCodec[T6], t7: TypeCodec[T7], t8: TypeCodec[T8], t9: TypeCodec[T9], t10: TypeCodec[T10], t11: TypeCodec[T11]): Future[ScalaPreparedStatement11[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, Row]] =
+        def prepareAsync[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11](implicit ec: ExecutionContext, t1: Codec[T1], t2: Codec[T2], t3: Codec[T3], t4: Codec[T4], t5: Codec[T5], t6: Codec[T6], t7: Codec[T7], t8: Codec[T8], t9: Codec[T9], t10: Codec[T10], t11: Codec[T11]): Future[ScalaPreparedStatement11[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, Row]] =
             session.prepareAsync(query).asScala
                 .map(pstmt => new ScalaPreparedStatement11[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, Row](pstmt, RowMapper.identity, StatementOptions.default, t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11))
 
@@ -427,7 +427,7 @@ object ScalaPreparedStatement:
           *
           * @return BoundStatement that can be called like a function
           */
-        def prepareAsync[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12](implicit ec: ExecutionContext, t1: TypeCodec[T1], t2: TypeCodec[T2], t3: TypeCodec[T3], t4: TypeCodec[T4], t5: TypeCodec[T5], t6: TypeCodec[T6], t7: TypeCodec[T7], t8: TypeCodec[T8], t9: TypeCodec[T9], t10: TypeCodec[T10], t11: TypeCodec[T11], t12: TypeCodec[T12]): Future[ScalaPreparedStatement12[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, Row]] =
+        def prepareAsync[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12](implicit ec: ExecutionContext, t1: Codec[T1], t2: Codec[T2], t3: Codec[T3], t4: Codec[T4], t5: Codec[T5], t6: Codec[T6], t7: Codec[T7], t8: Codec[T8], t9: Codec[T9], t10: Codec[T10], t11: Codec[T11], t12: Codec[T12]): Future[ScalaPreparedStatement12[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, Row]] =
             session.prepareAsync(query).asScala
                 .map(pstmt => new ScalaPreparedStatement12[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, Row](pstmt, RowMapper.identity, StatementOptions.default, t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11, t12))
 
@@ -435,7 +435,7 @@ object ScalaPreparedStatement:
           *
           * @return BoundStatement that can be called like a function
           */
-        def prepareAsync[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13](implicit ec: ExecutionContext, t1: TypeCodec[T1], t2: TypeCodec[T2], t3: TypeCodec[T3], t4: TypeCodec[T4], t5: TypeCodec[T5], t6: TypeCodec[T6], t7: TypeCodec[T7], t8: TypeCodec[T8], t9: TypeCodec[T9], t10: TypeCodec[T10], t11: TypeCodec[T11], t12: TypeCodec[T12], t13: TypeCodec[T13]): Future[ScalaPreparedStatement13[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, Row]] =
+        def prepareAsync[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13](implicit ec: ExecutionContext, t1: Codec[T1], t2: Codec[T2], t3: Codec[T3], t4: Codec[T4], t5: Codec[T5], t6: Codec[T6], t7: Codec[T7], t8: Codec[T8], t9: Codec[T9], t10: Codec[T10], t11: Codec[T11], t12: Codec[T12], t13: Codec[T13]): Future[ScalaPreparedStatement13[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, Row]] =
             session.prepareAsync(query).asScala
                 .map(pstmt => new ScalaPreparedStatement13[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, Row](pstmt, RowMapper.identity, StatementOptions.default, t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11, t12, t13))
 
@@ -443,7 +443,7 @@ object ScalaPreparedStatement:
           *
           * @return BoundStatement that can be called like a function
           */
-        def prepareAsync[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14](implicit ec: ExecutionContext, t1: TypeCodec[T1], t2: TypeCodec[T2], t3: TypeCodec[T3], t4: TypeCodec[T4], t5: TypeCodec[T5], t6: TypeCodec[T6], t7: TypeCodec[T7], t8: TypeCodec[T8], t9: TypeCodec[T9], t10: TypeCodec[T10], t11: TypeCodec[T11], t12: TypeCodec[T12], t13: TypeCodec[T13], t14: TypeCodec[T14]): Future[ScalaPreparedStatement14[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, Row]] =
+        def prepareAsync[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14](implicit ec: ExecutionContext, t1: Codec[T1], t2: Codec[T2], t3: Codec[T3], t4: Codec[T4], t5: Codec[T5], t6: Codec[T6], t7: Codec[T7], t8: Codec[T8], t9: Codec[T9], t10: Codec[T10], t11: Codec[T11], t12: Codec[T12], t13: Codec[T13], t14: Codec[T14]): Future[ScalaPreparedStatement14[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, Row]] =
             session.prepareAsync(query).asScala
                 .map(pstmt => new ScalaPreparedStatement14[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, Row](pstmt, RowMapper.identity, StatementOptions.default, t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11, t12, t13, t14))
 
@@ -451,7 +451,7 @@ object ScalaPreparedStatement:
           *
           * @return BoundStatement that can be called like a function
           */
-        def prepareAsync[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15](implicit ec: ExecutionContext, t1: TypeCodec[T1], t2: TypeCodec[T2], t3: TypeCodec[T3], t4: TypeCodec[T4], t5: TypeCodec[T5], t6: TypeCodec[T6], t7: TypeCodec[T7], t8: TypeCodec[T8], t9: TypeCodec[T9], t10: TypeCodec[T10], t11: TypeCodec[T11], t12: TypeCodec[T12], t13: TypeCodec[T13], t14: TypeCodec[T14], t15: TypeCodec[T15]): Future[ScalaPreparedStatement15[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, Row]] =
+        def prepareAsync[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15](implicit ec: ExecutionContext, t1: Codec[T1], t2: Codec[T2], t3: Codec[T3], t4: Codec[T4], t5: Codec[T5], t6: Codec[T6], t7: Codec[T7], t8: Codec[T8], t9: Codec[T9], t10: Codec[T10], t11: Codec[T11], t12: Codec[T12], t13: Codec[T13], t14: Codec[T14], t15: Codec[T15]): Future[ScalaPreparedStatement15[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, Row]] =
             session.prepareAsync(query).asScala
                 .map(pstmt => new ScalaPreparedStatement15[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, Row](pstmt, RowMapper.identity, StatementOptions.default, t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11, t12, t13, t14, t15))
 
@@ -459,7 +459,7 @@ object ScalaPreparedStatement:
           *
           * @return BoundStatement that can be called like a function
           */
-        def prepareAsync[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16](implicit ec: ExecutionContext, t1: TypeCodec[T1], t2: TypeCodec[T2], t3: TypeCodec[T3], t4: TypeCodec[T4], t5: TypeCodec[T5], t6: TypeCodec[T6], t7: TypeCodec[T7], t8: TypeCodec[T8], t9: TypeCodec[T9], t10: TypeCodec[T10], t11: TypeCodec[T11], t12: TypeCodec[T12], t13: TypeCodec[T13], t14: TypeCodec[T14], t15: TypeCodec[T15], t16: TypeCodec[T16]): Future[ScalaPreparedStatement16[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, Row]] =
+        def prepareAsync[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16](implicit ec: ExecutionContext, t1: Codec[T1], t2: Codec[T2], t3: Codec[T3], t4: Codec[T4], t5: Codec[T5], t6: Codec[T6], t7: Codec[T7], t8: Codec[T8], t9: Codec[T9], t10: Codec[T10], t11: Codec[T11], t12: Codec[T12], t13: Codec[T13], t14: Codec[T14], t15: Codec[T15], t16: Codec[T16]): Future[ScalaPreparedStatement16[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, Row]] =
             session.prepareAsync(query).asScala
                 .map(pstmt => new ScalaPreparedStatement16[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, Row](pstmt, RowMapper.identity, StatementOptions.default, t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11, t12, t13, t14, t15, t16))
 
@@ -467,7 +467,7 @@ object ScalaPreparedStatement:
           *
           * @return BoundStatement that can be called like a function
           */
-        def prepareAsync[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17](implicit ec: ExecutionContext, t1: TypeCodec[T1], t2: TypeCodec[T2], t3: TypeCodec[T3], t4: TypeCodec[T4], t5: TypeCodec[T5], t6: TypeCodec[T6], t7: TypeCodec[T7], t8: TypeCodec[T8], t9: TypeCodec[T9], t10: TypeCodec[T10], t11: TypeCodec[T11], t12: TypeCodec[T12], t13: TypeCodec[T13], t14: TypeCodec[T14], t15: TypeCodec[T15], t16: TypeCodec[T16], t17: TypeCodec[T17]): Future[ScalaPreparedStatement17[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, Row]] =
+        def prepareAsync[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17](implicit ec: ExecutionContext, t1: Codec[T1], t2: Codec[T2], t3: Codec[T3], t4: Codec[T4], t5: Codec[T5], t6: Codec[T6], t7: Codec[T7], t8: Codec[T8], t9: Codec[T9], t10: Codec[T10], t11: Codec[T11], t12: Codec[T12], t13: Codec[T13], t14: Codec[T14], t15: Codec[T15], t16: Codec[T16], t17: Codec[T17]): Future[ScalaPreparedStatement17[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, Row]] =
             session.prepareAsync(query).asScala
                 .map(pstmt => new ScalaPreparedStatement17[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, Row](pstmt, RowMapper.identity, StatementOptions.default, t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11, t12, t13, t14, t15, t16, t17))
 
@@ -475,7 +475,7 @@ object ScalaPreparedStatement:
           *
           * @return BoundStatement that can be called like a function
           */
-        def prepareAsync[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18](implicit ec: ExecutionContext, t1: TypeCodec[T1], t2: TypeCodec[T2], t3: TypeCodec[T3], t4: TypeCodec[T4], t5: TypeCodec[T5], t6: TypeCodec[T6], t7: TypeCodec[T7], t8: TypeCodec[T8], t9: TypeCodec[T9], t10: TypeCodec[T10], t11: TypeCodec[T11], t12: TypeCodec[T12], t13: TypeCodec[T13], t14: TypeCodec[T14], t15: TypeCodec[T15], t16: TypeCodec[T16], t17: TypeCodec[T17], t18: TypeCodec[T18]): Future[ScalaPreparedStatement18[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, Row]] =
+        def prepareAsync[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18](implicit ec: ExecutionContext, t1: Codec[T1], t2: Codec[T2], t3: Codec[T3], t4: Codec[T4], t5: Codec[T5], t6: Codec[T6], t7: Codec[T7], t8: Codec[T8], t9: Codec[T9], t10: Codec[T10], t11: Codec[T11], t12: Codec[T12], t13: Codec[T13], t14: Codec[T14], t15: Codec[T15], t16: Codec[T16], t17: Codec[T17], t18: Codec[T18]): Future[ScalaPreparedStatement18[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, Row]] =
             session.prepareAsync(query).asScala
                 .map(pstmt => new ScalaPreparedStatement18[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, Row](pstmt, RowMapper.identity, StatementOptions.default, t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11, t12, t13, t14, t15, t16, t17, t18))
 
@@ -483,7 +483,7 @@ object ScalaPreparedStatement:
           *
           * @return BoundStatement that can be called like a function
           */
-        def prepareAsync[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19](implicit ec: ExecutionContext, t1: TypeCodec[T1], t2: TypeCodec[T2], t3: TypeCodec[T3], t4: TypeCodec[T4], t5: TypeCodec[T5], t6: TypeCodec[T6], t7: TypeCodec[T7], t8: TypeCodec[T8], t9: TypeCodec[T9], t10: TypeCodec[T10], t11: TypeCodec[T11], t12: TypeCodec[T12], t13: TypeCodec[T13], t14: TypeCodec[T14], t15: TypeCodec[T15], t16: TypeCodec[T16], t17: TypeCodec[T17], t18: TypeCodec[T18], t19: TypeCodec[T19]): Future[ScalaPreparedStatement19[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, Row]] =
+        def prepareAsync[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19](implicit ec: ExecutionContext, t1: Codec[T1], t2: Codec[T2], t3: Codec[T3], t4: Codec[T4], t5: Codec[T5], t6: Codec[T6], t7: Codec[T7], t8: Codec[T8], t9: Codec[T9], t10: Codec[T10], t11: Codec[T11], t12: Codec[T12], t13: Codec[T13], t14: Codec[T14], t15: Codec[T15], t16: Codec[T16], t17: Codec[T17], t18: Codec[T18], t19: Codec[T19]): Future[ScalaPreparedStatement19[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, Row]] =
             session.prepareAsync(query).asScala
                 .map(pstmt => new ScalaPreparedStatement19[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, Row](pstmt, RowMapper.identity, StatementOptions.default, t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11, t12, t13, t14, t15, t16, t17, t18, t19))
 
@@ -491,7 +491,7 @@ object ScalaPreparedStatement:
           *
           * @return BoundStatement that can be called like a function
           */
-        def prepareAsync[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20](implicit ec: ExecutionContext, t1: TypeCodec[T1], t2: TypeCodec[T2], t3: TypeCodec[T3], t4: TypeCodec[T4], t5: TypeCodec[T5], t6: TypeCodec[T6], t7: TypeCodec[T7], t8: TypeCodec[T8], t9: TypeCodec[T9], t10: TypeCodec[T10], t11: TypeCodec[T11], t12: TypeCodec[T12], t13: TypeCodec[T13], t14: TypeCodec[T14], t15: TypeCodec[T15], t16: TypeCodec[T16], t17: TypeCodec[T17], t18: TypeCodec[T18], t19: TypeCodec[T19], t20: TypeCodec[T20]): Future[ScalaPreparedStatement20[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, Row]] =
+        def prepareAsync[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20](implicit ec: ExecutionContext, t1: Codec[T1], t2: Codec[T2], t3: Codec[T3], t4: Codec[T4], t5: Codec[T5], t6: Codec[T6], t7: Codec[T7], t8: Codec[T8], t9: Codec[T9], t10: Codec[T10], t11: Codec[T11], t12: Codec[T12], t13: Codec[T13], t14: Codec[T14], t15: Codec[T15], t16: Codec[T16], t17: Codec[T17], t18: Codec[T18], t19: Codec[T19], t20: Codec[T20]): Future[ScalaPreparedStatement20[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, Row]] =
             session.prepareAsync(query).asScala
                 .map(pstmt => new ScalaPreparedStatement20[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, Row](pstmt, RowMapper.identity, StatementOptions.default, t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11, t12, t13, t14, t15, t16, t17, t18, t19, t20))
 
@@ -499,7 +499,7 @@ object ScalaPreparedStatement:
           *
           * @return BoundStatement that can be called like a function
           */
-        def prepareAsync[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21](implicit ec: ExecutionContext, t1: TypeCodec[T1], t2: TypeCodec[T2], t3: TypeCodec[T3], t4: TypeCodec[T4], t5: TypeCodec[T5], t6: TypeCodec[T6], t7: TypeCodec[T7], t8: TypeCodec[T8], t9: TypeCodec[T9], t10: TypeCodec[T10], t11: TypeCodec[T11], t12: TypeCodec[T12], t13: TypeCodec[T13], t14: TypeCodec[T14], t15: TypeCodec[T15], t16: TypeCodec[T16], t17: TypeCodec[T17], t18: TypeCodec[T18], t19: TypeCodec[T19], t20: TypeCodec[T20], t21: TypeCodec[T21]): Future[ScalaPreparedStatement21[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, Row]] =
+        def prepareAsync[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21](implicit ec: ExecutionContext, t1: Codec[T1], t2: Codec[T2], t3: Codec[T3], t4: Codec[T4], t5: Codec[T5], t6: Codec[T6], t7: Codec[T7], t8: Codec[T8], t9: Codec[T9], t10: Codec[T10], t11: Codec[T11], t12: Codec[T12], t13: Codec[T13], t14: Codec[T14], t15: Codec[T15], t16: Codec[T16], t17: Codec[T17], t18: Codec[T18], t19: Codec[T19], t20: Codec[T20], t21: Codec[T21]): Future[ScalaPreparedStatement21[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, Row]] =
             session.prepareAsync(query).asScala
                 .map(pstmt => new ScalaPreparedStatement21[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, Row](pstmt, RowMapper.identity, StatementOptions.default, t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11, t12, t13, t14, t15, t16, t17, t18, t19, t20, t21))
 
@@ -507,7 +507,7 @@ object ScalaPreparedStatement:
           *
           * @return BoundStatement that can be called like a function
           */
-        def prepareAsync[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22](implicit ec: ExecutionContext, t1: TypeCodec[T1], t2: TypeCodec[T2], t3: TypeCodec[T3], t4: TypeCodec[T4], t5: TypeCodec[T5], t6: TypeCodec[T6], t7: TypeCodec[T7], t8: TypeCodec[T8], t9: TypeCodec[T9], t10: TypeCodec[T10], t11: TypeCodec[T11], t12: TypeCodec[T12], t13: TypeCodec[T13], t14: TypeCodec[T14], t15: TypeCodec[T15], t16: TypeCodec[T16], t17: TypeCodec[T17], t18: TypeCodec[T18], t19: TypeCodec[T19], t20: TypeCodec[T20], t21: TypeCodec[T21], t22: TypeCodec[T22]): Future[ScalaPreparedStatement22[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22, Row]] =
+        def prepareAsync[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22](implicit ec: ExecutionContext, t1: Codec[T1], t2: Codec[T2], t3: Codec[T3], t4: Codec[T4], t5: Codec[T5], t6: Codec[T6], t7: Codec[T7], t8: Codec[T8], t9: Codec[T9], t10: Codec[T10], t11: Codec[T11], t12: Codec[T12], t13: Codec[T13], t14: Codec[T14], t15: Codec[T15], t16: Codec[T16], t17: Codec[T17], t18: Codec[T18], t19: Codec[T19], t20: Codec[T20], t21: Codec[T21], t22: Codec[T22]): Future[ScalaPreparedStatement22[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22, Row]] =
             session.prepareAsync(query).asScala
                 .map(pstmt => new ScalaPreparedStatement22[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22, Row](pstmt, RowMapper.identity, StatementOptions.default, t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11, t12, t13, t14, t15, t16, t17, t18, t19, t20, t21, t22))
 
