@@ -8,7 +8,7 @@ object Dependencies {
     // 'core' dependencies
     val cassandraUnit = "4.3.1.0"
     val ossJavaDriver = "4.18.1"
-    val slf4j         = "2.0.13"
+    val slf4j         = "2.0.16"
 
     // Test Dependencies
     val mockito       = "5.12.0"
