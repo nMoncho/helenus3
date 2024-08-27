@@ -83,6 +83,6 @@ object RowMapperDerivationSpec:
 
     object RenamedIceCream:
         given RowMapper[RenamedIceCream] =
-            RowMapper.derivedRenamed[RenamedIceCream](_.naam -> "name", _.kers -> "numCherries", _.hoorn -> "cone")
+            RowMapper.deriveRenamed[RenamedIceCream](_.naam -> "name", _.kers -> "numCherries", _.hoorn -> "cone")
 
 end RowMapperDerivationSpec

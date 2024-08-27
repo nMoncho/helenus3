@@ -46,7 +46,13 @@ object RowMapper extends DerivedCaseClassRowMapper:
 
     def apply[T](using mapper: DerivedRowMapper[T]): RowMapper[T] = mapper
 
-    inline def derivedRenamed[A <: Product](
+    /** Derives a [[RowMapper]] considering the specified name mapping.
+      *
+      * @param first first mapping from field to column
+      * @param rest  rest mapping from field to column
+      * @tparam T target type
+      */
+    inline def deriveRenamed[A <: Product](
         inline first: A => (Any, String),
         inline rest: A => (Any, String)*
     ): RowMapper[A] =
