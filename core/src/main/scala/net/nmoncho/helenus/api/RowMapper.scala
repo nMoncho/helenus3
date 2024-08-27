@@ -78,8 +78,8 @@ object RowMapper extends DerivedCaseClassRowMapper:
           * @return [[ColumnMapper]] for an [[Either]]
           */
         def either[A, B](leftColumnName: String, rightColumnName: String)(
-            using leftCodec: TypeCodec[A],
-            rightCodec: TypeCodec[B]
+            using leftCodec: Codec[A],
+            rightCodec: Codec[B]
         ): ColumnMapper[Either[A, B]] = new ColumnMapper[Either[A, B]]:
             def apply(ignored: ColumnName, row: Row): Either[A, B] =
                 if row.isNull(leftColumnName) && !row.isNull(rightColumnName) then
