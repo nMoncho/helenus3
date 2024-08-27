@@ -36,15 +36,15 @@ class EnumOrdinalCodecSpec extends AnyWordSpec with Matchers with CodecSpecBase[
 
     "EnumOrdinalCodecSpec" should {
         "encode" in {
-            encode(Fingers.Ring) shouldBe Some("0x52696e67")
-            encode(Fingers.Index) shouldBe Some("0x496e646578")
-            encode(Fingers.Little) shouldBe Some("0x4c6974746c65")
+            encode(Fingers.Ring) shouldBe Some("0x00000003")
+            encode(Fingers.Index) shouldBe Some("0x00000001")
+            encode(Fingers.Little) shouldBe Some("0x00000004")
         }
 
         "decode" in {
-            decode("0x52696e67") shouldBe Some(Fingers.Ring)
-            decode("0x496e646578") shouldBe Some(Fingers.Index)
-            decode("0x4c6974746c65") shouldBe Some(Fingers.Little)
+            decode("0x00000003") shouldBe Some(Fingers.Ring)
+            decode("0x00000001") shouldBe Some(Fingers.Index)
+            decode("0x00000004") shouldBe Some(Fingers.Little)
         }
 
         "fail to decode wrong value" in {
@@ -54,14 +54,14 @@ class EnumOrdinalCodecSpec extends AnyWordSpec with Matchers with CodecSpecBase[
         }
 
         "format" in {
-            format(Fingers.Ring) shouldBe quote("Ring")
-            format(Fingers.Index) shouldBe quote("Index")
+            format(Fingers.Ring) shouldBe "3"
+            format(Fingers.Index) shouldBe "1"
             format(null) shouldBe "NULL"
         }
 
         "parse" in {
-            parse(quote("Ring")) shouldBe Fingers.Ring
-            parse(quote("Index")) shouldBe Fingers.Index
+            parse("3") shouldBe Fingers.Ring
+            parse("1") shouldBe Fingers.Index
             parse("null") shouldBe null
             parse("") shouldBe null
             parse(null) shouldBe null
@@ -92,7 +92,7 @@ end EnumOrdinalCodecSpec
 
 object EnumOrdinalCodecSpec:
 
-    enum Fingers derives NominalEnumCodec:
+    enum Fingers derives OrdinalEnumCodec:
         case Thumb, Index, Middle, Ring, Little
 
 end EnumOrdinalCodecSpec
