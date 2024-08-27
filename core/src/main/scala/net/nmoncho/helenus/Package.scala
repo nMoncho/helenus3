@@ -76,9 +76,42 @@ extension (query: String)
         session.map(CQLQuery(query, _))
 end extension
 
-extension (sc: StringContext)
+extension (inline sc: StringContext)
+
+    /** Creates a [[BoundStatement]] using String Interpolation.
+      * There is also an asynchronous alternative, which is `cqlAsync` instead of `cql`.
+      *
+      * This won't execute the bound statement yet, just set its arguments.
+      *
+      * {{{
+      * import net.nmoncho.helenus._
+      *
+      * val id = UUID.fromString("...")
+      * val bstmt = cql"SELECT * FROM some_table WHERE id = $id"
+      * }}}
+      */
     inline def cql(inline args: Any*)(using inline session: CqlSession): WrappedBoundStatement[Row] =
-        ${ CqlQueryInterpolation.cqlImpl('{ sc.parts }, 'args, 'session) }
+        ${ CqlQueryInterpolation.cqlImpl('sc, 'args, 'session) }
+
+    /** Creates a [[BoundStatement]] asynchronous using String Interpolation.
+      * There is also a synchronous alternative, which is `cql` instead of `cqlAsync`.
+      *
+      * This won't execute the bound statement yet, just set its arguments.
+      *
+      * {{{
+      * import net.nmoncho.helenus._
+      *
+      * val id = UUID.fromString("...")
+      * val bstmt = cqlAsync"SELECT * FROM some_table WHERE id = $id"
+      * }}}
+      */
+    inline def cqlAsync(inline args: Any*)(
+        using inline session: CqlSession,
+        inline ec: ExecutionContext
+    ): Future[WrappedBoundStatement[Row]] =
+        ${ CqlQueryInterpolation.cqlAsyncImpl('sc, 'args, 'session, 'ec) }
+
+end extension
 
 extension (bs: BoundStatement)
     /** Sets or binds the specified value only if it's not NULL, avoiding a tombstone insert.
@@ -234,6 +267,16 @@ extension [Out](future: Future[WrappedBoundStatement[Out]])
         using ev: Out =:= Row,
         ec: ExecutionContext
     ): Future[WrappedBoundStatement[Out2]] = future.map(_.as[Out2])
+
+    /** Executes this [[BoundStatement]] in a asynchronous fashion
+      *
+      * @return a future of [[MappedAsyncPagingIterable]]
+      */
+    def executeAsync()(
+        implicit session: CqlSession,
+        ec: ExecutionContext
+    ): Future[MappedAsyncPagingIterable[Out]] = future.flatMap(_.executeAsync())
+end extension
 
 extension (row: Row)
     /** Converts a [[Row]] into a [[T]]
