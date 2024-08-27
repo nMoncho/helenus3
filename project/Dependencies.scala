@@ -17,6 +17,12 @@ object Dependencies {
     val scalaTestPlus = "3.2.18.0"
     val logback       = "1.5.6"
 
+    val akka    = "2.6.21" // 2.7 changed to business license
+    val alpakka = "4.0.0" // 5.x changed to business license
+
+    val akkaBusl    = "2.9.4"
+    val alpakkaBusl = "8.0.0"
+
     // Pekko Dependencies
     val pekkoConnector = "1.0.2"
     val pekkoTestKit   = "1.0.2"
@@ -33,6 +39,14 @@ object Dependencies {
   val scalaTest     = "org.scalatest"     %% "scalatest"       % Version.scalaTest
   val scalaTestPlus = "org.scalatestplus" %% "scalacheck-1-17" % Version.scalaTestPlus
   val logback       = "ch.qos.logback"     % "logback-classic" % Version.logback
+
+  // 'akka' dependencies
+  val alpakka     = "com.lightbend.akka" %% "akka-stream-alpakka-cassandra" % Version.alpakka
+  val akkaTestKit = "com.typesafe.akka"  %% "akka-testkit"                  % Version.akka
+
+  // 'akka-busl' dependencies
+  val alpakkaBusl = "com.lightbend.akka" %% "akka-stream-alpakka-cassandra" % Version.alpakkaBusl
+  val akkaTestKitBusl = "com.typesafe.akka" %% "akka-testkit" % Version.akkaBusl
 
   // 'pekko' dependencies
   val pekkoConnector = "org.apache.pekko" %% "pekko-connectors-cassandra" % Version.pekkoConnector
