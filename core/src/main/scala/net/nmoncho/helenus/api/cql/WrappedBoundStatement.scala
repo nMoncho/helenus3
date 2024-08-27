@@ -54,7 +54,7 @@ import org.reactivestreams.Publisher
   * @param mapper output row mapper
   * @tparam Out query output type
   */
-class WrappedBoundStatement[Out: RowMapper](bstmt: BoundStatement) extends BoundStatement:
+class WrappedBoundStatement[Out](bstmt: BoundStatement)(using RowMapper[Out]) extends BoundStatement:
 
     /** Executes this [[BoundStatement]] in synchronous fashion
       *

@@ -54,6 +54,7 @@ lazy val basicSettings = Seq(
       "-release" :+
       "11" :+
       "-Ywarn-unused" :+
+      "-Xcheck-macros" :+
       "-language:higherKinds" :+
       "-Xlog-implicits"),
   (Test / testOptions) += Tests.Argument("-oF"),

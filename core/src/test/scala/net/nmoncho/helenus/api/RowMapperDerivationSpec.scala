@@ -19,7 +19,8 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package net.nmoncho.helenus.api
+package net.nmoncho.helenus
+package api
 
 import com.datastax.oss.driver.api.core.cql.Row
 import net.nmoncho.helenus.api.RowMapper.ColumnMapper
@@ -62,6 +63,7 @@ class RowMapperDerivationSpec extends AnyWordSpec with Matchers:
 end RowMapperDerivationSpec
 
 object RowMapperDerivationSpec:
+
     case class IceCream(name: String, numCherries: Int, cone: Boolean) derives RowMapper
 
     case class SpecialProps(numCherries: Int, cone: Boolean)
