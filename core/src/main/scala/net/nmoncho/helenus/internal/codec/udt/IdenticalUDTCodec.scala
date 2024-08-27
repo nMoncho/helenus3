@@ -315,21 +315,4 @@ object IdenticalUDTCodec:
         end new
     end deriveCodec
 
-    // TODO check why we can overload `derived`!
-    inline def derive[A <: Product](keyspace: String, name: String, frozen: Boolean = true)(
-        using mirror: Mirror.ProductOf[A],
-        labelling: Labelling[A],
-        tag: ClassTag[A],
-        namingScheme: ColumnNamingScheme = DefaultColumnNamingScheme
-    ): Codec[A] & UDTCodec[A] =
-        deriveCodec[A](Some(keyspace), Some(name), frozen = true)
-
-    inline def derived[A <: Product](
-        using mirror: Mirror.ProductOf[A],
-        labelling: Labelling[A],
-        tag: ClassTag[A],
-        namingScheme: ColumnNamingScheme = DefaultColumnNamingScheme
-    ): Codec[A] & UDTCodec[A] =
-        deriveCodec[A](None, None, frozen = true)
-
 end IdenticalUDTCodec

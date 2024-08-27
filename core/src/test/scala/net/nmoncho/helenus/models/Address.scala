@@ -21,9 +21,7 @@
 
 package net.nmoncho.helenus.models
 
-import com.datastax.oss.driver.api.core.`type`.codec.TypeCodec
 import net.nmoncho.helenus.api.`type`.codec.Codec
-import net.nmoncho.helenus.internal.codec.udt.IdenticalUDTCodec
 
 final case class Address(
     street: String,
@@ -31,14 +29,10 @@ final case class Address(
     stateOrProvince: String,
     postalCode: String,
     country: String
-)
+) derives Codec
 
 object Address:
     import net.nmoncho.helenus.*
 
     final val Empty: Address = Address("", "", "", "", "")
-
-    given c: Codec[Address] = IdenticalUDTCodec.derived
-
-    // implicit val typeCodec: TypeCodec[Address] = Codec.udtOf[Address]()
 end Address
