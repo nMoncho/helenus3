@@ -27,7 +27,7 @@ lazy val root = project
       mimaFailOnNoPrevious := false,
       Test / testOptions += Tests.Setup(() => EmbeddedDatabase.start())
     )
-    .aggregate(core)
+    .aggregate(core, pekko)
 
 lazy val basicSettings = Seq(
   organization := "net.nmoncho",
@@ -76,5 +76,19 @@ lazy val core = project
         Dependencies.scalaTestPlus % Test,
         Dependencies.logback       % Test,
         "net.java.dev.jna"         % "jna" % "5.14.0" % Test // Fixes M1 JNA issue
+      )
+    )
+
+lazy val pekko = project
+    .settings(basicSettings)
+    .dependsOn(core % "compile->compile;test->test")
+    .settings(
+      name := "helenus-pekko",
+      Test / testOptions += Tests.Setup(() => EmbeddedDatabase.start()),
+      libraryDependencies ++= Seq(
+        Dependencies.pekkoConnector % "provided,test",
+        Dependencies.pekkoTestKit   % Test,
+        // Adding this until Alpakka aligns version with Pekko TestKit
+        "org.apache.pekko" %% "pekko-stream" % Dependencies.Version.pekkoTestKit
       )
     )
