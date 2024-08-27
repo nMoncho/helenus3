@@ -8,7 +8,6 @@ object Dependencies {
     // 'core' dependencies
     val cassandraUnit = "4.3.1.0"
     val ossJavaDriver = "4.18.1"
-    val shapeless3    = "3.4.1"
     val slf4j         = "2.0.13"
 
     // Test Dependencies
@@ -24,10 +23,9 @@ object Dependencies {
   }
 
   // 'core' dependencies
-  val cassandraUnit = "org.cassandraunit" % "cassandra-unit"      % Version.cassandraUnit
-  val ossJavaDriver = "org.apache.cassandra"  % "java-driver-core"    % Version.ossJavaDriver
-  val shapeless     = "org.typelevel"    %% "shapeless3-deriving" % Version.shapeless3
-  val slf4j         = "org.slf4j"         % "slf4j-api"           % Version.slf4j
+  val cassandraUnit = "org.cassandraunit"    % "cassandra-unit"   % Version.cassandraUnit
+  val ossJavaDriver = "org.apache.cassandra" % "java-driver-core" % Version.ossJavaDriver
+  val slf4j         = "org.slf4j"            % "slf4j-api"        % Version.slf4j
 
   // Test Dependencies
   val mockito       = "org.mockito"        % "mockito-core"    % Version.mockito
