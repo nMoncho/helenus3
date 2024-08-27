@@ -81,6 +81,24 @@ lazy val core = project
       )
     )
 
+lazy val docs = project
+    .in(file("helenus-docs"))
+    .enablePlugins(MdocPlugin)
+    .disablePlugins(ScoverageSbtPlugin)
+    .settings(basicSettings)
+    .settings(
+      publish / skip := true,
+      mdocVariables := Map(
+        "VERSION" -> version.value
+      ),
+      mdocOut := file("."),
+      libraryDependencies ++= Seq(
+        Dependencies.ossJavaDriver,
+        Dependencies.cassandraUnit
+      )
+    )
+    .dependsOn(core)
+
 lazy val akka = project
     .settings(basicSettings)
     .dependsOn(core % "compile->compile;test->test")
