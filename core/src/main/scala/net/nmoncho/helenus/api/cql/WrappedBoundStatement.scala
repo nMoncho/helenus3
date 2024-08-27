@@ -61,7 +61,7 @@ class WrappedBoundStatement[Out: RowMapper](bstmt: BoundStatement) extends Bound
       * @return [[PagingIterable]] of [[Out]] output values
       */
     def execute()(using session: CqlSession): PagingIterable[Out] =
-    session.execute(this).as[Out]
+        session.execute(this).as[Out]
 
     /** Executes this [[BoundStatement]] in a asynchronous fashion
       *
