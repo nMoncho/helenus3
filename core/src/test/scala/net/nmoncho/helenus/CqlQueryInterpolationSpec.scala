@@ -23,6 +23,8 @@ package net.nmoncho.helenus
 
 import java.util.UUID
 
+import scala.concurrent.Future
+
 import com.datastax.oss.driver.api.core.CqlSession
 import net.nmoncho.helenus.utils.CassandraSpec
 import org.scalatest.OptionValues.*
@@ -36,7 +38,8 @@ class CqlQueryInterpolationSpec extends AnyWordSpec with Matchers with Cassandra
 
     import Keyspace.*
 
-    private implicit lazy val cqlSession: CqlSession = session
+    private implicit lazy val cqlSession: CqlSession            = session
+    private implicit lazy val futCqlSession: Future[CqlSession] = Future.successful(cqlSession)
 
     override implicit val patienceConfig: PatienceConfig = PatienceConfig(Span(6, Seconds))
 

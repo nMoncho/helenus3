@@ -572,6 +572,15 @@ extension [Out](pager: Future[Try[Pager[Out]]])
 
 end extension
 
+extension [Out](wbs: Future[WrappedBoundStatement[Out]])
+    /** A [[Source]] reading from Cassandra
+      */
+    @targetName("as_read_source_future_wrapped_statement")
+    def asReadSource()(using CassandraSession, ExecutionContext): Source[Out, NotUsed] =
+        futureSource(wbs.map(_.asReadSource()))
+
+end extension
+
 extension [Out](pstmt: Future[ScalaPreparedStatementUnit[Out]])
     /** A [[Source]] reading from Cassandra
       */

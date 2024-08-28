@@ -225,15 +225,15 @@ class PackageSpec extends AnyWordSpec with Matchers with CassandraSpec with Scal
                 testStream(ijes, query, insert)(identity)
             }
 
-            // withClue("work with interpolated queries") {
-            //     val name = "vanilla"
-            //     val query =
-            //         cqlAsync"SELECT * FROM ice_creams WHERE name = $name".as[IceCream].asReadSource()
+            withClue("work with interpolated queries") {
+                val name        = "vanilla"
+                val query       = cqlAsync"SELECT * FROM ice_creams WHERE name = $name".as[IceCream].asReadSource()
+                val queryStream = query.runWith(Sink.seq[IceCream])
 
-            //     whenReady(query.runWith(Sink.seq[IceCream])) { result =>
-            //         result should not be empty
-            //     }
-            // }
+                whenReady(queryStream) { result =>
+                    result should not be empty
+                }
+            }
         }
 
         "work with Akka Streams and Context (async)" in {
