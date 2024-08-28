@@ -53,7 +53,7 @@ object CqlQueryInterpolation:
     def cqlAsyncImpl(
         sc: Expr[StringContext],
         params: Expr[Seq[Any]],
-        session: Expr[CqlSession],
+        session: Expr[Future[CqlSession]],
         ec: Expr[ExecutionContext]
     )(using qctx: Quotes): Expr[Future[WrappedBoundStatement[Row]]] =
         import qctx.reflect.*
@@ -63,9 +63,11 @@ object CqlQueryInterpolation:
         val encodeStmt     = encodeLambda(terms)
 
         '{
-            scala.jdk.javaapi.FutureConverters.asScala($session.prepareAsync($stmt)).map { pstmt =>
-                new WrappedBoundStatement($encodeStmt(pstmt.bind()))(using RowMapper.identity)
-            }($ec)
+            $session.flatMap(sess =>
+                scala.jdk.javaapi.FutureConverters.asScala(sess.prepareAsync($stmt)).map { pstmt =>
+                    new WrappedBoundStatement($encodeStmt(pstmt.bind()))(using RowMapper.identity)
+                }($ec)
+            )($ec)
         }
     end cqlAsyncImpl
 

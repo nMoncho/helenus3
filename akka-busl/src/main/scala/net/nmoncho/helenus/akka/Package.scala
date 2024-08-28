@@ -404,19 +404,19 @@ extension [Out](pager: Try[Pager[Out]])
 
 end extension
 
-extension [Out](pstmt: ScalaPreparedStatementUnit[Out])
-    /** A [[Source]] reading from Cassandra
-      */
-    def asReadSource()(using CassandraSession): Source[Out, NotUsed] =
-        source(implicit s => pstmt.executeReactive())
-
-end extension
-
 extension [Out](wbs: WrappedBoundStatement[Out])
     /** A [[Source]] reading from Cassandra
       */
     def asReadSource()(using CassandraSession): Source[Out, NotUsed] =
         source(implicit s => wbs.executeReactive())
+
+end extension
+
+extension [Out](pstmt: ScalaPreparedStatementUnit[Out])
+    /** A [[Source]] reading from Cassandra
+      */
+    def asReadSource()(using CassandraSession): Source[Out, NotUsed] =
+        source(implicit s => pstmt.executeReactive())
 
 end extension
 
@@ -569,6 +569,15 @@ extension [Out](pager: Future[Try[Pager[Out]]])
                 pager.map(_.asReadSource(pageSize))
             }
             .mapMaterializedValue(_.flatten)
+
+end extension
+
+extension [Out](wbs: Future[WrappedBoundStatement[Out]])
+    /** A [[Source]] reading from Cassandra
+      */
+    @targetName("as_read_source_future_wrapped_statement")
+    def asReadSource()(using CassandraSession, ExecutionContext): Source[Out, NotUsed] =
+        futureSource(wbs.map(_.asReadSource()))
 
 end extension
 

@@ -104,7 +104,7 @@ extension (inline sc: StringContext)
       * }}}
       */
     inline def cqlAsync(inline args: Any*)(
-        using inline session: CqlSession,
+        using inline session: Future[CqlSession],
         inline ec: ExecutionContext
     ): Future[WrappedBoundStatement[Row]] =
         ${ CqlQueryInterpolation.cqlAsyncImpl('sc, 'args, 'session, 'ec) }
