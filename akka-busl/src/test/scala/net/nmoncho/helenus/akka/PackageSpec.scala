@@ -260,43 +260,43 @@ class PackageSpec extends AnyWordSpec with Matchers with CassandraSpec with Scal
                 result should not be empty
             }
 
-            // withClue("use pager operator") {
-            //     val query = "SELECT * FROM ice_creams".toCQLAsync.prepareUnit.as[IceCream]
+            withClue("use pager operator") {
+                val query = "SELECT * FROM ice_creams".toCQLAsync.prepareUnit.as[IceCream]
 
-            //     val pager0 = query.pager().asReadSource(pageSize)
+                val pager0 = query.pager().asReadSource(pageSize)
 
-            //     val (state0, rows0) = pager0.toMat(Sink.seq[IceCream])(Keep.both).run()
-            //     val (page0State, page0) = whenReady(rows0.flatMap(r => state0.map(r -> _))) {
-            //     case (rows, state) =>
-            //         rows should have size pageSize
+                val (state0, rows0) = pager0.toMat(Sink.seq[IceCream])(Keep.both).run()
+                val (page0State, page0) = whenReady(rows0.flatMap(r => state0.map(r -> _))) {
+                    case (rows, state) =>
+                        rows should have size pageSize
 
-            //         state -> rows
-            //     }
+                        state -> rows
+                }
 
-            //     val pager1 = query.pager(page0State.value).asReadSource(pageSize)
+                val pager1 = query.pager(page0State.value).asReadSource(pageSize)
 
-            //     val (state2, rows2) = pager1.toMat(Sink.seq[IceCream])(Keep.both).run()
-            //     whenReady(rows2.flatMap(r => state2.map(r -> _))) { case (rows, state) =>
-            //     rows should have size 1
-            //     rows.toSet should not equal (page0.toSet)
+                val (state2, rows2) = pager1.toMat(Sink.seq[IceCream])(Keep.both).run()
+                whenReady(rows2.flatMap(r => state2.map(r -> _))) { case (rows, state) =>
+                    rows should have size 1
+                    rows.toSet should not equal (page0.toSet)
 
-            //     state should not be page0State
-            //     }
-            // }
+                    state should not be page0State
+                }
+            }
 
-            // withClue("handle an empty operator") {
-            //     val query = "SELECT * FROM ice_creams WHERE name = 'crema del cielo'".toCQLAsync.prepareUnit
-            //     .as[IceCream]
+            withClue("handle an empty operator") {
+                val query = "SELECT * FROM ice_creams WHERE name = 'crema del cielo'".toCQLAsync.prepareUnit
+                    .as[IceCream]
 
-            //     val pager0          = query.pager().asReadSource(pageSize)
-            //     val (state0, rows0) = pager0.toMat(Sink.seq[IceCream])(Keep.both).run()
+                val pager0          = query.pager().asReadSource(pageSize)
+                val (state0, rows0) = pager0.toMat(Sink.seq[IceCream])(Keep.both).run()
 
-            //     whenReady(rows0.flatMap(r => state0.map(r -> _))) { case (rows, state) =>
-            //     rows shouldBe empty
+                whenReady(rows0.flatMap(r => state0.map(r -> _))) { case (rows, state) =>
+                    rows shouldBe empty
 
-            //     state should not be defined
-            //     }
-            // }
+                    state should not be defined
+                }
+            }
         }
 
         "perform batched writes with Akka Stream (async)" in {
