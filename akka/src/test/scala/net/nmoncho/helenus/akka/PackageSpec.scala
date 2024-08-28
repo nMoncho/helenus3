@@ -33,13 +33,17 @@ import _root_.akka.stream.alpakka.cassandra.scaladsl.*
 import _root_.akka.stream.scaladsl.FlowWithContext
 import _root_.akka.stream.scaladsl.Sink
 import _root_.akka.stream.scaladsl.Source
+import akka.stream.scaladsl.Keep
 import com.datastax.oss.driver.api.core.CqlSession
 import com.datastax.oss.driver.api.core.cql.Row
 import com.typesafe.config.Config
 import com.typesafe.config.ConfigFactory
 import net.nmoncho.helenus.api.RowMapper
 import net.nmoncho.helenus.api.cql.Adapter
+import net.nmoncho.helenus.api.cql.Pager
+import net.nmoncho.helenus.api.cql.PagerSerializer
 import net.nmoncho.helenus.utils.CassandraSpec
+import org.scalatest.OptionValues.*
 import org.scalatest.concurrent.ScalaFutures
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.time.Seconds
@@ -60,6 +64,8 @@ class PackageSpec extends AnyWordSpec with Matchers with CassandraSpec with Scal
 
     private implicit lazy val as: CassandraSession = CassandraSessionRegistry(system)
         .sessionFor(CassandraSessionSettings())
+
+    given PagerSerializer[String] = PagerSerializer.DefaultPagingStateSerializer
 
     "Helenus" should {
         import system.dispatcher
@@ -110,57 +116,58 @@ class PackageSpec extends AnyWordSpec with Matchers with CassandraSpec with Scal
                 }
             }
 
-            // withClue("use reactive pagination") {
-            //     val rows = Source.fromPublisher(
-            //       "SELECT * FROM ice_creams".toCQL.prepareUnit
-            //           .as[IceCream]
-            //           .pager()
-            //           .executeReactive(pageSize)
-            //     )
+            withClue("use reactive pagination") {
+                val rows = Source.fromPublisher(
+                  "SELECT * FROM ice_creams".toCQL.prepareUnit
+                      .as[IceCream]
+                      .pager()
+                      .executeReactive(pageSize)
+                )
 
-            //     val page0Stream = rows.runWith(Sink.seq[(Pager[IceCream], IceCream)])
-            //     val pager0 = whenReady(page0Stream) { result =>
-            //         result should have size pageSize
-            //         result.last._1
-            //     }
+                val page0Stream = rows.runWith(Sink.seq[(Pager[IceCream], IceCream)])
+                val pager0 = whenReady(page0Stream) { result =>
+                    result should have size pageSize
+                    result.last._1
+                }
 
-            //     val rows2 = Source.fromPublisher(
-            //       "SELECT * FROM ice_creams".toCQL.prepareUnit
-            //           .as[IceCream]
-            //           .pager(pager0.encodePagingState.get)
-            //           .get
-            //           .executeReactive(pageSize)
-            //     )
+                val rows2 = Source.fromPublisher(
+                  "SELECT * FROM ice_creams".toCQL.prepareUnit
+                      .as[IceCream]
+                      .pager(pager0.encodePagingState.get)
+                      .get
+                      .executeReactive(pageSize)
+                )
 
-            //     whenReady(rows2.runWith(Sink.seq[(Pager[IceCream], IceCream)])) { result =>
-            //         result should have size 1
-            //     }
-            // }
+                val page1Stream = rows2.runWith(Sink.seq[(Pager[IceCream], IceCream)])
+                whenReady(page1Stream) { result =>
+                    result should have size 1
+                }
+            }
 
-            // withClue("use pager operator") {
-            //     val query = "SELECT * FROM ice_creams".toCQL.prepareUnit.as[IceCream]
+            withClue("use pager operator") {
+                val query = "SELECT * FROM ice_creams".toCQL.prepareUnit.as[IceCream]
 
-            //     val pager0 = query.pager().asReadSource(pageSize)
+                val pager0 = query.pager().asReadSource(pageSize)
 
-            //     val (state0, rows0) = pager0.toMat(Sink.seq[IceCream])(Keep.both).run()
-            //     val (page0State, page0) = whenReady(rows0.flatMap(r => state0.map(r -> _))) {
-            //         case (rows, state) =>
-            //             rows should have size pageSize
+                val (state0, rows0) = pager0.toMat(Sink.seq[IceCream])(Keep.both).run()
+                val (page0State, page0) = whenReady(rows0.flatMap(r => state0.map(r -> _))) {
+                    case (rows, state) =>
+                        rows should have size pageSize
 
-            //             state -> rows
-            //     }
+                        state -> rows
+                }
 
-            //     val pager1 = query.pager(page0State.value).asReadSource(pageSize)
+                val pager1 = query.pager(page0State.value).asReadSource(pageSize)
 
-            //     val (state2, rows2) = pager1.toMat(Sink.seq[IceCream])(Keep.both).run()
-            //     whenReady(rows2.flatMap(r => state2.map(r -> _))) { case (rows, state) =>
-            //         rows should have size 1
-            //         rows.toSet should not equal (page0.toSet)
+                val (state2, rows2) = pager1.toMat(Sink.seq[IceCream])(Keep.both).run()
+                whenReady(rows2.flatMap(r => state2.map(r -> _))) { case (rows, state) =>
+                    rows should have size 1
+                    rows.toSet should not equal (page0.toSet)
 
-            //         state should not be page0State
-            //         state should not be defined
-            //     }
-            // }
+                    state should not be page0State
+                    state should not be defined
+                }
+            }
         }
 
         "work with Akka Streams and Context (sync)" in withSession { implicit session =>
