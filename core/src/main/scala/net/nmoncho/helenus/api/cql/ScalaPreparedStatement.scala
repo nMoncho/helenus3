@@ -176,6 +176,19 @@ object ScalaPreparedStatement:
           */
         def prepareUnit: ScalaPreparedStatementUnit[Row] =
             new ScalaPreparedStatementUnit[Row](session.prepare(query), RowMapper.identity, StatementOptions.default)
+        
+        /** Prepares a query that can be mapped with a Scala Case Class
+         * {{{
+         *   import net.nmoncho.helenus._
+         *
+         *   val pstmt = "INSERT INTO users(id, name, address) VALUES (?, ?, ?)".toCQL.prepareFrom[User]
+         *   val bstmt = pstmt(User(1, "bob", Address("742 Evergreen Terrace", "Springfield")))
+         * }}}
+         *
+         * @return BoundStatement that can be called like a function
+         */
+        def prepareFrom[T1](using mapping: Mapping[T1]): ScalaPreparedStatementMapped[T1, Row] =
+            new ScalaPreparedStatementMapped[T1, Row](session.prepare(query), RowMapper.identity, StatementOptions.default, mapping)
 
         /** Prepares a query that will take 1 query parameter, which can be invoked like:
           * {{{

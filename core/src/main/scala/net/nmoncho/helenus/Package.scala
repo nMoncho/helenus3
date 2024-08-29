@@ -572,6 +572,8 @@ end FutureCQLQueryOps
 extension (cql: Future[CQLQuery])
     def prepareUnit(using ExecutionContext): Future[ScalaPreparedStatementUnit[Row]] = cql.map(_.prepareUnit)
 
+    def prepareFrom[T1: Mapping](using ExecutionContext): Future[ScalaPreparedStatementMapped[T1, Row]] = cql.map(_.prepareFrom[T1])
+
     // The `prepare` methods had to be moved to the value class `FutureCQLQueryOps`
     // Originally these methods were in the extension methods, but Scala 3 doesn't resolve the overload properly
     inline def prepare: FutureCQLQueryOps = new FutureCQLQueryOps(cql)
@@ -642,6 +644,26 @@ extension [Out](fut: Future[ScalaPreparedStatementUnit[Out]])
     def pager[A: PagerSerializer](pagingState: A)(using ec: ExecutionContext): Future[ApiPager[Out]] = fut.map(_.pager(pagingState).get)
 end extension
 
+extension [T1, Out](fut: Future[ScalaPreparedStatementMapped[T1, Out]])
+    @targetName("future_scala_pstmt_mapped_as_out2")
+    def as[Out2](using ec: ExecutionContext, mapper: RowMapper[Out2], ev: Out =:= Row): Future[ScalaPreparedStatementMapped[T1, Out2]] = fut.map(_.as[Out2])
+
+    @targetName("future_scala_pstmt_mapped_as_out2_explicit_mapper")
+    def as[Out2](mapper: RowMapper[Out2])(using ec: ExecutionContext, ev: Out =:= Row): Future[ScalaPreparedStatementMapped[T1, Out2]] = fut.map(_.as[Out2](ev, mapper))
+
+    @targetName("future_scala_pstmt_mapped_execute_async")
+    def executeAsync(t1: T1)(using cqlSession: Future[CqlSession], ec: ExecutionContext): Future[MappedAsyncPagingIterable[Out]] = cqlSession.flatMap {s => fut.flatMap(_.executeAsync(t1)(using s))}
+
+    @targetName("future_scala_pstmt_mapped_execute_pager_from_input")
+    def pager(t1: T1)(using ec: ExecutionContext): Future[ApiPager[Out]] = fut.map(_.pager(t1))
+
+    @targetName("future_scala_pstmt_mapped_execute_pager_from_paging_state")
+    def pager(pagingState: PagingState, t1: T1)(using ec: ExecutionContext): Future[ApiPager[Out]] = fut.map(_.pager(pagingState, t1).get)
+
+    @targetName("future_scala_pstmt_mapped_execute_pager_from_paging_state_with_serializer")
+    def pager[A: PagerSerializer](pagingState: A, t1: T1)(using ec: ExecutionContext): Future[ApiPager[Out]] = fut.map(_.pager(pagingState, t1).get)
+end extension
+
 extension [T1, Out](fut: Future[ScalaPreparedStatement1[T1, Out]])
     @targetName("future_scala_pstmt_1_as_out2")
     def as[Out2](using ec: ExecutionContext, mapper: RowMapper[Out2], ev: Out =:= Row): Future[ScalaPreparedStatement1[T1, Out2]] = fut.map(_.as[Out2])
@@ -657,20 +679,6 @@ extension [T1, Out](fut: Future[ScalaPreparedStatement1[T1, Out]])
 
     def pager[A: PagerSerializer](pagingState: A, t1: T1)(using ec: ExecutionContext): Future[ApiPager[Out]] = fut.map(_.pager(pagingState, t1).get)
 end extension
-
-// extension [T1, Out](fut: Future[ScalaPreparedStatementMapped[T1, Out]])
-//     def as[Out2](using ec: ExecutionContext, mapper: RowMapper[Out2], ev: Out =:= Row): Future[ScalaPreparedStatementMapped[T1, Out2]] = fut.map(_.as[Out2])
-
-//     def as[Out2](mapper: RowMapper[Out2])(using ec: ExecutionContext, ev: Out =:= Row): Future[ScalaPreparedStatementMapped[T1, Out2]] = fut.map(_.as[Out2](ev, mapper))
-
-//     def executeAsync(t1: T1)(using cqlSession: Future[CqlSession], ec: ExecutionContext): Future[MappedAsyncPagingIterable[Out]] = cqlSession.flatMap {using s => fut.flatMap(_.executeAsync(t1))}
-
-//     def pager(t1: T1)(using ec: ExecutionContext): Future[ApiPager[Out]] = fut.map(_.pager(t1))
-
-//     def pager(pagingState: PagingState, t1: T1)(using ec: ExecutionContext): Future[ApiPager[Out]] = fut.map(_.pager(pagingState, t1).get)
-
-//     def pager[A: PagerSerializer](pagingState: A, t1: T1)(using ec: ExecutionContext): Future[ApiPager[Out]] = fut.map(_.pager(pagingState, t1).get)
-// end extension
 
 extension [T1, T2, Out](fut: Future[ScalaPreparedStatement2[T1, T2, Out]])
     @targetName("future_scala_pstmt_2_as_out2")
