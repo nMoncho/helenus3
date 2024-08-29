@@ -420,6 +420,17 @@ extension [Out](wbs: WrappedBoundStatement[Out])
 
 end extension
 
+extension [In, Out](pstmt: ScalaPreparedStatementMapped[In, Out])
+    /** A [[Source]] reading from Cassandra
+      *
+      * @param in query parameters
+      */
+    @targetName("as_read_source_pstmt_mapped")
+    def asReadSource(in: In)(using CassandraSession): Source[Out, NotUsed] =
+        source(implicit s => pstmt.executeReactive(in))
+
+end extension
+
 extension [In, Out](pstmt: ScalaPreparedStatement1[In, Out])
     /** A [[Source]] reading from Cassandra
       *
@@ -587,6 +598,16 @@ extension [Out](pstmt: Future[ScalaPreparedStatementUnit[Out]])
     def asReadSource()(using CassandraSession, ExecutionContext): Source[Out, NotUsed] =
         futureSource(pstmt.map(_.asReadSource()))
 
+end extension
+
+extension [In, Out](pstmt: Future[ScalaPreparedStatementMapped[In, Out]])
+    /** A [[Source]] reading from Cassandra
+      *
+      * @param in query parameters
+      */
+    @targetName("as_read_source_pstmt_mapped")
+    def asReadSource(in: In)(using CassandraSession, ExecutionContext): Source[Out, NotUsed] =
+        futureSource(pstmt.map(_.asReadSource(in)))
 end extension
 
 extension [In, Out](pstmt: Future[ScalaPreparedStatement1[In, Out]])
