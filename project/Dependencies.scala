@@ -3,7 +3,7 @@ import sbt.*
 object Dependencies {
 
   object Version {
-    val scala = "3.4.2"
+    val scala = "3.3.3"
 
     // 'core' dependencies
     val cassandraUnit = "4.3.1.0"
