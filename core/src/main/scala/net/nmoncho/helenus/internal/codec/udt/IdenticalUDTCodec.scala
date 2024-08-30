@@ -268,7 +268,7 @@ object IdenticalUDTCodec:
             override def decode(bytes: ByteBuffer, protocolVersion: ProtocolVersion): A =
                 mirror.fromTuple(codec.decode(bytes, protocolVersion))
 
-            override def getCqlType(): DataType =
+            override val getCqlType: UserDefinedType =
                 import scala.jdk.CollectionConverters.*
 
                 val (identifiers, dataTypes) =
@@ -310,7 +310,8 @@ object IdenticalUDTCodec:
 
             override def accepts(cqlType: DataType): Boolean = cqlType match
                 case udt: UserDefinedType =>
-                    udt.getFieldTypes == getCqlType.asInstanceOf[UserDefinedType].getFieldTypes
+                    udt.getFieldNames == getCqlType.getFieldNames &&
+                    udt.getFieldTypes == getCqlType.getFieldTypes
 
                 case _ => false
         end new
