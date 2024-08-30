@@ -144,8 +144,21 @@ object CqlQueryInterpolation:
                     bstmt
 
                 case _ =>
-                    term.tpe.widen.asType match
-                        case '[t] => enc[t](bstmt, term.asExprOf[t])
+                    encScala3_3_3(using q, term.tpe.widen.asType.asInstanceOf[Type[Any]])(bstmt, term.asExpr)
+
+        // The following code works on Scala 3.4.2 but not on Scala 3.3.3 LTS
+        // The offending code is `term.tpe.widen.asType match case '[t] =>`
+        // More specifically `'[t]`.
+        // I'm keeping this here until it's resolved in a patch version
+
+        // terms.foldLeft(bstmt): (bstmt, term) =>
+        //     term.tpe.widenTermRefByName match
+        //         case ConstantType(_) =>
+        //             bstmt
+
+        //         case _ =>
+        //             term.tpe.widen.asType match
+        //                 case '[t] => encScala3_4_2[t](bstmt, term.asExprOf[t])
     end encode
 
     /** Sets/Encodes a single Bind Parameter into a CQL BoundStatement by searching its [[Codec]]
@@ -155,7 +168,8 @@ object CqlQueryInterpolation:
       * @tparam T resulting expression type
       * @return resulting expression
       */
-    inline def enc[T: Type](using q: Quotes)(bstmt: Expr[BoundStatement], expr: Expr[T]): Expr[BoundStatement] =
+    inline def encScala3_4_2[T: Type](using
+    q: Quotes)(bstmt: Expr[BoundStatement], expr: Expr[T]): Expr[BoundStatement] =
         import q.reflect.*
 
         Implicits.search(TypeRepr.of[Codec].appliedTo(expr.asTerm.tpe.widen)) match
@@ -170,7 +184,35 @@ object CqlQueryInterpolation:
             case f: ImplicitSearchFailure =>
                 report.errorAndAbort(f.explanation)
         end match
-    end enc
+    end encScala3_4_2
+
+    /** Sets/Encodes a single Bind Parameter into a CQL BoundStatement by searching its [[Codec]]
+      *
+      * @param bstmt BoundStatement to set the parameter into
+      * @param expr parameter to set
+      * @tparam T resulting expression type
+      * @return resulting expression
+      */
+    inline def encScala3_3_3(using q: Quotes, t: Type[Any])(
+        bstmt: Expr[BoundStatement],
+        expr: Expr[Any]
+    ): Expr[BoundStatement] =
+        import q.reflect.*
+
+        Implicits.search(TypeRepr.of[Codec].appliedTo(expr.asTerm.tpe.widen)) match
+            case s: ImplicitSearchSuccess =>
+                val codec = s.tree.asExprOf[Codec[t.Underlying]]
+                val name  = Expr(namedParameter(expr.asTerm).substring(1))
+                val tExpr = expr.asExprOf[t.Underlying](using t)
+
+                '{
+                    $bstmt.setBytesUnsafe($name, $codec.encode($tExpr, ProtocolVersion.DEFAULT))
+                }
+
+            case f: ImplicitSearchFailure =>
+                report.errorAndAbort(f.explanation)
+        end match
+    end encScala3_3_3
 
     /** Creates a lambda that given a [[BoundStatement]], it will set/encode all bind parameters
       *
