@@ -18,12 +18,14 @@ We also provide integration against several streaming libraries:
 - Flink (Experimental)
 - Pekko
 
+This is the Scala 3 version of Helenus. For Scala 2, go [here](https://github.com/nMoncho/helenus).
+
 ## Installation
 
 Include the library into you project definition:
 
 ```scala
-libraryDependencies += "net.nmoncho" %% "helenus-core" % "0.3.0+4-41db4af4+20240826-1502-SNAPSHOT"
+libraryDependencies += "net.nmoncho" %% "helenus-core" % "1.0.0"
 ```
 
 ## Motivation
@@ -73,10 +75,22 @@ import net.nmoncho.helenus.*
 given CqlSession = getSession
 
 // We can derive Cassandra TypeCodecs used to map UDTs to case classes
-case class Address(street: String, city: String, stateOrProvince: String, postalCode: String, country: String) derives UDTCodec
+case class Address(
+  street: String,
+  city: String,
+  stateOrProvince: String,
+  postalCode: String,
+  country: String
+) derives UDTCodec
 
 // We can derive how query results map to case classes
-case class Hotel(id: String, name: String, phone: String, address: Address, pois: Set[String]) derives RowMapper
+case class Hotel(
+  id: String,
+  name: String,
+  phone: String,
+  address: Address,
+  pois: Set[String]
+) derives RowMapper
 
 val hotelId = "h1"
 // hotelId: String = "h1"
@@ -85,7 +99,7 @@ val hotelId = "h1"
 val hotelsById = "SELECT * FROM hotels WHERE id = ?".toCQL
     .prepare[String]
     .as[Hotel]
-// hotelsById: ScalaPreparedStatement1[String, Hotel] = net.nmoncho.helenus.internal.cql.ScalaPreparedStatement1@569dd438
+// hotelsById: ScalaPreparedStatement1[String, Hotel] = net.nmoncho.helenus.internal.cql.ScalaPreparedStatement1@4843a29e
 
 // We can extract a single result using `nextOption()`, or
 // use `to(Coll)` to transform the result to a collection
@@ -108,7 +122,7 @@ hotelsById.execute("h1").nextOption()
 
 // We can also run the same using CQL interpolated queries
 val interpolatedHotelsById = cql"SELECT * FROM hotels WHERE id = $hotelId"
-// interpolatedHotelsById: WrappedBoundStatement[Row] = net.nmoncho.helenus.api.cql.WrappedBoundStatement@6cd0d466
+// interpolatedHotelsById: WrappedBoundStatement[Row] = net.nmoncho.helenus.api.cql.WrappedBoundStatement@3efc071e
 
 interpolatedHotelsById.as[Hotel].execute().nextOption()
 // res1: Option[Hotel] = Some(
