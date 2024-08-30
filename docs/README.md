@@ -18,6 +18,8 @@ We also provide integration against several streaming libraries:
 - Flink (Experimental)
 - Pekko
 
+This is the Scala 3 version of Helenus. For Scala 2, go [here](https://github.com/nMoncho/helenus).
+
 ## Installation
 
 Include the library into you project definition:
@@ -81,10 +83,22 @@ import net.nmoncho.helenus.*
 given CqlSession = getSession
 
 // We can derive Cassandra TypeCodecs used to map UDTs to case classes
-case class Address(street: String, city: String, stateOrProvince: String, postalCode: String, country: String) derives UDTCodec
+case class Address(
+  street: String,
+  city: String,
+  stateOrProvince: String,
+  postalCode: String,
+  country: String
+) derives UDTCodec
 
 // We can derive how query results map to case classes
-case class Hotel(id: String, name: String, phone: String, address: Address, pois: Set[String]) derives RowMapper
+case class Hotel(
+  id: String,
+  name: String,
+  phone: String,
+  address: Address,
+  pois: Set[String]
+) derives RowMapper
 
 val hotelId = "h1"
 
