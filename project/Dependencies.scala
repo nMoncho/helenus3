@@ -25,7 +25,7 @@ object Dependencies {
 
     // Pekko Dependencies
     val pekkoConnector = "1.0.2"
-    val pekkoTestKit   = "1.0.3"
+    val pekkoTestKit   = "1.1.0"
   }
 
   // 'core' dependencies
