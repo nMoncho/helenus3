@@ -55,6 +55,8 @@ object ScalaTypeToken:
 
     def wrap[T](typeArg: Type): Class[T] =
         if isPrimitive(typeArg) then Primitives.wrap(typeArg.asInstanceOf[Class[T]])
-        else typeArg.asInstanceOf[Class[T]]
+        else typeArg.getClass().asInstanceOf[Class[T]]
 
 end ScalaTypeToken
+
+abstract class ScalaTypeParameter[T] extends TypeParameter[T]

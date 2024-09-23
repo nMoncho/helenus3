@@ -96,7 +96,7 @@ class TupleCodecSpec extends AnyWordSpec with Matchers with CodecSpecBase[(Strin
             }
         }
 
-        "accept generic type" ignore {
+        "accept generic type" in {
             val anotherTupleCodec = Codec[(String, String)]
             val intTupleCodec     = Codec[(Int, String)]
 
