@@ -15,7 +15,7 @@ object Dependencies {
     val scalaCheck    = "1.18.1"
     val scalaTest     = "3.2.19"
     val scalaTestPlus = "3.2.18.0"
-    val logback       = "1.5.15"
+    val logback       = "1.5.16"
 
     val akka    = "2.6.21" // 2.7 changed to business license
     val alpakka = "4.0.0" // 5.x changed to business license
