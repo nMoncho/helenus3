@@ -37,7 +37,7 @@ import net.nmoncho.helenus.api.cql.WrappedBoundStatement
 object CqlQueryInterpolation:
 
     def cqlImpl(sc: Expr[StringContext], params: Expr[Seq[Any]], session: Expr[CqlSession])(using
-    qctx: Quotes): Expr[WrappedBoundStatement[Row]] =
+        qctx: Quotes): Expr[WrappedBoundStatement[Row]] =
         import qctx.reflect.*
 
         val (parts, terms) = partsAndTerms(sc, params)
@@ -72,7 +72,7 @@ object CqlQueryInterpolation:
     end cqlAsyncImpl
 
     inline def partsAndTerms(sc: Expr[StringContext], params: Expr[Seq[Any]])(using
-    q: Quotes): (Seq[String], List[q.reflect.Term]) =
+        q: Quotes): (Seq[String], List[q.reflect.Term]) =
         import q.reflect.*
 
         val parts = sc match
@@ -169,7 +169,7 @@ object CqlQueryInterpolation:
       * @return resulting expression
       */
     inline def encScala3_4_2[T: Type](using
-    q: Quotes)(bstmt: Expr[BoundStatement], expr: Expr[T]): Expr[BoundStatement] =
+        q: Quotes)(bstmt: Expr[BoundStatement], expr: Expr[T]): Expr[BoundStatement] =
         import q.reflect.*
 
         Implicits.search(TypeRepr.of[Codec].appliedTo(expr.asTerm.tpe.widen)) match

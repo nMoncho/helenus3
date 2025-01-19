@@ -119,7 +119,7 @@ object UDTCodec:
         )
 
     inline def derived[A <: Product: Mirror.ProductOf: Labelling: ClassTag](using namingScheme: ColumnNamingScheme =
-        DefaultColumnNamingScheme): UDTCodec[A] =
+            DefaultColumnNamingScheme): UDTCodec[A] =
         new UnifiedUDTCodec[A](
           IdenticalUDTCodec.deriveCodec[A](None, None, frozen = true),
           NonIdenticalUDTCodec.derivedFn[A]
