@@ -93,8 +93,7 @@ object PagerSerializer:
                 // always returns 'true' since the 'unsafe' ByteBuffer is used
                 override def matches(statement: Statement[?], session: Session): Boolean = true
 
-                override def getRawPagingState: ByteBuffer = value
-            )
+                override def getRawPagingState: ByteBuffer = value)
     end SimplePagingStateSerializer
 
 end PagerSerializer
