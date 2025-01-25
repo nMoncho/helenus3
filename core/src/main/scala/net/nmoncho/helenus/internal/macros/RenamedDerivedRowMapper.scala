@@ -34,7 +34,7 @@ import net.nmoncho.helenus.internal.Labelling
 object RenamedDerivedRowMapper:
 
     def renamedImpl[A <: Product: Type](first: Expr[A => (Any, String)], rest: Expr[Seq[A => (Any, String)]])(using
-    qctx: Quotes): Expr[RowMapper[A]] =
+        qctx: Quotes): Expr[RowMapper[A]] =
         import qctx.reflect.*
 
         def summonOrFail[T: Type]: Expr[T] =
@@ -80,8 +80,7 @@ object RenamedDerivedRowMapper:
 
         val rename: Expr[Map[String, String]] = Expr(rest match
             case Varargs(fieldsExpr) =>
-                fieldsExpr.map(extract).toMap + extract(first)
-        )
+                fieldsExpr.map(extract).toMap + extract(first))
 
         val renamedFields = '{
             ${ summonOrFail[Labelling[A]] }.elemLabels.map(field =>
