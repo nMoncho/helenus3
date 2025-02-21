@@ -614,6 +614,9 @@ extension [In2, In, Out](fut: Future[AdaptedScalaPreparedStatement[In2, In, Out]
     @targetName("future_scala_pstmt_adapted_as_out2_explicit_mapper")
     def as[Out2](mapper: RowMapper[Out2])(using ec: ExecutionContext, ev: Out =:= Row): Future[AdaptedScalaPreparedStatement[In2, In, Out2]] = fut.map(_.as[Out2](ev, mapper))
 
+    @targetName("future_scala_pstmt_adapted_with_options")
+    def withOptions(opts: StatementOptions)(using ExecutionContext): Future[AdaptedScalaPreparedStatement[In2, In, Out]] = fut.map(_.withOptions(opts))
+
     @targetName("future_scala_pstmt_unit_execute_async")
     def executeAsync(t1: In2)(using cqlSession: Future[CqlSession], ec: ExecutionContext): Future[MappedAsyncPagingIterable[Out]] = cqlSession.flatMap {s => fut.flatMap(_.executeAsync(t1)(using s, ec))}
 
@@ -634,6 +637,9 @@ extension [Out](fut: Future[ScalaPreparedStatementUnit[Out]])
     @targetName("future_scala_pstmt_unit_as_out2_explicit_mapper")
     def as[Out2](mapper: RowMapper[Out2])(using ec: ExecutionContext, ev: Out =:= Row): Future[ScalaPreparedStatementUnit[Out2]] = fut.map(_.as[Out2](ev, mapper))
 
+    @targetName("future_scala_pstmt_unit_with_options")
+    def withOptions(opts: StatementOptions)(using ExecutionContext): Future[ScalaPreparedStatementUnit[Out]] = fut.map(_.withOptions(opts))
+
     def executeAsync()(using cqlSession: Future[CqlSession], ec: ExecutionContext): Future[MappedAsyncPagingIterable[Out]] = cqlSession.flatMap {s => fut.flatMap(_.executeAsync()(using s, ec))}
 
     def pager()(using ec: ExecutionContext): Future[ApiPager[Out]] = fut.map(_.pager())
@@ -649,6 +655,9 @@ extension [T1, Out](fut: Future[ScalaPreparedStatementMapped[T1, Out]])
 
     @targetName("future_scala_pstmt_mapped_as_out2_explicit_mapper")
     def as[Out2](mapper: RowMapper[Out2])(using ec: ExecutionContext, ev: Out =:= Row): Future[ScalaPreparedStatementMapped[T1, Out2]] = fut.map(_.as[Out2](ev, mapper))
+
+    @targetName("future_scala_pstmt_mapped_with_options")
+    def withOptions(opts: StatementOptions)(using ExecutionContext): Future[ScalaPreparedStatementMapped[T1, Out]] = fut.map(_.withOptions(opts))
 
     @targetName("future_scala_pstmt_mapped_execute_async")
     def executeAsync(t1: T1)(using cqlSession: Future[CqlSession], ec: ExecutionContext): Future[MappedAsyncPagingIterable[Out]] = cqlSession.flatMap {s => fut.flatMap(_.executeAsync(t1)(using s, ec))}
@@ -670,6 +679,9 @@ extension [T1, Out](fut: Future[ScalaPreparedStatement1[T1, Out]])
     @targetName("future_scala_pstmt_1_as_out2_explicit_mapper")
     def as[Out2](mapper: RowMapper[Out2])(using ec: ExecutionContext, ev: Out =:= Row): Future[ScalaPreparedStatement1[T1, Out2]] = fut.map(_.as[Out2](ev, mapper))
 
+    @targetName("future_scala_pstmt_1_with_options")
+    def withOptions(opts: StatementOptions)(using ExecutionContext): Future[ScalaPreparedStatement1[T1, Out]] = fut.map(_.withOptions(opts))
+
     def executeAsync(t1: T1)(using cqlSession: Future[CqlSession], ec: ExecutionContext): Future[MappedAsyncPagingIterable[Out]] = cqlSession.flatMap {s => fut.flatMap(_.executeAsync(t1)(using s, ec))}
 
     def pager(t1: T1)(using ec: ExecutionContext): Future[ApiPager[Out]] = fut.map(_.pager(t1))
@@ -685,6 +697,9 @@ extension [T1, T2, Out](fut: Future[ScalaPreparedStatement2[T1, T2, Out]])
 
     @targetName("future_scala_pstmt_2_as_out2_explicit_mapper")
     def as[Out2](mapper: RowMapper[Out2])(using ec: ExecutionContext, ev: Out =:= Row): Future[ScalaPreparedStatement2[T1, T2, Out2]] = fut.map(_.as[Out2](ev, mapper))
+
+    @targetName("future_scala_pstmt_2_with_options")
+    def withOptions(opts: StatementOptions)(using ExecutionContext): Future[ScalaPreparedStatement2[T1, T2, Out]] = fut.map(_.withOptions(opts))
 
     def executeAsync(t1: T1, t2: T2)(using cqlSession: Future[CqlSession], ec: ExecutionContext): Future[MappedAsyncPagingIterable[Out]] = cqlSession.flatMap {s => fut.flatMap(_.executeAsync(t1, t2)(using s, ec))}
 
@@ -702,6 +717,9 @@ extension [T1, T2, T3, Out](fut: Future[ScalaPreparedStatement3[T1, T2, T3, Out]
     @targetName("future_scala_pstmt_3_as_out2_explicit_mapper")
     def as[Out2](mapper: RowMapper[Out2])(using ec: ExecutionContext, ev: Out =:= Row): Future[ScalaPreparedStatement3[T1, T2, T3, Out2]] = fut.map(_.as[Out2](ev, mapper))
 
+    @targetName("future_scala_pstmt_3_with_options")
+    def withOptions(opts: StatementOptions)(using ExecutionContext): Future[ScalaPreparedStatement3[T1, T2, T3, Out]] = fut.map(_.withOptions(opts))
+
     def executeAsync(t1: T1, t2: T2, t3: T3)(using cqlSession: Future[CqlSession], ec: ExecutionContext): Future[MappedAsyncPagingIterable[Out]] = cqlSession.flatMap {s => fut.flatMap(_.executeAsync(t1, t2, t3)(using s, ec))}
 
     def pager(t1: T1, t2: T2, t3: T3)(using ec: ExecutionContext): Future[ApiPager[Out]] = fut.map(_.pager(t1, t2, t3))
@@ -717,6 +735,9 @@ extension [T1, T2, T3, T4, Out](fut: Future[ScalaPreparedStatement4[T1, T2, T3, 
 
     @targetName("future_scala_pstmt_4_as_out2_explicit_mapper")
     def as[Out2](mapper: RowMapper[Out2])(using ec: ExecutionContext, ev: Out =:= Row): Future[ScalaPreparedStatement4[T1, T2, T3, T4, Out2]] = fut.map(_.as[Out2](ev, mapper))
+
+    @targetName("future_scala_pstmt_4_with_options")
+    def withOptions(opts: StatementOptions)(using ExecutionContext): Future[ScalaPreparedStatement4[T1, T2, T3, T4, Out]] = fut.map(_.withOptions(opts))
 
     def executeAsync(t1: T1, t2: T2, t3: T3, t4: T4)(using cqlSession: Future[CqlSession], ec: ExecutionContext): Future[MappedAsyncPagingIterable[Out]] = cqlSession.flatMap {s => fut.flatMap(_.executeAsync(t1, t2, t3, t4)(using s, ec))}
 
@@ -734,6 +755,9 @@ extension [T1, T2, T3, T4, T5, Out](fut: Future[ScalaPreparedStatement5[T1, T2, 
     @targetName("future_scala_pstmt_5_as_out2_explicit_mapper")
     def as[Out2](mapper: RowMapper[Out2])(using ec: ExecutionContext, ev: Out =:= Row): Future[ScalaPreparedStatement5[T1, T2, T3, T4, T5, Out2]] = fut.map(_.as[Out2](ev, mapper))
 
+    @targetName("future_scala_pstmt_5_with_options")
+    def withOptions(opts: StatementOptions)(using ExecutionContext): Future[ScalaPreparedStatement5[T1, T2, T3, T4, T5, Out]] = fut.map(_.withOptions(opts))
+
     def executeAsync(t1: T1, t2: T2, t3: T3, t4: T4, t5: T5)(using cqlSession: Future[CqlSession], ec: ExecutionContext): Future[MappedAsyncPagingIterable[Out]] = cqlSession.flatMap {s => fut.flatMap(_.executeAsync(t1, t2, t3, t4, t5)(using s, ec))}
 
     def pager(t1: T1, t2: T2, t3: T3, t4: T4, t5: T5)(using ec: ExecutionContext): Future[ApiPager[Out]] = fut.map(_.pager(t1, t2, t3, t4, t5))
@@ -749,6 +773,9 @@ extension [T1, T2, T3, T4, T5, T6, Out](fut: Future[ScalaPreparedStatement6[T1, 
 
     @targetName("future_scala_pstmt_6_as_out2_explicit_mapper")
     def as[Out2](mapper: RowMapper[Out2])(using ec: ExecutionContext, ev: Out =:= Row): Future[ScalaPreparedStatement6[T1, T2, T3, T4, T5, T6, Out2]] = fut.map(_.as[Out2](ev, mapper))
+
+    @targetName("future_scala_pstmt_6_with_options")
+    def withOptions(opts: StatementOptions)(using ExecutionContext): Future[ScalaPreparedStatement6[T1, T2, T3, T4, T5, T6, Out]] = fut.map(_.withOptions(opts))
 
     def executeAsync(t1: T1, t2: T2, t3: T3, t4: T4, t5: T5, t6: T6)(using cqlSession: Future[CqlSession], ec: ExecutionContext): Future[MappedAsyncPagingIterable[Out]] = cqlSession.flatMap {s => fut.flatMap(_.executeAsync(t1, t2, t3, t4, t5, t6)(using s, ec))}
 
@@ -766,6 +793,9 @@ extension [T1, T2, T3, T4, T5, T6, T7, Out](fut: Future[ScalaPreparedStatement7[
     @targetName("future_scala_pstmt_7_as_out2_explicit_mapper")
     def as[Out2](mapper: RowMapper[Out2])(using ec: ExecutionContext, ev: Out =:= Row): Future[ScalaPreparedStatement7[T1, T2, T3, T4, T5, T6, T7, Out2]] = fut.map(_.as[Out2](ev, mapper))
 
+    @targetName("future_scala_pstmt_7_with_options")
+    def withOptions(opts: StatementOptions)(using ExecutionContext): Future[ScalaPreparedStatement7[T1, T2, T3, T4, T5, T6, T7, Out]] = fut.map(_.withOptions(opts))
+
     def executeAsync(t1: T1, t2: T2, t3: T3, t4: T4, t5: T5, t6: T6, t7: T7)(using cqlSession: Future[CqlSession], ec: ExecutionContext): Future[MappedAsyncPagingIterable[Out]] = cqlSession.flatMap {s => fut.flatMap(_.executeAsync(t1, t2, t3, t4, t5, t6, t7)(using s, ec))}
 
     def pager(t1: T1, t2: T2, t3: T3, t4: T4, t5: T5, t6: T6, t7: T7)(using ec: ExecutionContext): Future[ApiPager[Out]] = fut.map(_.pager(t1, t2, t3, t4, t5, t6, t7))
@@ -781,6 +811,9 @@ extension [T1, T2, T3, T4, T5, T6, T7, T8, Out](fut: Future[ScalaPreparedStateme
 
     @targetName("future_scala_pstmt_8_as_out2_explicit_mapper")
     def as[Out2](mapper: RowMapper[Out2])(using ec: ExecutionContext, ev: Out =:= Row): Future[ScalaPreparedStatement8[T1, T2, T3, T4, T5, T6, T7, T8, Out2]] = fut.map(_.as[Out2](ev, mapper))
+
+    @targetName("future_scala_pstmt_8_with_options")
+    def withOptions(opts: StatementOptions)(using ExecutionContext): Future[ScalaPreparedStatement8[T1, T2, T3, T4, T5, T6, T7, T8, Out]] = fut.map(_.withOptions(opts))
 
     def executeAsync(t1: T1, t2: T2, t3: T3, t4: T4, t5: T5, t6: T6, t7: T7, t8: T8)(using cqlSession: Future[CqlSession], ec: ExecutionContext): Future[MappedAsyncPagingIterable[Out]] = cqlSession.flatMap {s => fut.flatMap(_.executeAsync(t1, t2, t3, t4, t5, t6, t7, t8)(using s, ec))}
 
@@ -798,6 +831,9 @@ extension [T1, T2, T3, T4, T5, T6, T7, T8, T9, Out](fut: Future[ScalaPreparedSta
     @targetName("future_scala_pstmt_9_as_out2_explicit_mapper")
     def as[Out2](mapper: RowMapper[Out2])(using ec: ExecutionContext, ev: Out =:= Row): Future[ScalaPreparedStatement9[T1, T2, T3, T4, T5, T6, T7, T8, T9, Out2]] = fut.map(_.as[Out2](ev, mapper))
 
+    @targetName("future_scala_pstmt_9_with_options")
+    def withOptions(opts: StatementOptions)(using ExecutionContext): Future[ScalaPreparedStatement9[T1, T2, T3, T4, T5, T6, T7, T8, T9, Out]] = fut.map(_.withOptions(opts))
+
     def executeAsync(t1: T1, t2: T2, t3: T3, t4: T4, t5: T5, t6: T6, t7: T7, t8: T8, t9: T9)(using cqlSession: Future[CqlSession], ec: ExecutionContext): Future[MappedAsyncPagingIterable[Out]] = cqlSession.flatMap {s => fut.flatMap(_.executeAsync(t1, t2, t3, t4, t5, t6, t7, t8, t9)(using s, ec))}
 
     def pager(t1: T1, t2: T2, t3: T3, t4: T4, t5: T5, t6: T6, t7: T7, t8: T8, t9: T9)(using ec: ExecutionContext): Future[ApiPager[Out]] = fut.map(_.pager(t1, t2, t3, t4, t5, t6, t7, t8, t9))
@@ -814,6 +850,9 @@ extension [T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, Out](fut: Future[ScalaPrepar
     @targetName("future_scala_pstmt_10_as_out2_explicit_mapper")
     def as[Out2](mapper: RowMapper[Out2])(using ec: ExecutionContext, ev: Out =:= Row): Future[ScalaPreparedStatement10[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, Out2]] = fut.map(_.as[Out2](ev, mapper))
 
+    @targetName("future_scala_pstmt_10_with_options")
+    def withOptions(opts: StatementOptions)(using ExecutionContext): Future[ScalaPreparedStatement10[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, Out]] = fut.map(_.withOptions(opts))
+
     def executeAsync(t1: T1, t2: T2, t3: T3, t4: T4, t5: T5, t6: T6, t7: T7, t8: T8, t9: T9, t10: T10)(using cqlSession: Future[CqlSession], ec: ExecutionContext): Future[MappedAsyncPagingIterable[Out]] = cqlSession.flatMap {s => fut.flatMap(_.executeAsync(t1, t2, t3, t4, t5, t6, t7, t8, t9, t10)(using s, ec))}
     def pager(t1: T1, t2: T2, t3: T3, t4: T4, t5: T5, t6: T6, t7: T7, t8: T8, t9: T9, t10: T10)(using ec: ExecutionContext): Future[ApiPager[Out]] = fut.map(_.pager(t1, t2, t3, t4, t5, t6, t7, t8, t9, t10))
 
@@ -828,6 +867,9 @@ extension [T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, Out](fut: Future[ScalaP
 
     @targetName("future_scala_pstmt_11_as_out2_explicit_mapper")
     def as[Out2](mapper: RowMapper[Out2])(using ec: ExecutionContext, ev: Out =:= Row): Future[ScalaPreparedStatement11[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, Out2]] = fut.map(_.as[Out2](ev, mapper))
+
+    @targetName("future_scala_pstmt_11_with_options")
+    def withOptions(opts: StatementOptions)(using ExecutionContext): Future[ScalaPreparedStatement11[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, Out]] = fut.map(_.withOptions(opts))
 
     def executeAsync(t1: T1, t2: T2, t3: T3, t4: T4, t5: T5, t6: T6, t7: T7, t8: T8, t9: T9, t10: T10, t11: T11)(using cqlSession: Future[CqlSession], ec: ExecutionContext): Future[MappedAsyncPagingIterable[Out]] = cqlSession.flatMap {s => fut.flatMap(_.executeAsync(t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11)(using s, ec))}
 
@@ -845,6 +887,9 @@ extension [T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, Out](fut: Future[S
     @targetName("future_scala_pstmt_12_as_out2_explicit_mapper")
     def as[Out2](mapper: RowMapper[Out2])(using ec: ExecutionContext, ev: Out =:= Row): Future[ScalaPreparedStatement12[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, Out2]] = fut.map(_.as[Out2](ev, mapper))
 
+    @targetName("future_scala_pstmt_12_with_options")
+    def withOptions(opts: StatementOptions)(using ExecutionContext): Future[ScalaPreparedStatement12[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, Out]] = fut.map(_.withOptions(opts))
+
     def executeAsync(t1: T1, t2: T2, t3: T3, t4: T4, t5: T5, t6: T6, t7: T7, t8: T8, t9: T9, t10: T10, t11: T11, t12: T12)(using cqlSession: Future[CqlSession], ec: ExecutionContext): Future[MappedAsyncPagingIterable[Out]] = cqlSession.flatMap {s => fut.flatMap(_.executeAsync(t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11, t12)(using s, ec))}
 
     def pager(t1: T1, t2: T2, t3: T3, t4: T4, t5: T5, t6: T6, t7: T7, t8: T8, t9: T9, t10: T10, t11: T11, t12: T12)(using ec: ExecutionContext): Future[ApiPager[Out]] = fut.map(_.pager(t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11, t12))
@@ -860,6 +905,9 @@ extension [T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, Out](fut: Fut
 
     @targetName("future_scala_pstmt_13_as_out2_explicit_mapper")
     def as[Out2](mapper: RowMapper[Out2])(using ec: ExecutionContext, ev: Out =:= Row): Future[ScalaPreparedStatement13[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, Out2]] = fut.map(_.as[Out2](ev, mapper))
+
+    @targetName("future_scala_pstmt_13_with_options")
+    def withOptions(opts: StatementOptions)(using ExecutionContext): Future[ScalaPreparedStatement13[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, Out]] = fut.map(_.withOptions(opts))
 
     def executeAsync(t1: T1, t2: T2, t3: T3, t4: T4, t5: T5, t6: T6, t7: T7, t8: T8, t9: T9, t10: T10, t11: T11, t12: T12, t13: T13)(using cqlSession: Future[CqlSession], ec: ExecutionContext): Future[MappedAsyncPagingIterable[Out]] = cqlSession.flatMap {s => fut.flatMap(_.executeAsync(t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11, t12, t13)(using s, ec))}
 
@@ -877,6 +925,9 @@ extension [T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, Out](fut
     @targetName("future_scala_pstmt_14_as_out2_explicit_mapper")
     def as[Out2](mapper: RowMapper[Out2])(using ec: ExecutionContext, ev: Out =:= Row): Future[ScalaPreparedStatement14[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, Out2]] = fut.map(_.as[Out2](ev, mapper))
 
+    @targetName("future_scala_pstmt_14_with_options")
+    def withOptions(opts: StatementOptions)(using ExecutionContext): Future[ScalaPreparedStatement14[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, Out]] = fut.map(_.withOptions(opts))
+
     def executeAsync(t1: T1, t2: T2, t3: T3, t4: T4, t5: T5, t6: T6, t7: T7, t8: T8, t9: T9, t10: T10, t11: T11, t12: T12, t13: T13, t14: T14)(using cqlSession: Future[CqlSession], ec: ExecutionContext): Future[MappedAsyncPagingIterable[Out]] = cqlSession.flatMap {s => fut.flatMap(_.executeAsync(t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11, t12, t13, t14)(using s, ec))}
 
     def pager(t1: T1, t2: T2, t3: T3, t4: T4, t5: T5, t6: T6, t7: T7, t8: T8, t9: T9, t10: T10, t11: T11, t12: T12, t13: T13, t14: T14)(using ec: ExecutionContext): Future[ApiPager[Out]] = fut.map(_.pager(t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11, t12, t13, t14))
@@ -892,6 +943,9 @@ extension [T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, Out
 
     @targetName("future_scala_pstmt_15_as_out2_explicit_mapper")
     def as[Out2](mapper: RowMapper[Out2])(using ec: ExecutionContext, ev: Out =:= Row): Future[ScalaPreparedStatement15[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, Out2]] = fut.map(_.as[Out2](ev, mapper))
+
+    @targetName("future_scala_pstmt_15_with_options")
+    def withOptions(opts: StatementOptions)(using ExecutionContext): Future[ScalaPreparedStatement15[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, Out]] = fut.map(_.withOptions(opts))
 
     def executeAsync(t1: T1, t2: T2, t3: T3, t4: T4, t5: T5, t6: T6, t7: T7, t8: T8, t9: T9, t10: T10, t11: T11, t12: T12, t13: T13, t14: T14, t15: T15)(using cqlSession: Future[CqlSession], ec: ExecutionContext): Future[MappedAsyncPagingIterable[Out]] = cqlSession.flatMap {s => fut.flatMap(_.executeAsync(t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11, t12, t13, t14, t15)(using s, ec))}
 
@@ -909,6 +963,9 @@ extension [T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16
     @targetName("future_scala_pstmt_16_as_out2_explicit_mapper")
     def as[Out2](mapper: RowMapper[Out2])(using ec: ExecutionContext, ev: Out =:= Row): Future[ScalaPreparedStatement16[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, Out2]] = fut.map(_.as[Out2](ev, mapper))
 
+    @targetName("future_scala_pstmt_16_with_options")
+    def withOptions(opts: StatementOptions)(using ExecutionContext): Future[ScalaPreparedStatement16[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, Out]] = fut.map(_.withOptions(opts))
+
     def executeAsync(t1: T1, t2: T2, t3: T3, t4: T4, t5: T5, t6: T6, t7: T7, t8: T8, t9: T9, t10: T10, t11: T11, t12: T12, t13: T13, t14: T14, t15: T15, t16: T16)(using cqlSession: Future[CqlSession], ec: ExecutionContext): Future[MappedAsyncPagingIterable[Out]] = cqlSession.flatMap {s => fut.flatMap(_.executeAsync(t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11, t12, t13, t14, t15, t16)(using s, ec))}
 
     def pager(t1: T1, t2: T2, t3: T3, t4: T4, t5: T5, t6: T6, t7: T7, t8: T8, t9: T9, t10: T10, t11: T11, t12: T12, t13: T13, t14: T14, t15: T15, t16: T16)(using ec: ExecutionContext): Future[ApiPager[Out]] = fut.map(_.pager(t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11, t12, t13, t14, t15, t16))
@@ -924,6 +981,9 @@ extension [T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16
 
     @targetName("future_scala_pstmt_17_as_out2_explicit_mapper")
     def as[Out2](mapper: RowMapper[Out2])(using ec: ExecutionContext, ev: Out =:= Row): Future[ScalaPreparedStatement17[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, Out2]] = fut.map(_.as[Out2](ev, mapper))
+
+    @targetName("future_scala_pstmt_17_with_options")
+    def withOptions(opts: StatementOptions)(using ExecutionContext): Future[ScalaPreparedStatement17[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, Out]] = fut.map(_.withOptions(opts))
 
     def executeAsync(t1: T1, t2: T2, t3: T3, t4: T4, t5: T5, t6: T6, t7: T7, t8: T8, t9: T9, t10: T10, t11: T11, t12: T12, t13: T13, t14: T14, t15: T15, t16: T16, t17: T17)(using cqlSession: Future[CqlSession], ec: ExecutionContext): Future[MappedAsyncPagingIterable[Out]] = cqlSession.flatMap {s => fut.flatMap(_.executeAsync(t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11, t12, t13, t14, t15, t16, t17)(using s, ec))}
 
@@ -941,6 +1001,9 @@ extension [T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16
     @targetName("future_scala_pstmt_18_as_out2_explicit_mapper")
     def as[Out2](mapper: RowMapper[Out2])(using ec: ExecutionContext, ev: Out =:= Row): Future[ScalaPreparedStatement18[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, Out2]] = fut.map(_.as[Out2](ev, mapper))
 
+    @targetName("future_scala_pstmt_18_with_options")
+    def withOptions(opts: StatementOptions)(using ExecutionContext): Future[ScalaPreparedStatement18[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, Out]] = fut.map(_.withOptions(opts))
+
     def executeAsync(t1: T1, t2: T2, t3: T3, t4: T4, t5: T5, t6: T6, t7: T7, t8: T8, t9: T9, t10: T10, t11: T11, t12: T12, t13: T13, t14: T14, t15: T15, t16: T16, t17: T17, t18: T18)(using cqlSession: Future[CqlSession], ec: ExecutionContext): Future[MappedAsyncPagingIterable[Out]] = cqlSession.flatMap {s => fut.flatMap(_.executeAsync(t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11, t12, t13, t14, t15, t16, t17, t18)(using s, ec))}
 
     def pager(t1: T1, t2: T2, t3: T3, t4: T4, t5: T5, t6: T6, t7: T7, t8: T8, t9: T9, t10: T10, t11: T11, t12: T12, t13: T13, t14: T14, t15: T15, t16: T16, t17: T17, t18: T18)(using ec: ExecutionContext): Future[ApiPager[Out]] = fut.map(_.pager(t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11, t12, t13, t14, t15, t16, t17, t18))
@@ -956,6 +1019,9 @@ extension [T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16
 
     @targetName("future_scala_pstmt_19_as_out2_explicit_mapper")
     def as[Out2](mapper: RowMapper[Out2])(using ec: ExecutionContext, ev: Out =:= Row): Future[ScalaPreparedStatement19[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, Out2]] = fut.map(_.as[Out2](ev, mapper))
+
+    @targetName("future_scala_pstmt_19_with_options")
+    def withOptions(opts: StatementOptions)(using ExecutionContext): Future[ScalaPreparedStatement19[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, Out]] = fut.map(_.withOptions(opts))
 
     def executeAsync(t1: T1, t2: T2, t3: T3, t4: T4, t5: T5, t6: T6, t7: T7, t8: T8, t9: T9, t10: T10, t11: T11, t12: T12, t13: T13, t14: T14, t15: T15, t16: T16, t17: T17, t18: T18, t19: T19)(using cqlSession: Future[CqlSession], ec: ExecutionContext): Future[MappedAsyncPagingIterable[Out]] = cqlSession.flatMap {s => fut.flatMap(_.executeAsync(t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11, t12, t13, t14, t15, t16, t17, t18, t19)(using s, ec))}
 
@@ -973,6 +1039,9 @@ extension [T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16
     @targetName("future_scala_pstmt_20_as_out2_explicit_mapper")
     def as[Out2](mapper: RowMapper[Out2])(using ec: ExecutionContext, ev: Out =:= Row): Future[ScalaPreparedStatement20[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, Out2]] = fut.map(_.as[Out2](ev, mapper))
 
+    @targetName("future_scala_pstmt_20_with_options")
+    def withOptions(opts: StatementOptions)(using ExecutionContext): Future[ScalaPreparedStatement20[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, Out]] = fut.map(_.withOptions(opts))
+
     def executeAsync(t1: T1, t2: T2, t3: T3, t4: T4, t5: T5, t6: T6, t7: T7, t8: T8, t9: T9, t10: T10, t11: T11, t12: T12, t13: T13, t14: T14, t15: T15, t16: T16, t17: T17, t18: T18, t19: T19, t20: T20)(using cqlSession: Future[CqlSession], ec: ExecutionContext): Future[MappedAsyncPagingIterable[Out]] = cqlSession.flatMap {s => fut.flatMap(_.executeAsync(t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11, t12, t13, t14, t15, t16, t17, t18, t19, t20)(using s, ec))}
 
     def pager(t1: T1, t2: T2, t3: T3, t4: T4, t5: T5, t6: T6, t7: T7, t8: T8, t9: T9, t10: T10, t11: T11, t12: T12, t13: T13, t14: T14, t15: T15, t16: T16, t17: T17, t18: T18, t19: T19, t20: T20)(using ec: ExecutionContext): Future[ApiPager[Out]] = fut.map(_.pager(t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11, t12, t13, t14, t15, t16, t17, t18, t19, t20))
@@ -989,6 +1058,9 @@ extension [T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16
     @targetName("future_scala_pstmt_21_as_out2_explicit_mapper")
     def as[Out2](mapper: RowMapper[Out2])(using ec: ExecutionContext, ev: Out =:= Row): Future[ScalaPreparedStatement21[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, Out2]] = fut.map(_.as[Out2](ev, mapper))
 
+    @targetName("future_scala_pstmt_21_with_options")
+    def withOptions(opts: StatementOptions)(using ExecutionContext): Future[ScalaPreparedStatement21[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, Out]] = fut.map(_.withOptions(opts))
+
     def executeAsync(t1: T1, t2: T2, t3: T3, t4: T4, t5: T5, t6: T6, t7: T7, t8: T8, t9: T9, t10: T10, t11: T11, t12: T12, t13: T13, t14: T14, t15: T15, t16: T16, t17: T17, t18: T18, t19: T19, t20: T20, t21: T21)(using cqlSession: Future[CqlSession], ec: ExecutionContext): Future[MappedAsyncPagingIterable[Out]] = cqlSession.flatMap {s => fut.flatMap(_.executeAsync(t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11, t12, t13, t14, t15, t16, t17, t18, t19, t20, t21)(using s, ec))}
 
     def pager(t1: T1, t2: T2, t3: T3, t4: T4, t5: T5, t6: T6, t7: T7, t8: T8, t9: T9, t10: T10, t11: T11, t12: T12, t13: T13, t14: T14, t15: T15, t16: T16, t17: T17, t18: T18, t19: T19, t20: T20, t21: T21)(using ec: ExecutionContext): Future[ApiPager[Out]] = fut.map(_.pager(t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11, t12, t13, t14, t15, t16, t17, t18, t19, t20, t21))
@@ -1004,6 +1076,9 @@ extension [T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16
 
     @targetName("future_scala_pstmt_22_as_out2_explicit_mapper")
     def as[Out2](mapper: RowMapper[Out2])(using ec: ExecutionContext, ev: Out =:= Row): Future[ScalaPreparedStatement22[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22, Out2]] = fut.map(_.as[Out2](ev, mapper))
+
+    @targetName("future_scala_pstmt_22_with_options")
+    def withOptions(opts: StatementOptions)(using ExecutionContext): Future[ScalaPreparedStatement22[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22, Out]] = fut.map(_.withOptions(opts))
 
     def executeAsync(t1: T1, t2: T2, t3: T3, t4: T4, t5: T5, t6: T6, t7: T7, t8: T8, t9: T9, t10: T10, t11: T11, t12: T12, t13: T13, t14: T14, t15: T15, t16: T16, t17: T17, t18: T18, t19: T19, t20: T20, t21: T21, t22: T22)(using cqlSession: Future[CqlSession], ec: ExecutionContext): Future[MappedAsyncPagingIterable[Out]] = cqlSession.flatMap {s => fut.flatMap(_.executeAsync(t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11, t12, t13, t14, t15, t16, t17, t18, t19, t20, t21, t22)(using s, ec))}
 
