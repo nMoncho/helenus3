@@ -23,6 +23,9 @@ object Dependencies {
     val akkaBusl    = "2.9.4"
     val alpakkaBusl = "8.0.0"
 
+    // Monix Dependencies
+    val monix = "3.4.1"
+
     // Pekko Dependencies
     val pekkoConnector = "1.0.2"
     val pekkoTestKit   = "1.1.2"
@@ -47,6 +50,10 @@ object Dependencies {
   // 'akka-busl' dependencies
   val alpakkaBusl = "com.lightbend.akka" %% "akka-stream-alpakka-cassandra" % Version.alpakkaBusl
   val akkaTestKitBusl = "com.typesafe.akka" %% "akka-testkit" % Version.akkaBusl
+
+  // 'monix' dependencies
+  val monix         = "io.monix" %% "monix"          % Version.monix
+  val monixReactive = "io.monix" %% "monix-reactive" % Version.monix
 
   // 'pekko' dependencies
   val pekkoConnector = "org.apache.pekko" %% "pekko-connectors-cassandra" % Version.pekkoConnector

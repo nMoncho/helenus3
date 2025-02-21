@@ -29,7 +29,7 @@ lazy val root = project
       mimaFailOnNoPrevious := false,
       Test / testOptions += Tests.Setup(() => EmbeddedDatabase.start())
     )
-    .aggregate(core, pekko, akka, akkaBusl)
+    .aggregate(core, pekko, akka, akkaBusl, monix)
 
 lazy val basicSettings = Seq(
   organization := "net.nmoncho",
@@ -131,6 +131,20 @@ lazy val akkaBusl = project
         Dependencies.akkaTestKitBusl % Test,
         // Adding this until Alpakka aligns version with Akka TestKit
         "com.typesafe.akka" %% "akka-stream" % Dependencies.Version.akkaBusl % "provided,test"
+      )
+    )
+
+lazy val monix = project
+    .settings(basicSettings)
+    .dependsOn(core % "compile->compile;test->test")
+    .settings(
+      name := "helenus-monix",
+      Test / testOptions += Tests.Setup(() => EmbeddedDatabase.start()),
+      mimaFailOnNoPrevious := false,
+      libraryDependencies ++= Seq(
+        Dependencies.ossJavaDriver % Provided,
+        Dependencies.monix         % "provided,test",
+        Dependencies.monixReactive % "provided,test"
       )
     )
 
