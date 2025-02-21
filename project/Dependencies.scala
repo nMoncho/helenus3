@@ -24,7 +24,7 @@ object Dependencies {
     val alpakkaBusl = "8.0.0"
 
     // Pekko Dependencies
-    val pekkoConnector = "1.0.2"
+    val pekkoConnector = "1.1.0"
     val pekkoTestKit   = "1.1.2"
   }
 
