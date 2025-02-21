@@ -29,7 +29,7 @@ lazy val root = project
       mimaFailOnNoPrevious := false,
       Test / testOptions += Tests.Setup(() => EmbeddedDatabase.start())
     )
-    .aggregate(core, pekko, akka, akkaBusl, monix)
+    .aggregate(core, pekko, akka, akkaBusl, monix, zio)
 
 lazy val basicSettings = Seq(
   organization := "net.nmoncho",
@@ -159,5 +159,23 @@ lazy val pekko = project
         Dependencies.pekkoTestKit   % Test,
         // Adding this until Alpakka aligns version with Pekko TestKit
         "org.apache.pekko" %% "pekko-stream" % Dependencies.Version.pekkoTestKit % "provided,test"
+      )
+    )
+
+lazy val zio = project
+    .settings(basicSettings)
+    .dependsOn(core % "compile->compile;test->test")
+    .settings(
+      name := "helenus-zio",
+      Test / testOptions += Tests.Setup(() => EmbeddedDatabase.start()),
+      mimaFailOnNoPrevious := false,
+      libraryDependencies ++= Seq(
+        Dependencies.ossJavaDriver     % Provided,
+        Dependencies.zio               % "provided,test",
+        Dependencies.zioStreams        % "provided,test",
+        Dependencies.zioStreamsInterop % "provided,test",
+        Dependencies.zioTest           % Test,
+        Dependencies.zioTestSbt        % Test,
+        Dependencies.zioTestMagnolia   % Test
       )
     )
