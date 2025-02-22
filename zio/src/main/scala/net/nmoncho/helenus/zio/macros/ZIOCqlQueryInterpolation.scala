@@ -37,7 +37,7 @@ import zio.ZIO
 object ZIOCqlQueryInterpolation:
 
     def cqlImpl(sc: Expr[StringContext], params: Expr[Seq[Any]])(using
-    qctx: Quotes): Expr[ZIO[ZCqlSession, CassandraException, WrappedBoundStatement[Row]]] =
+        qctx: Quotes): Expr[ZIO[ZCqlSession, CassandraException, WrappedBoundStatement[Row]]] =
         import qctx.reflect.*
 
         val (parts, terms) = partsAndTerms(sc, params)
@@ -52,7 +52,7 @@ object ZIOCqlQueryInterpolation:
     end cqlImpl
 
     def cqlAsyncImpl(sc: Expr[StringContext], params: Expr[Seq[Any]])(using
-    qctx: Quotes): Expr[ZIO[ZCqlSession, CassandraException, WrappedBoundStatement[Row]]] =
+        qctx: Quotes): Expr[ZIO[ZCqlSession, CassandraException, WrappedBoundStatement[Row]]] =
         import qctx.reflect.*
 
         val (parts, terms) = partsAndTerms(sc, params)
@@ -68,7 +68,7 @@ object ZIOCqlQueryInterpolation:
     end cqlAsyncImpl
 
     inline def partsAndTerms(sc: Expr[StringContext], params: Expr[Seq[Any]])(using
-    q: Quotes): (Seq[String], List[q.reflect.Term]) =
+        q: Quotes): (Seq[String], List[q.reflect.Term]) =
         import q.reflect.*
 
         val parts = sc match
@@ -168,7 +168,7 @@ object ZIOCqlQueryInterpolation:
       * @return resulting expression
       */
     inline def encScala3_4_2[T: Type](using
-    q: Quotes)(bstmt: Expr[BoundStatement], expr: Expr[T]): Expr[BoundStatement] =
+        q: Quotes)(bstmt: Expr[BoundStatement], expr: Expr[T]): Expr[BoundStatement] =
         import q.reflect.*
 
         Implicits.search(TypeRepr.of[Codec].appliedTo(expr.asTerm.tpe.widen)) match
