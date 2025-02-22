@@ -21,16 +21,18 @@
 
 package net.nmoncho.helenus.zio.macros
 
+import scala.quoted.*
+
 import com.datastax.oss.driver.api.core.ProtocolVersion
-import com.datastax.oss.driver.api.core.cql.{ BoundStatement, Row }
+import com.datastax.oss.driver.api.core.cql.BoundStatement
+import com.datastax.oss.driver.api.core.cql.Row
 import com.datastax.oss.driver.internal.core.util.Strings
 import net.nmoncho.helenus.api.RowMapper
 import net.nmoncho.helenus.api.`type`.codec.Codec
 import net.nmoncho.helenus.api.cql.WrappedBoundStatement
-import net.nmoncho.helenus.zio.{ CassandraException, ZCqlSession }
+import net.nmoncho.helenus.zio.CassandraException
+import net.nmoncho.helenus.zio.ZCqlSession
 import zio.ZIO
-
-import scala.quoted.*
 
 object ZIOCqlQueryInterpolation:
 

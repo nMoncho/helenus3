@@ -22,18 +22,24 @@
 package net.nmoncho.helenus
 package zio
 
-import _root_.zio.stream.{ ZSink, ZStream }
-import _root_.zio.{ Chunk, ZIO }
-import com.datastax.oss.driver.api.core.cql.{ BoundStatement, Row }
-import com.datastax.oss.driver.api.core.{ MappedAsyncPagingIterable, PagingIterable }
+import scala.collection.Factory
+import scala.util.Failure
+import scala.util.Success
+import scala.util.Try
+
+import _root_.zio.Chunk
+import _root_.zio.ZIO
+import _root_.zio.stream.ZSink
+import _root_.zio.stream.ZStream
+import com.datastax.oss.driver.api.core.MappedAsyncPagingIterable
+import com.datastax.oss.driver.api.core.PagingIterable
+import com.datastax.oss.driver.api.core.cql.BoundStatement
+import com.datastax.oss.driver.api.core.cql.Row
 import net.nmoncho.helenus.ScalaBoundStatement
 import net.nmoncho.helenus.api.RowMapper
 import net.nmoncho.helenus.api.cql.*
 import net.nmoncho.helenus.internal.cql.*
 import net.nmoncho.helenus.zio.macros.ZIOCqlQueryInterpolation
-
-import scala.collection.Factory
-import scala.util.{ Failure, Success, Try }
 
 type ZPagingIterable[Out] =
     ZIO[ZCqlSession, CassandraException, PagingIterable[Out]]

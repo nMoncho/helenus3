@@ -21,10 +21,12 @@
 
 package net.nmoncho.helenus.monix
 
+import scala.annotation.targetName
 import scala.concurrent.ExecutionContext
 import scala.concurrent.Future
 import scala.concurrent.duration.FiniteDuration
 import scala.jdk.FutureConverters.*
+
 import _root_.monix.eval.Task
 import _root_.monix.execution.Ack
 import _root_.monix.reactive.Consumer
@@ -37,8 +39,6 @@ import net.nmoncho.helenus.api.cql.Pager
 import net.nmoncho.helenus.api.cql.ScalaPreparedStatement
 import net.nmoncho.helenus.api.cql.WrappedBoundStatement
 import net.nmoncho.helenus.internal.cql.*
-
-import scala.annotation.targetName
 
 extension [Out](wbs: WrappedBoundStatement[Out])
     /** An [[Observable]] reading from Cassandra */
