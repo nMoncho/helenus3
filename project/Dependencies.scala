@@ -11,7 +11,7 @@ object Dependencies {
     val slf4j         = "2.0.16"
 
     // Test Dependencies
-    val mockito       = "5.15.2"
+    val mockito       = "5.16.0"
     val scalaCheck    = "1.18.1"
     val scalaTest     = "3.2.19"
     val scalaTestPlus = "3.2.18.0"
