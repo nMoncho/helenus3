@@ -1,3 +1,5 @@
+import com.typesafe.tools.mima.core.*
+
 Global / concurrentRestrictions += Tags.limit(Tags.Test, 2)
 
 ThisBuild / libraryDependencySchemes ++= Seq(
@@ -68,6 +70,15 @@ lazy val core = project
     .settings(
       name := "helenus-core",
       Test / testOptions += Tests.Setup(() => EmbeddedDatabase.start()),
+      mimaPreviousArtifacts := Set("net.nmoncho" %% "helenus-core" % "1.0.0"),
+      mimaBinaryIssueFilters ++= Seq(
+        ProblemFilters.exclude[DirectMissingMethodProblem](
+          "net.nmoncho.helenus.api.type.codec.Codec.generateTupleCodec"
+        ),
+        ProblemFilters.exclude[DirectMissingMethodProblem](
+          "net.nmoncho.helenus.internal.codec.TupleCodecDerivation.generateTupleCodec"
+        )
+      ),
       libraryDependencies ++= Seq(
         Dependencies.ossJavaDriver % Provided,
         Dependencies.slf4j,
@@ -105,6 +116,7 @@ lazy val akka = project
     .settings(
       name := "helenus-akka",
       Test / testOptions += Tests.Setup(() => EmbeddedDatabase.start()),
+      mimaPreviousArtifacts := Set("net.nmoncho" %% "helenus-akka" % "1.0.0"),
       // 5.x changed to business license
       dependencyUpdatesFilter -= moduleFilter(organization = "com.lightbend.akka"),
       // 2.7.x changed to business license
@@ -126,6 +138,7 @@ lazy val akkaBusl = project
     .settings(
       name := "helenus-akka-busl",
       Test / testOptions += Tests.Setup(() => EmbeddedDatabase.start()),
+      mimaPreviousArtifacts := Set("net.nmoncho" %% "helenus-akka-busl" % "1.0.0"),
       libraryDependencies ++= Seq(
         Dependencies.alpakkaBusl     % "provided,test",
         Dependencies.akkaTestKitBusl % Test,
@@ -154,6 +167,7 @@ lazy val pekko = project
     .settings(
       name := "helenus-pekko",
       Test / testOptions += Tests.Setup(() => EmbeddedDatabase.start()),
+      mimaPreviousArtifacts := Set("net.nmoncho" %% "helenus-pekko" % "1.0.0"),
       libraryDependencies ++= Seq(
         Dependencies.pekkoConnector % "provided,test",
         Dependencies.pekkoTestKit   % Test,
