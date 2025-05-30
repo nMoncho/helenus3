@@ -210,7 +210,7 @@ class ScalaPreparedStatementSpec
             import scala.jdk.CollectionConverters.*
 
             def checkIfPhoneIsSet(bs: BoundStatement, shouldBeSet: Boolean): Unit =
-                val columns = bs.getPreparedStatement.getVariableDefinitions.iterator().asScala.toList
+                val columns      = bs.getPreparedStatement.getVariableDefinitions.iterator().asScala.toList
                 val unsetColumns = columns
                     .filterNot(col => bs.isSet(col.getName))
                     .map(_.getName.asInternal())

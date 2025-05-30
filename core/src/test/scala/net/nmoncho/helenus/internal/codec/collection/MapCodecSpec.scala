@@ -26,7 +26,7 @@ abstract class AbstractMapCodecSpec[Coll[_, _] <: scala.collection.Map[?, ?]](na
     override protected val codec: Codec[Coll[String, Int]]
     protected val sCodec: Codec[Coll[String, String]]
 
-    private val emptyMap = intFactory.newBuilder.result()
+    private val emptyMap  = intFactory.newBuilder.result()
     private val fooBarBaz =
         val builder = intFactory.newBuilder
         builder ++= Seq("Foo" -> 1, "Bar" -> 2, "Baz" -> 3)

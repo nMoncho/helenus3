@@ -26,7 +26,7 @@ abstract class AbstractSetCodecSpec[Coll[_] <: scala.collection.Set[?]](name: St
     override protected val codec: Codec[Coll[Int]]
     protected val sCodec: Codec[Coll[String]]
 
-    private val emptySet = intFactory.newBuilder.result()
+    private val emptySet    = intFactory.newBuilder.result()
     private val oneTwoThree =
         val builder = intFactory.newBuilder
         builder ++= Seq(1, 2, 3)
@@ -111,6 +111,6 @@ class SetCodecSpec extends AbstractSetCodecSpec[Set]("SetCodec"):
     override protected val sCodec: Codec[Set[String]] = Codec[Set[String]]
 
 class MutableSetCodecSpec extends AbstractSetCodecSpec[mutablecoll.Set]("MutableSetCodec"):
-    override protected val codec: Codec[mutablecoll.Set[Int]] = Codec[mutablecoll.Set[Int]]
+    override protected val codec: Codec[mutablecoll.Set[Int]]     = Codec[mutablecoll.Set[Int]]
     override protected val sCodec: Codec[mutablecoll.Set[String]] =
         Codec[mutablecoll.Set[String]]
