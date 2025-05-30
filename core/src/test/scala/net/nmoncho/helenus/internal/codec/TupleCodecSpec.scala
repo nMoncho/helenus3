@@ -114,7 +114,7 @@ class OnParTupleCodecSpec
 
     private val attachmentPoint = mock(classOf[AttachmentPoint])
     private val codecRegistry   = mock(classOf[CodecRegistry])
-    private val tupleType =
+    private val tupleType       =
         new DefaultTupleType(List(DataTypes.TEXT, DataTypes.INT).asJava, attachmentPoint)
 
     "TupleCodec" should {

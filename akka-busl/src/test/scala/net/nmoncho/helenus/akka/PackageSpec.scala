@@ -110,7 +110,7 @@ class PackageSpec extends AnyWordSpec with Matchers with CassandraSpec with Scal
                 )
 
                 val page0Stream = rows.runWith(Sink.seq[(Pager[IceCream], IceCream)])
-                val pager0 = whenReady(page0Stream) { result =>
+                val pager0      = whenReady(page0Stream) { result =>
                     result should have size pageSize
                     result.last._1
                 }
@@ -134,7 +134,7 @@ class PackageSpec extends AnyWordSpec with Matchers with CassandraSpec with Scal
 
                 val pager0 = query.pager().asReadSource(pageSize)
 
-                val (state0, rows0) = pager0.toMat(Sink.seq[IceCream])(Keep.both).run()
+                val (state0, rows0)     = pager0.toMat(Sink.seq[IceCream])(Keep.both).run()
                 val (page0State, page0) = whenReady(rows0.flatMap(r => state0.map(r -> _))) {
                     case (rows, state) =>
                         rows should have size pageSize
@@ -250,7 +250,7 @@ class PackageSpec extends AnyWordSpec with Matchers with CassandraSpec with Scal
 
                 val pager0 = query.pager().asReadSource(pageSize)
 
-                val (state0, rows0) = pager0.toMat(Sink.seq[IceCream])(Keep.both).run()
+                val (state0, rows0)     = pager0.toMat(Sink.seq[IceCream])(Keep.both).run()
                 val (page0State, page0) = whenReady(rows0.flatMap(r => state0.map(r -> _))) {
                     case (rows, state) =>
                         rows should have size pageSize

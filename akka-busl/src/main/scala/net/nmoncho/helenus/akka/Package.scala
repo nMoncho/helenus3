@@ -196,7 +196,7 @@ extension [In, Out](pstmt: ScalaPreparedStatement[In, Out])
                     .mapConcat(identity)
                     .mapAsyncUnordered(writeSettings.parallelism) { list =>
                         val boundStatements = list.map(pstmt.tupled)
-                        val batchStatement =
+                        val batchStatement  =
                             BatchStatement.newInstance(writeSettings.batchType).addAll(boundStatements.asJava)
                         session.executeWriteBatch(batchStatement).map(_ => list)(ExecutionContext.parasitic)
                     }

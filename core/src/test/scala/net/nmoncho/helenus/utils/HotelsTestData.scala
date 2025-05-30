@@ -96,7 +96,7 @@ object HotelsTestData:
         )
 
         final val rotterdamBoijmans: PointOfInterest = PointOfInterest(
-          name = "Museum Boijmans Van Beuningen",
+          name        = "Museum Boijmans Van Beuningen",
           description =
               "Museum in Rotterdam featuring art and design from the Middle Ages to the present day."
         )
@@ -218,8 +218,8 @@ object HotelsTestData:
           "Free Wi-Fi",
           "Complimentary high-speed Wi-Fi access in all guest rooms and public areas."
         )
-        final val airCo: Amenity   = Amenity("Air conditioning", "Air conditioning in all guest rooms.")
-        final val laundry: Amenity = Amenity("Laundry facilities", "On-site guest laundry facilities.")
+        final val airCo: Amenity       = Amenity("Air conditioning", "Air conditioning in all guest rooms.")
+        final val laundry: Amenity     = Amenity("Laundry facilities", "On-site guest laundry facilities.")
         final val freeParking: Amenity =
             Amenity("Free parking", "Complimentary self-parking in the hotel's lot.")
         final val roomService: Amenity =

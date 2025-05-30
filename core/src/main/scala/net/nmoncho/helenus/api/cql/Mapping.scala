@@ -292,7 +292,7 @@ object Mapping:
             apply(pstmt.asInstanceOf[ScalaPreparedStatement[Unit, Row]])
 
         override def apply[Out](pstmt: ScalaPreparedStatement[A, Out]): A => ScalaBoundStatement[Out] =
-            val collected = collector(pstmt)
+            val collected        = collector(pstmt)
             val requiredComputed = computedColumns.collect {
                 case (_, computed) if computed.contains(pstmt) => computed(pstmt)
             }
