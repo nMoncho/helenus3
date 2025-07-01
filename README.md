@@ -15,9 +15,8 @@ We also provide integration against several streaming libraries:
 
 - Akka v2.6 (Apache License)
 - Akka BUSL
-- Monix
+- Flink (Experimental)
 - Pekko
-- ZIO
 
 This is the Scala 3 version of Helenus. For Scala 2, go [here](https://github.com/nMoncho/helenus).
 
@@ -26,7 +25,7 @@ This is the Scala 3 version of Helenus. For Scala 2, go [here](https://github.co
 Include the library into you project definition:
 
 ```scala
-libraryDependencies += "net.nmoncho" %% "helenus-core" % "1.1.0"
+libraryDependencies += "net.nmoncho" %% "helenus-core" % "1.1.1"
 ```
 
 ## Motivation
@@ -100,7 +99,7 @@ val hotelId = "h1"
 val hotelsById = "SELECT * FROM hotels WHERE id = ?".toCQL
     .prepare[String]
     .as[Hotel]
-// hotelsById: ScalaPreparedStatement1[String, Hotel] = net.nmoncho.helenus.internal.cql.ScalaPreparedStatement1@2e963914
+// hotelsById: ScalaPreparedStatement1[String, Hotel] = net.nmoncho.helenus.internal.cql.ScalaPreparedStatement1@12452034
 
 // We can extract a single result using `nextOption()`, or
 // use `to(Coll)` to transform the result to a collection
@@ -123,7 +122,7 @@ hotelsById.execute("h1").nextOption()
 
 // We can also run the same using CQL interpolated queries
 val interpolatedHotelsById = cql"SELECT * FROM hotels WHERE id = $hotelId"
-// interpolatedHotelsById: WrappedBoundStatement[Row] = net.nmoncho.helenus.api.cql.WrappedBoundStatement@4ba4e1e4
+// interpolatedHotelsById: WrappedBoundStatement[Row] = net.nmoncho.helenus.api.cql.WrappedBoundStatement@5b46c527
 
 interpolatedHotelsById.as[Hotel].execute().nextOption()
 // res1: Option[Hotel] = Some(
