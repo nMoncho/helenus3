@@ -25,7 +25,7 @@ This is the Scala 3 version of Helenus. For Scala 2, go [here](https://github.co
 Include the library into you project definition:
 
 ```scala
-libraryDependencies += "net.nmoncho" %% "helenus-core" % "1.1.1"
+libraryDependencies += "net.nmoncho" %% "helenus-core" % "1.1.2"
 ```
 
 ## Motivation
@@ -99,7 +99,7 @@ val hotelId = "h1"
 val hotelsById = "SELECT * FROM hotels WHERE id = ?".toCQL
     .prepare[String]
     .as[Hotel]
-// hotelsById: ScalaPreparedStatement1[String, Hotel] = net.nmoncho.helenus.internal.cql.ScalaPreparedStatement1@12452034
+// hotelsById: ScalaPreparedStatement1[String, Hotel] = net.nmoncho.helenus.internal.cql.ScalaPreparedStatement1@4685e4e8
 
 // We can extract a single result using `nextOption()`, or
 // use `to(Coll)` to transform the result to a collection
@@ -122,7 +122,7 @@ hotelsById.execute("h1").nextOption()
 
 // We can also run the same using CQL interpolated queries
 val interpolatedHotelsById = cql"SELECT * FROM hotels WHERE id = $hotelId"
-// interpolatedHotelsById: WrappedBoundStatement[Row] = net.nmoncho.helenus.api.cql.WrappedBoundStatement@5b46c527
+// interpolatedHotelsById: WrappedBoundStatement[Row] = net.nmoncho.helenus.api.cql.WrappedBoundStatement@5825dd22
 
 interpolatedHotelsById.as[Hotel].execute().nextOption()
 // res1: Option[Hotel] = Some(
