@@ -131,7 +131,7 @@ object CqlQueryInterpolation:
                 case _ =>
                     encScala3_3_3(using q, term.tpe.widen.asType.asInstanceOf[Type[Any]])(bstmt, term.asExpr)
 
-        // The following code works on Scala 3.4.2 but not on Scala 3.3.3 LTS
+        // The following code works on Scala 3.4.2 but not on Scala 3.3.7 LTS
         // The offending code is `term.tpe.widen.asType match case '[t] =>`
         // More specifically `'[t]`.
         // I'm keeping this here until it's resolved in a patch version
