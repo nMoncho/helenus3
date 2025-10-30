@@ -6,8 +6,8 @@ object Dependencies {
     val scala = "3.3.6" // scala-steward:off
 
     // 'core' dependencies
-    val cassandraUnit = "4.3.1.0"
-    val ossJavaDriver = "4.19.0"
+    val cassandraUnit = "3.11.19.1"
+    val ossJavaDriver = "4.19.1"
     val slf4j         = "2.0.17"
 
     // Test Dependencies
@@ -35,7 +35,7 @@ object Dependencies {
   }
 
   // 'core' dependencies
-  val cassandraUnit = "org.cassandraunit"    % "cassandra-unit"   % Version.cassandraUnit
+  val cassandraUnit = "net.nmoncho"          % "cassandra-unit"   % Version.cassandraUnit
   val ossJavaDriver = "org.apache.cassandra" % "java-driver-core" % Version.ossJavaDriver
   val slf4j         = "org.slf4j"            % "slf4j-api"        % Version.slf4j
 
