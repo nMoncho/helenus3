@@ -26,6 +26,10 @@ import com.datastax.oss.driver.api.core.ProtocolVersion
 import com.datastax.oss.driver.api.core.`type`.DataType
 import com.datastax.oss.driver.api.core.`type`.codec.TypeCodec
 import com.datastax.oss.driver.api.core.`type`.reflect.GenericType
+import com.datastax.oss.driver.api.core.metadata.token.Token
+import com.datastax.oss.driver.internal.core.metadata.token.ByteOrderedToken
+import com.datastax.oss.driver.internal.core.metadata.token.Murmur3Token
+import com.datastax.oss.driver.internal.core.metadata.token.RandomToken
 import net.nmoncho.helenus.internal.codec.*
 import net.nmoncho.helenus.internal.codec.TupleCodecDerivation
 import net.nmoncho.helenus.internal.codec.collection.*
@@ -107,6 +111,11 @@ object Codec extends TupleCodecDerivation:
     given Codec[Point]      = wrap(Codecs.pointCodec)
     given Codec[Polygon]    = wrap(Codecs.polygonCodec)
     given Codec[DateRange]  = wrap(Codecs.dateRangeCodec)
+
+    given Codec[Token]            = wrap(Codecs.tokenCodec)
+    given Codec[Murmur3Token]     = wrap(Codecs.murmur3TokenCodec)
+    given Codec[RandomToken]      = wrap(Codecs.randomTokenCodec)
+    given Codec[ByteOrderedToken] = wrap(Codecs.byteOrderedTokenCodec)
 
     given [A, B](using left: Codec[A], right: Codec[B]): Codec[Either[A, B]] = wrap(EitherCodec(left, right))
 
