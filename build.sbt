@@ -21,7 +21,15 @@ addCommandAlias(
   "; scalafmtCheckAll; headerCheckAll; scalafixAll --check"
 )
 
-Global / resolvers += "Akka library repository".at("https://repo.akka.io/maven")
+val akkaKey = Option(System.getenv("AKKA_IO_REPOSITORY_KEY")).getOrElse {
+    throw new IllegalStateException("Akka.io repository key is required to build Akka BUSL projects")
+}
+
+ThisBuild / resolvers += "akka-secure-mvn" at s"https://repo.akka.io/${akkaKey}/secure"
+ThisBuild / resolvers += Resolver.url(
+  "akka-secure-ivy",
+  url(s"https://repo.akka.io/${akkaKey}/secure")
+)(Resolver.ivyStylePatterns)
 
 lazy val root = project
     .in(file("."))
@@ -31,7 +39,7 @@ lazy val root = project
       mimaFailOnNoPrevious := false,
       Test / testOptions += Tests.Setup(() => EmbeddedDatabase.start())
     )
-    .aggregate(core, pekko, akka, monix, zio)
+    .aggregate(core, pekko, akka, akkaBusl, monix, zio)
 
 lazy val basicSettings = Seq(
   organization := "net.nmoncho",
@@ -75,21 +83,6 @@ lazy val core = project
         ),
         ProblemFilters.exclude[DirectMissingMethodProblem](
           "net.nmoncho.helenus.internal.codec.TupleCodecDerivation.generateTupleCodec"
-        ),
-        ProblemFilters.exclude[DirectMissingMethodProblem](
-          "net.nmoncho.helenus.api.cql.StatementOptions.apply"
-        ),
-        ProblemFilters.exclude[DirectMissingMethodProblem](
-          "net.nmoncho.helenus.api.cql.StatementOptions#BoundStatementOptions.apply"
-        ),
-        ProblemFilters.exclude[DirectMissingMethodProblem](
-          "net.nmoncho.helenus.api.cql.StatementOptions#BoundStatementOptions.this"
-        ),
-        ProblemFilters.exclude[DirectMissingMethodProblem](
-          "net.nmoncho.helenus.api.cql.StatementOptions#BoundStatementOptions.copy"
-        ),
-        ProblemFilters.exclude[DirectMissingMethodProblem](
-          "net.nmoncho.helenus.api.cql.StatementOptions#BoundStatementOptions.apply"
         )
       ),
       libraryDependencies ++= Seq(

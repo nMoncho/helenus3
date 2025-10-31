@@ -10,6 +10,7 @@ permissions:
 env:
   LOG_LEVEL: DEBUG
   CASSANDRA_LOG_LEVEL: DEBUG
+  AKKA_IO_REPOSITORY_KEY: ${{ secrets.AKKA_IO_REPOSITORY_KEY }}
 
 jobs:
   build:
