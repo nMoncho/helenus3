@@ -30,7 +30,9 @@ case class StatementOptions(
         if bstmtOptions == StatementOptions.default.bstmtOptions then bs
         else
             // TODO maybe we can avoid so many allocations with a simple `new`, although it would be less flexible
-            val bs1 = bs.setTracing(bstmtOptions.tracing).setPageSize(bstmtOptions.pageSize)
+            val bs1 = bs.setTracing(
+              bstmtOptions.tracing
+            ).setPageSize(bstmtOptions.pageSize).setIdempotent(bstmtOptions.idempotent)
             val bs2 = bstmtOptions.profile.map(bs1.setExecutionProfile).getOrElse(bs1)
             val bs3 = bstmtOptions.routingKeyspace.map(bs2.setRoutingKeyspace).getOrElse(bs2)
             val bs4 = bstmtOptions.routingKey.map(bs3.setRoutingKey).getOrElse(bs3)
@@ -69,7 +71,8 @@ object StatementOptions:
         timeout: Option[Duration],
         pagingState: Option[ByteBuffer],
         pageSize: Int,
-        consistencyLevel: Option[ConsistencyLevel]
+        consistencyLevel: Option[ConsistencyLevel],
+        idempotent: Boolean
     ): StatementOptions =
         StatementOptions(
           default.pstmtOptions,
@@ -81,7 +84,8 @@ object StatementOptions:
             timeout,
             pagingState,
             pageSize,
-            consistencyLevel
+            consistencyLevel,
+            idempotent
           )
         )
 
@@ -106,7 +110,8 @@ object StatementOptions:
         timeout: Option[Duration],
         pagingState: Option[ByteBuffer],
         pageSize: Int,
-        consistencyLevel: Option[ConsistencyLevel]
+        consistencyLevel: Option[ConsistencyLevel],
+        idempotent: Boolean
     )
 
     /** Default Options, takes all configuration options from the session */
@@ -122,7 +127,8 @@ object StatementOptions:
         timeout          = None,
         pagingState      = None,
         pageSize         = 0, // 0 or negative uses default value defined in configuration
-        consistencyLevel = None
+        consistencyLevel = None,
+        idempotent       = false
       )
     )
 

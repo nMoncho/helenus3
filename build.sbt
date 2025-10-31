@@ -75,6 +75,21 @@ lazy val core = project
         ),
         ProblemFilters.exclude[DirectMissingMethodProblem](
           "net.nmoncho.helenus.internal.codec.TupleCodecDerivation.generateTupleCodec"
+        ),
+        ProblemFilters.exclude[DirectMissingMethodProblem](
+          "net.nmoncho.helenus.api.cql.StatementOptions.apply"
+        ),
+        ProblemFilters.exclude[DirectMissingMethodProblem](
+          "net.nmoncho.helenus.api.cql.StatementOptions#BoundStatementOptions.apply"
+        ),
+        ProblemFilters.exclude[DirectMissingMethodProblem](
+          "net.nmoncho.helenus.api.cql.StatementOptions#BoundStatementOptions.this"
+        ),
+        ProblemFilters.exclude[DirectMissingMethodProblem](
+          "net.nmoncho.helenus.api.cql.StatementOptions#BoundStatementOptions.copy"
+        ),
+        ProblemFilters.exclude[DirectMissingMethodProblem](
+          "net.nmoncho.helenus.api.cql.StatementOptions#BoundStatementOptions.apply"
         )
       ),
       libraryDependencies ++= Seq(
