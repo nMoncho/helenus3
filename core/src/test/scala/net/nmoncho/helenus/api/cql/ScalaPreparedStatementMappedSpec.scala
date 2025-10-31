@@ -33,7 +33,7 @@ class ScalaPreparedStatementMappedSpec extends AnyWordSpec
     private implicit lazy val cqlSession: CqlSession         = session
     private implicit lazy val futSession: Future[CqlSession] = Future.successful(session)
 
-    given Mapping[Hotel] = Mapping.derived
+    given Mapping[Hotel] = Mapping.deriveRenamed(_.id -> "id")
 
     "ScalaPreparedStatementFrom" should {
         "prepare a query" in {

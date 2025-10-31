@@ -17,6 +17,7 @@ import com.datastax.oss.driver.api.core.cql.PreparedStatement
 import com.datastax.oss.driver.api.core.cql.Row
 import net.nmoncho.helenus.api.`type`.codec.Codec
 import net.nmoncho.helenus.internal.Labelling
+import net.nmoncho.helenus.internal.macros.RenamedDerivedMapping
 
 /** Defines the contract of how Helenus can map a type [[T]] into and from the database
   *
@@ -95,12 +96,12 @@ object Mapping:
         def contains(pstmt: PreparedStatement): Boolean = pstmt.getVariableDefinitions.contains(column)
     end BindParameterCollector
 
-    sealed trait FieldCollector[T] extends BindParameterCollector[T]:
+    trait FieldCollector[T] extends BindParameterCollector[T]:
         def apply(row: Row): T
 
     import scala.compiletime.*
 
-    inline def summonInstances[Elems <: Tuple](fields: Seq[String]): FieldCollector[Elems] =
+    inline def summonInstances[Elems](fields: Seq[String]): FieldCollector[Elems] =
         inline erasedValue[Elems] match
             case _: (elem *: EmptyTuple) =>
                 deriveLast[elem](fields).asInstanceOf[FieldCollector[Elems]]
@@ -207,6 +208,18 @@ object Mapping:
 
         new DefaultCaseClassDerivedMapping[A](collector, Map.empty)
     end derived
+
+    /** Derives a [[Mapping]] considering the specified name mapping.
+      *
+      * @param first first mapping from field to column
+      * @param rest  rest mapping from field to column
+      * @tparam A target type
+      */
+    inline def deriveRenamed[A <: Product](
+        inline first: A => (Any, String),
+        inline rest: A => (Any, String)*
+    ): Mapping[A] =
+        ${ RenamedDerivedMapping.renamedImpl[A]('first, 'rest) }
 
     /** Sets the value to the [[BoundStatement]] only if not-null to avoid tombstones
       */
