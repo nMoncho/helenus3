@@ -31,7 +31,7 @@ lazy val root = project
       mimaFailOnNoPrevious := false,
       Test / testOptions += Tests.Setup(() => EmbeddedDatabase.start())
     )
-    .aggregate(core, pekko, akka, akkaBusl, monix, zio)
+    .aggregate(core, pekko, akka, monix, zio)
 
 lazy val basicSettings = Seq(
   organization := "net.nmoncho",
